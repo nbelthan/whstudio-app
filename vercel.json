@@ -1,47 +1,5 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
   "framework": "nextjs",
-  "functions": {
-    "src/app/api/verify-proof/route.ts": {
-      "runtime": "edge",
-      "maxDuration": 30
-    },
-    "src/app/api/auth/session/route.ts": {
-      "runtime": "edge",
-      "maxDuration": 10
-    },
-    "src/app/api/initiate-payment/route.ts": {
-      "runtime": "edge",
-      "maxDuration": 30
-    },
-    "src/app/api/tasks/route.ts": {
-      "maxDuration": 60
-    },
-    "src/app/api/submissions/route.ts": {
-      "maxDuration": 60
-    }
-  },
-  "regions": ["iad1"],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "X-Requested-With, Content-Type, Authorization"
-        }
-      ]
-    }
-  ]
+  "buildCommand": "npm run build",
+  "regions": ["iad1"]
 }
