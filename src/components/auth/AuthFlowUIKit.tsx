@@ -55,19 +55,27 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
     // Don't auto-update step if we've manually set it (e.g., after wallet connection)
     if (sessionStatus === 'loading' || manualStepOverride) return;
 
+    // Check if already authenticated and redirect
+    if (isAuthenticated && user?.verification_level) {
+      if (currentStep !== 'complete') {
+        setCurrentStep('complete');
+        setTimeout(() => {
+          if (onComplete) {
+            onComplete(user);
+          } else {
+            router.push('/dashboard');
+          }
+        }, 1000);
+      }
+      return;
+    }
+
     if (!session) {
       setCurrentStep('wallet');
     } else if (session.user && (!user?.verification_level)) {
       setCurrentStep('verification');
-    } else if (isAuthenticated && user?.verification_level) {
-      setCurrentStep('complete');
-      if (onComplete) {
-        onComplete(user);
-      } else {
-        router.push('/dashboard');
-      }
     }
-  }, [session, sessionStatus, user, isAuthenticated, onComplete, router, manualStepOverride]);
+  }, [session, sessionStatus, user, isAuthenticated, onComplete, router, manualStepOverride, currentStep]);
 
   const handleWalletAuth = useCallback(async () => {
     // Allow in development mode or when installed in World App
