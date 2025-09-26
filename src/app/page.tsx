@@ -2,6 +2,7 @@
 
 // Main entry point for WorldHuman Studio App
 // Deployment test: 2025-09-26 16:15
+// UI Guidelines fix: 2025-09-26
 import {
   Typography,
   SafeAreaView,
