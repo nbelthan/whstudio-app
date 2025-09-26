@@ -497,7 +497,7 @@ export const DataAnnotationInterface: React.FC<DataAnnotationInterfaceProps> = (
                         {annotation.type.replace('_', ' ')}
                         {annotation.coordinates && (
                           <>
-                            {' '}• '}
+                            {' • '}
                             {annotation.type === 'point'
                               ? `(${Math.round(annotation.coordinates[0])}, ${Math.round(annotation.coordinates[1])})`
                               : `${Math.round(annotation.coordinates[2])} × ${Math.round(annotation.coordinates[3])}`
