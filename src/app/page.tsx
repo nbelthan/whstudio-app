@@ -1,12 +1,25 @@
-import { Page } from '@/components/PageLayout';
-import { AuthButton } from '../components/AuthButton';
+import { AuthFlow } from '@/components/auth';
 
 export default function Home() {
   return (
-    <Page>
-      <Page.Main className="flex flex-col items-center justify-center">
-        <AuthButton />
-      </Page.Main>
-    </Page>
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-white mb-4">
+            WorldHuman Studio
+          </h1>
+          <p className="text-white/80 text-lg mb-2">
+            Earn by completing human intelligence tasks
+          </p>
+          <p className="text-white/60 text-sm">
+            Join the future of human-AI collaboration
+          </p>
+        </div>
+
+        <AuthFlow onComplete={(user) => {
+          window.location.href = '/dashboard';
+        }} />
+      </div>
+    </div>
   );
 }

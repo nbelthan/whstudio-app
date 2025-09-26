@@ -1,0 +1,61 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "functions": {
+    "src/app/api/verify-proof/route.ts": {
+      "runtime": "edge",
+      "maxDuration": 30
+    },
+    "src/app/api/auth/session/route.ts": {
+      "runtime": "edge",
+      "maxDuration": 10
+    },
+    "src/app/api/initiate-payment/route.ts": {
+      "runtime": "edge",
+      "maxDuration": 30
+    },
+    "src/app/api/tasks/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/submissions/route.ts": {
+      "maxDuration": 60
+    }
+  },
+  "env": {
+    "DATABASE_URL": "@whstudio-database-url",
+    "DATABASE_URL_NON_POOLING": "@whstudio-database-url-non-pooling",
+    "NEXT_PUBLIC_APP_ID": "@whstudio-world-app-id",
+    "WORLD_ACTION_ID": "@whstudio-world-action-id",
+    "AUTH_SECRET": "@whstudio-auth-secret",
+    "HMAC_SECRET_KEY": "@whstudio-hmac-secret",
+    "JWT_SECRET": "@whstudio-jwt-secret",
+    "KV_URL": "@whstudio-kv-url",
+    "KV_REST_API_URL": "@whstudio-kv-rest-api-url",
+    "KV_REST_API_TOKEN": "@whstudio-kv-rest-api-token",
+    "BLOB_READ_WRITE_TOKEN": "@whstudio-blob-token",
+    "PAYMENT_WEBHOOK_SECRET": "@whstudio-payment-webhook-secret"
+  },
+  "regions": ["iad1"],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "X-Requested-With, Content-Type, Authorization"
+        }
+      ]
+    }
+  ]
+}

@@ -1,26 +1,129 @@
 @import 'tailwindcss';
 
 :root {
+  /* WorldHuman Studio Colors */
+  --primary: rgb(25, 137, 251);
+  --primary-dark: rgb(20, 110, 201);
+  --primary-light: rgb(56, 153, 252);
+
+  /* Dark theme (default) */
+  --background: #000000;
+  --surface: #111111;
+  --surface-secondary: #1a1a1a;
+  --surface-tertiary: #222222;
+  --foreground: #ffffff;
+  --foreground-muted: #a0a0a0;
+  --foreground-secondary: #808080;
+  --border: #333333;
+  --border-muted: #2a2a2a;
+
+  /* Status colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+
+  /* World App specific */
+  --world-blue: rgb(25, 137, 251);
+  --world-black: #000000;
+  --world-gray: #808080;
+}
+
+/* Light theme override */
+[data-theme="light"] {
   --background: #ffffff;
-  --foreground: #171717;
+  --surface: #f8f9fa;
+  --surface-secondary: #e9ecef;
+  --surface-tertiary: #dee2e6;
+  --foreground: #000000;
+  --foreground-muted: #6c757d;
+  --foreground-secondary: #495057;
+  --border: #dee2e6;
+  --border-muted: #e9ecef;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-secondary);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideInFromBottom 0.4s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

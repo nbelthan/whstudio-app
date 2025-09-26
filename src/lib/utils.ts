@@ -1,0 +1,262 @@
+/**
+ * Utility functions for WorldHuman Studio App
+ */
+
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { TaskType, TaskDifficulty, RewardCurrency } from '@/types';
+
+/**
+ * Merge Tailwind CSS classes with clsx
+ */
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+/**
+ * Format currency amounts
+ */
+export function formatCurrency(amount: number, currency: RewardCurrency = 'WLD'): string {
+  const formatted = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: currency === 'WLD' ? 2 : 4,
+    maximumFractionDigits: currency === 'WLD' ? 2 : 8,
+  }).format(amount);
+
+  return `${formatted} ${currency}`;
+}
+
+/**
+ * Format relative time (e.g., "2 hours ago")
+ */
+export function formatTimeAgo(date: string | Date): string {
+  const now = new Date();
+  const past = new Date(date);
+  const diffInSeconds = Math.floor((now.getTime() - past.getTime()) / 1000);
+
+  if (diffInSeconds < 60) {
+    return 'just now';
+  }
+
+  const intervals = [
+    { label: 'year', seconds: 31536000 },
+    { label: 'month', seconds: 2592000 },
+    { label: 'week', seconds: 604800 },
+    { label: 'day', seconds: 86400 },
+    { label: 'hour', seconds: 3600 },
+    { label: 'minute', seconds: 60 },
+  ];
+
+  for (const interval of intervals) {
+    const count = Math.floor(diffInSeconds / interval.seconds);
+    if (count > 0) {
+      return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
+    }
+  }
+
+  return 'just now';
+}
+
+/**
+ * Format duration in minutes to human readable format
+ */
+export function formatDuration(minutes: number): string {
+  if (minutes < 60) {
+    return `${minutes}m`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  if (remainingMinutes === 0) {
+    return `${hours}h`;
+  }
+
+  return `${hours}h ${remainingMinutes}m`;
+}
+
+/**
+ * Get task type display name
+ */
+export function getTaskTypeDisplayName(taskType: TaskType): string {
+  const taskTypeNames: Record<TaskType, string> = {
+    data_entry: 'Data Entry',
+    content_review: 'Content Review',
+    transcription: 'Transcription',
+    translation: 'Translation',
+    image_tagging: 'Image Tagging',
+    quality_assurance: 'Quality Assurance',
+    research: 'Research',
+    creative_tasks: 'Creative Tasks',
+    rlhf_rating: 'RLHF Rating',
+    voice_recording: 'Voice Recording',
+    data_annotation: 'Data Annotation',
+  };
+
+  return taskTypeNames[taskType] || taskType;
+}
+
+/**
+ * Get task difficulty display properties
+ */
+export function getTaskDifficultyProps(level: TaskDifficulty): {
+  label: string;
+  color: string;
+  bgColor: string;
+} {
+  const difficultyProps: Record<TaskDifficulty, { label: string; color: string; bgColor: string }> = {
+    1: { label: 'Beginner', color: 'text-green-400', bgColor: 'bg-green-400/10' },
+    2: { label: 'Easy', color: 'text-blue-400', bgColor: 'bg-blue-400/10' },
+    3: { label: 'Medium', color: 'text-yellow-400', bgColor: 'bg-yellow-400/10' },
+    4: { label: 'Hard', color: 'text-orange-400', bgColor: 'bg-orange-400/10' },
+    5: { label: 'Expert', color: 'text-red-400', bgColor: 'bg-red-400/10' },
+  };
+
+  return difficultyProps[level];
+}
+
+/**
+ * Get status display properties
+ */
+export function getStatusProps(status: string): {
+  label: string;
+  color: string;
+  bgColor: string;
+} {
+  const statusProps: Record<string, { label: string; color: string; bgColor: string }> = {
+    // Task statuses
+    draft: { label: 'Draft', color: 'text-gray-400', bgColor: 'bg-gray-400/10' },
+    active: { label: 'Active', color: 'text-green-400', bgColor: 'bg-green-400/10' },
+    paused: { label: 'Paused', color: 'text-yellow-400', bgColor: 'bg-yellow-400/10' },
+    completed: { label: 'Completed', color: 'text-blue-400', bgColor: 'bg-blue-400/10' },
+    cancelled: { label: 'Cancelled', color: 'text-red-400', bgColor: 'bg-red-400/10' },
+
+    // Submission statuses
+    pending: { label: 'Pending', color: 'text-yellow-400', bgColor: 'bg-yellow-400/10' },
+    approved: { label: 'Approved', color: 'text-green-400', bgColor: 'bg-green-400/10' },
+    rejected: { label: 'Rejected', color: 'text-red-400', bgColor: 'bg-red-400/10' },
+    under_review: { label: 'Under Review', color: 'text-blue-400', bgColor: 'bg-blue-400/10' },
+
+    // Payment statuses
+    processing: { label: 'Processing', color: 'text-blue-400', bgColor: 'bg-blue-400/10' },
+    failed: { label: 'Failed', color: 'text-red-400', bgColor: 'bg-red-400/10' },
+  };
+
+  return statusProps[status] || { label: status, color: 'text-gray-400', bgColor: 'bg-gray-400/10' };
+}
+
+/**
+ * Truncate text to specified length
+ */
+export function truncateText(text: string, maxLength: number): string {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength).trim() + '...';
+}
+
+/**
+ * Generate a random ID
+ */
+export function generateId(): string {
+  return Math.random().toString(36).substr(2, 9);
+}
+
+/**
+ * Debounce function
+ */
+export function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeout: NodeJS.Timeout;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+}
+
+/**
+ * Validate email format
+ */
+export function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Copy text to clipboard
+ */
+export async function copyToClipboard(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (error) {
+    console.error('Failed to copy to clipboard:', error);
+    return false;
+  }
+}
+
+/**
+ * Check if device is mobile
+ */
+export function isMobile(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.innerWidth < 768;
+}
+
+/**
+ * Format file size
+ */
+export function formatFileSize(bytes: number): string {
+  if (bytes === 0) return '0 B';
+
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+}
+
+/**
+ * Sleep/delay function
+ */
+export function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Get task type icon emoji
+ */
+export function getTaskTypeIcon(taskType: TaskType): string {
+  const taskTypeIcons: Record<TaskType, string> = {
+    data_entry: '📝',
+    content_review: '👀',
+    transcription: '🎤',
+    translation: '🌐',
+    image_tagging: '🏷️',
+    quality_assurance: '✅',
+    research: '🔍',
+    creative_tasks: '🎨',
+    rlhf_rating: '🎯',
+    voice_recording: '🎙️',
+    data_annotation: '📊',
+  };
+
+  return taskTypeIcons[taskType] || '📋';
+}
+
+/**
+ * Calculate completion percentage
+ */
+export function calculateCompletionPercentage(completed: number, total: number): number {
+  if (total === 0) return 0;
+  return Math.min(100, Math.max(0, Math.round((completed / total) * 100)));
+}
+
+/**
+ * Parse error message from API response
+ */
+export function parseErrorMessage(error: any): string {
+  if (typeof error === 'string') return error;
+  if (error?.message) return error.message;
+  if (error?.error) return error.error;
+  return 'An unexpected error occurred';
+}

@@ -4,6 +4,9 @@ import {
   verifyCloudProof,
 } from '@worldcoin/minikit-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { verifyWorldIDProof, isValidProofFormat, checkVerificationRateLimit, actions } from '@/lib/world/verify';
+import { queries } from '@/lib/db/client';
+import { createSession, isNullifierUsed } from '@/lib/auth/session';
 
 interface IRequestPayload {
   payload: ISuccessResult;
@@ -12,28 +15,138 @@ interface IRequestPayload {
 }
 
 /**
- * This route is used to verify the proof of the user
- * It is critical proofs are verified from the server side
- * Read More: https://docs.world.org/mini-apps/commands/verify#verifying-the-proof
+ * Enhanced World ID verification with authentication and sybil resistance
+ * This route verifies the proof and creates/updates user sessions
  */
 export async function POST(req: NextRequest) {
-  const { payload, action, signal } = (await req.json()) as IRequestPayload;
-  const app_id = process.env.NEXT_PUBLIC_APP_ID as `app_${string}`;
+  try {
+    const { payload, action, signal } = (await req.json()) as IRequestPayload;
+    const app_id = process.env.NEXT_PUBLIC_APP_ID as `app_${string}`;
 
-  const verifyRes = (await verifyCloudProof(
-    payload,
-    app_id,
-    action,
-    signal,
-  )) as IVerifyResponse; // Wrapper on this
+    // Validate request format
+    if (!isValidProofFormat(payload)) {
+      return NextResponse.json(
+        { error: 'Invalid proof format' },
+        { status: 400 }
+      );
+    }
 
-  if (verifyRes.success) {
-    // This is where you should perform backend actions if the verification succeeds
-    // Such as, setting a user as "verified" in a database
-    return NextResponse.json({ verifyRes, status: 200 });
-  } else {
-    // This is where you should handle errors from the World ID /verify endpoint.
-    // Usually these errors are due to a user having already verified.
-    return NextResponse.json({ verifyRes, status: 400 });
+    // Rate limiting check
+    const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0] ||
+                     req.headers.get('x-real-ip') ||
+                     'unknown';
+
+    const rateLimitCheck = await checkVerificationRateLimit(
+      `${clientIP}:${payload.nullifier_hash}`,
+      15, // 15 minutes window
+      5   // max 5 attempts
+    );
+
+    if (!rateLimitCheck.allowed) {
+      return NextResponse.json(
+        {
+          error: 'Rate limit exceeded',
+          resetTime: rateLimitCheck.resetTime.toISOString()
+        },
+        { status: 429 }
+      );
+    }
+
+    // Verify proof with World ID
+    const verifyRes = (await verifyCloudProof(
+      payload,
+      app_id,
+      action,
+      signal,
+    )) as IVerifyResponse;
+
+    if (!verifyRes.success) {
+      return NextResponse.json(
+        {
+          error: 'World ID verification failed',
+          details: verifyRes
+        },
+        { status: 400 }
+      );
+    }
+
+    // Check if this nullifier is already in use (sybil protection)
+    const existingUsers = await queries.users.findByNullifier(payload.nullifier_hash);
+
+    let user;
+    let isNewUser = false;
+
+    if (existingUsers.length === 0) {
+      // New user - create account
+      if (action !== actions.REGISTER && action !== actions.LOGIN) {
+        return NextResponse.json(
+          { error: 'New users must register first' },
+          { status: 400 }
+        );
+      }
+
+      // Generate world_id
+      const worldId = `world_${payload.nullifier_hash.slice(2, 18)}`;
+
+      const newUsers = await queries.users.create({
+        world_id: worldId,
+        nullifier_hash: payload.nullifier_hash,
+        verification_level: payload.verification_level,
+        username: null,
+        wallet_address: null
+      });
+
+      if (newUsers.length === 0) {
+        throw new Error('Failed to create user');
+      }
+
+      user = newUsers[0];
+      isNewUser = true;
+    } else {
+      user = existingUsers[0];
+
+      // Check if user is active
+      if (!user.is_active) {
+        return NextResponse.json(
+          { error: 'Account is disabled' },
+          { status: 403 }
+        );
+      }
+    }
+
+    // Create session
+    const sessionToken = await createSession({
+      userId: user.id,
+      worldId: user.world_id,
+      nullifierHash: user.nullifier_hash,
+      verificationLevel: user.verification_level,
+      walletAddress: user.wallet_address || undefined,
+      username: user.username || undefined
+    });
+
+    // Return success response
+    return NextResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        world_id: user.world_id,
+        nullifier_hash: user.nullifier_hash,
+        verification_level: user.verification_level,
+        username: user.username,
+        wallet_address: user.wallet_address,
+        reputation_score: user.reputation_score,
+        total_earned: user.total_earned,
+        is_new_user: isNewUser
+      },
+      session_token: sessionToken,
+      verification: verifyRes
+    });
+
+  } catch (error) {
+    console.error('Verification error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
