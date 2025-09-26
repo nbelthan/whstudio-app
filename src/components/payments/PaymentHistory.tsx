@@ -179,8 +179,8 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
         <Card.Content>
           <div className="space-y-4">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
-                <div className="flex items-center gap-3">
+              <div key={i} className="flex items-center justify-between p-6 bg-white/5 rounded-2xl">
+                <div className="flex items-center gap-6">
                   <LoadingSkeleton width={32} height={32} rounded />
                   <div>
                     <LoadingSkeleton width={120} height={16} />
@@ -227,8 +227,8 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
 
         <Card.Content>
           {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-green-500/10 border border-green-500/20 rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-1">
                 <TrendingUp className="w-4 h-4 text-green-400" />
                 <span className="text-sm text-green-400">Earned</span>
@@ -238,7 +238,7 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
               </p>
             </div>
 
-            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+            <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-1">
                 <DollarSign className="w-4 h-4 text-blue-400" />
                 <span className="text-sm text-blue-400">Spent</span>
@@ -248,7 +248,7 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
               </p>
             </div>
 
-            <div className="bg-white/10 border border-white/20 rounded-lg p-4">
+            <div className="bg-white/10 border border-white/20 rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-1">
                 <Calendar className="w-4 h-4 text-white/60" />
                 <span className="text-sm text-white/60">Net</span>
@@ -275,7 +275,7 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
           )}
 
           {/* Payment List */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             {filteredPayments.length === 0 ? (
               <div className="text-center py-8">
                 <DollarSign className="w-12 h-12 text-white/30 mx-auto mb-4" />
@@ -290,9 +290,9 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
                   <div
                     key={payment.id}
                     onClick={() => handlePaymentClick(payment)}
-                    className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 cursor-pointer transition-colors"
+                    className="flex items-center justify-between p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 cursor-pointer transition-colors"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-6">
                       {getPaymentTypeIcon(payment.payment_type)}
                       <div>
                         <div className="flex items-center gap-2">
@@ -352,15 +352,15 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
       >
         {selectedPayment && (
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/5 rounded-lg p-4">
+            <div className="grid grid-cols-2 gap-6">
+              <div className="bg-white/5 rounded-2xl p-6">
                 <span className="text-white/60 text-sm">Amount</span>
                 <p className="text-white font-semibold text-lg">
                   {formatCurrency(selectedPayment.amount, selectedPayment.currency)}
                 </p>
               </div>
 
-              <div className="bg-white/5 rounded-lg p-4">
+              <div className="bg-white/5 rounded-2xl p-6">
                 <span className="text-white/60 text-sm">Status</span>
                 <div className="mt-1">
                   <Badge className={cn(
@@ -373,7 +373,7 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
               </div>
             </div>
 
-            <div className="bg-white/5 rounded-lg p-4">
+            <div className="bg-white/5 rounded-2xl p-6">
               <span className="text-white/60 text-sm">Type</span>
               <p className="text-white capitalize">
                 {selectedPayment.payment_type.replace('_', ' ')}
@@ -381,7 +381,7 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
             </div>
 
             {selectedPayment.transaction_hash && (
-              <div className="bg-white/5 rounded-lg p-4">
+              <div className="bg-white/5 rounded-2xl p-6">
                 <span className="text-white/60 text-sm">Transaction Hash</span>
                 <div className="flex items-center gap-2 mt-1">
                   <p className="text-white font-mono text-sm">
@@ -401,8 +401,8 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/5 rounded-lg p-4">
+            <div className="grid grid-cols-2 gap-6">
+              <div className="bg-white/5 rounded-2xl p-6">
                 <span className="text-white/60 text-sm">Created</span>
                 <p className="text-white">
                   {new Date(selectedPayment.created_at).toLocaleString()}
@@ -410,7 +410,7 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
               </div>
 
               {selectedPayment.processed_at && (
-                <div className="bg-white/5 rounded-lg p-4">
+                <div className="bg-white/5 rounded-2xl p-6">
                   <span className="text-white/60 text-sm">Processed</span>
                   <p className="text-white">
                     {new Date(selectedPayment.processed_at).toLocaleString()}
@@ -420,7 +420,7 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
             </div>
 
             {selectedPayment.gas_fee && (
-              <div className="bg-white/5 rounded-lg p-4">
+              <div className="bg-white/5 rounded-2xl p-6">
                 <span className="text-white/60 text-sm">Network Fee</span>
                 <p className="text-white">
                   {formatCurrency(selectedPayment.gas_fee, selectedPayment.currency)}

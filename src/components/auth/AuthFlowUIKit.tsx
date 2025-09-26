@@ -16,6 +16,7 @@ import {
   Typography,
   CircularState,
   ListItem,
+  Spinner,
   useToast,
   AlertDialog,
   AlertDialogContent,
@@ -47,10 +48,12 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
   const [walletConnecting, setWalletConnecting] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [manualStepOverride, setManualStepOverride] = useState(false);
 
   // Determine current step based on session and user state
   useEffect(() => {
-    if (sessionStatus === 'loading') return;
+    // Don't auto-update step if we've manually set it (e.g., after wallet connection)
+    if (sessionStatus === 'loading' || manualStepOverride) return;
 
     if (!session) {
       setCurrentStep('wallet');
@@ -64,23 +67,40 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
         router.push('/dashboard');
       }
     }
-  }, [session, sessionStatus, user, isAuthenticated, onComplete, router]);
+  }, [session, sessionStatus, user, isAuthenticated, onComplete, router, manualStepOverride]);
 
   const handleWalletAuth = useCallback(async () => {
-    if (!isInstalled || walletConnecting) return;
+    // Allow in development mode or when installed in World App
+    const isDev = process.env.NODE_ENV === 'development';
+    if ((!isInstalled && !isDev) || walletConnecting) return;
 
     setWalletConnecting(true);
     setLoading(true);
 
     try {
-      await walletAuth();
+      const result = await walletAuth();
 
-      toast({
-        title: 'Wallet Connected',
-        description: 'Now let\'s verify your World ID',
-      });
+      if (result.ok) {
+        // TODO: Fix toast implementation
+        console.log('Wallet connected successfully');
 
-      setCurrentStep('verification');
+        // In dev mode, skip to verification or complete
+        if (isDev) {
+          // Mock a user session
+          const mockUser = {
+            id: '123',
+            username: 'dev_user',
+            wallet_address: result.payload.address,
+            verification_level: null,
+          };
+          login(mockUser);
+        }
+
+        // Set manual override to prevent useEffect from resetting the step
+        setManualStepOverride(true);
+        setCurrentStep('verification');
+        console.log('Setting step to verification');
+      }
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Failed to connect wallet';
       setErrorMessage(errorMsg);
@@ -90,40 +110,55 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
       setWalletConnecting(false);
       setLoading(false);
     }
-  }, [isInstalled, walletConnecting, setLoading, setError, toast]);
+  }, [isInstalled, walletConnecting, setLoading, setError, login]);
 
   const handleVerificationSuccess = useCallback(async (verification: WorldIdVerification) => {
     try {
       setLoading(true);
 
-      const response = await fetch('/api/verify-proof', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          payload: verification,
-          action: 'worldhuman-studio-verify',
-          signal: undefined,
-        }),
-      });
+      // In development mode, skip the API call and use mock data
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Development mode: Skipping API verification');
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Verification failed');
+        // Update the mock user with verification data
+        const updatedUser = {
+          ...user,
+          id: user?.id || '123',
+          username: user?.username || 'dev_user',
+          wallet_address: user?.wallet_address || '0x' + Math.random().toString(16).substring(2, 42),
+          verification_level: verification.verification_level,
+        };
+
+        login(updatedUser);
+        console.log('Verification complete!');
+        setCurrentStep('complete');
+        onComplete?.(updatedUser);
+
+      } else {
+        // Production mode - make actual API call
+        const response = await fetch('/api/verify-proof', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            payload: verification,
+            action: 'worldhuman-studio-verify',
+            signal: undefined,
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Verification failed');
+        }
+
+        const updatedUser = await response.json();
+        login(updatedUser.user);
+        console.log('Verification complete!');
+        setCurrentStep('complete');
+        onComplete?.(updatedUser.user);
       }
-
-      const updatedUser = await response.json();
-
-      login(updatedUser.user);
-
-      toast({
-        title: 'Verification Complete!',
-        description: 'You can now access all WorldHuman Studio features',
-      });
-
-      setCurrentStep('complete');
-      onComplete?.(updatedUser.user);
 
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : 'Failed to complete verification';
@@ -133,7 +168,7 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
     } finally {
       setLoading(false);
     }
-  }, [setLoading, setError, login, toast, onComplete]);
+  }, [setLoading, setError, login, user, onComplete]);
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -154,7 +189,7 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
               className="mb-6"
             />
 
-            {!isInstalled && (
+            {!isInstalled && process.env.NODE_ENV === 'production' && (
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 mb-6">
                 <Typography variant="body2" className="text-yellow-400 font-medium">
                   World App Required
@@ -165,16 +200,35 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
               </div>
             )}
 
+            {!isInstalled && process.env.NODE_ENV === 'development' && (
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-6">
+                <Typography variant="body2" className="text-blue-400 font-medium">
+                  Development Mode
+                </Typography>
+                <Typography variant="caption" className="text-white/70">
+                  Testing without World App. Mock authentication will be used.
+                </Typography>
+              </div>
+            )}
+
             <Button
               variant="primary"
               size="large"
-              disabled={!isInstalled || walletConnecting || sessionStatus === 'loading'}
-              loading={walletConnecting || sessionStatus === 'loading'}
+              disabled={((!isInstalled && process.env.NODE_ENV === 'production') || walletConnecting || sessionStatus === 'loading')}
               onClick={handleWalletAuth}
               className="w-full"
             >
-              <Wallet className="w-4 h-4 mr-2" />
-              Connect World App Wallet
+              {(walletConnecting || sessionStatus === 'loading') ? (
+                <>
+                  <Spinner className="w-4 h-4 mr-2" />
+                  Connecting...
+                </>
+              ) : (
+                <>
+                  <Wallet className="w-4 h-4 mr-2" />
+                  Connect World App Wallet
+                </>
+              )}
             </Button>
           </div>
         );

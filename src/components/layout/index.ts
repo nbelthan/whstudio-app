@@ -3,4 +3,4 @@
  * Exports all layout-related components
  */
 
-export { default as AppNavigation } from './AppNavigation';
+export { BottomTabs as AppNavigation } from '../navigation/BottomTabs';

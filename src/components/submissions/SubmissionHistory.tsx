@@ -288,8 +288,8 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
 
         <Card.Content>
           {/* Statistics */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-white/5 rounded-lg p-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white/5 rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-1">
                 <CheckCircle className="w-4 h-4 text-green-400" />
                 <span className="text-sm text-white/80">Approved</span>
@@ -298,7 +298,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
               <p className="text-xs text-white/60">{stats.approvalRate.toFixed(1)}% rate</p>
             </div>
 
-            <div className="bg-white/5 rounded-lg p-3">
+            <div className="bg-white/5 rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-1">
                 <Clock className="w-4 h-4 text-blue-400" />
                 <span className="text-sm text-white/80">Pending</span>
@@ -307,7 +307,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
               <p className="text-xs text-white/60">In review</p>
             </div>
 
-            <div className="bg-white/5 rounded-lg p-3">
+            <div className="bg-white/5 rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-1">
                 <XCircle className="w-4 h-4 text-red-400" />
                 <span className="text-sm text-white/80">Rejected</span>
@@ -316,7 +316,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
               <p className="text-xs text-white/60">Need revision</p>
             </div>
 
-            <div className="bg-white/5 rounded-lg p-3">
+            <div className="bg-white/5 rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-1">
                 <Eye className="w-4 h-4 text-purple-400" />
                 <span className="text-sm text-white/80">Quality</span>
@@ -328,7 +328,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
 
           {/* Search and Filters */}
           {showFilters && (
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="flex flex-col md:flex-row gap-6 mb-8">
               <div className="flex-1">
                 <Input
                   placeholder="Search submissions..."
@@ -392,7 +392,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
                   <div
                     key={submission.id}
                     onClick={() => handleSubmissionClick(submission)}
-                    className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 cursor-pointer transition-colors"
+                    className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 cursor-pointer transition-colors"
                   >
                     <div className="flex items-center gap-4">
                       {getSubmissionStatusIcon(submission.status)}
@@ -453,8 +453,8 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
         {selectedSubmission && (
           <div className="space-y-6">
             {/* Basic Info */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/5 rounded-lg p-4">
+            <div className="grid grid-cols-2 gap-6">
+              <div className="bg-white/5 rounded-2xl p-6">
                 <span className="text-white/60 text-sm">Status</span>
                 <div className="flex items-center gap-2 mt-1">
                   {getSubmissionStatusIcon(selectedSubmission.status)}
@@ -467,7 +467,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
                 </div>
               </div>
 
-              <div className="bg-white/5 rounded-lg p-4">
+              <div className="bg-white/5 rounded-2xl p-6">
                 <span className="text-white/60 text-sm">Submitted</span>
                 <p className="text-white mt-1">
                   {new Date(selectedSubmission.created_at).toLocaleString()}
@@ -476,9 +476,9 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
             </div>
 
             {/* Quality and Time */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-6">
               {selectedSubmission.quality_score && (
-                <div className="bg-white/5 rounded-lg p-4">
+                <div className="bg-white/5 rounded-2xl p-6">
                   <span className="text-white/60 text-sm">Quality Score</span>
                   <p className="text-white text-lg font-semibold mt-1">
                     {selectedSubmission.quality_score.toFixed(1)}/5.0
@@ -487,7 +487,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
               )}
 
               {selectedSubmission.time_spent_minutes && (
-                <div className="bg-white/5 rounded-lg p-4">
+                <div className="bg-white/5 rounded-2xl p-6">
                   <span className="text-white/60 text-sm">Time Spent</span>
                   <p className="text-white text-lg font-semibold mt-1">
                     {selectedSubmission.time_spent_minutes} minutes
@@ -498,7 +498,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
 
             {/* Review */}
             {selectedSubmission.review_notes && (
-              <div className="bg-white/5 rounded-lg p-4">
+              <div className="bg-white/5 rounded-2xl p-6">
                 <span className="text-white/60 text-sm">Review Notes</span>
                 <p className="text-white/80 mt-2 leading-relaxed">
                   {selectedSubmission.review_notes}
@@ -512,9 +512,9 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
             )}
 
             {/* Submission Data Preview */}
-            <div className="bg-white/5 rounded-lg p-4">
+            <div className="bg-white/5 rounded-2xl p-6">
               <span className="text-white/60 text-sm">Submission Data</span>
-              <pre className="text-white/80 text-xs mt-2 bg-black/20 rounded p-3 overflow-auto">
+              <pre className="text-white/80 text-xs mt-2 bg-black/20 rounded p-4 overflow-auto">
                 {JSON.stringify(selectedSubmission.submission_data, null, 2)}
               </pre>
             </div>

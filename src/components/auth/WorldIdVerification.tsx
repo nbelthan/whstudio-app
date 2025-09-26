@@ -12,7 +12,7 @@ import { Shield, CheckCircle, AlertCircle, Globe } from 'lucide-react';
 
 import { useAuth, useUI } from '@/stores';
 import { Button, Card, Badge, LoadingSpinner } from '@/components/ui';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 import { WorldIdVerification } from '@/types';
 
 interface WorldIdVerificationProps {
@@ -42,6 +42,42 @@ export const WorldIdVerificationComponent: React.FC<WorldIdVerificationProps> = 
   });
 
   const handleVerification = useCallback(async (level: VerificationLevel) => {
+    // Development mode bypass
+    if (process.env.NODE_ENV === 'development' && !isInstalled) {
+      console.log('Development mode: Simulating World ID verification');
+
+      setVerificationState({
+        level,
+        status: 'pending',
+      });
+
+      // Simulate verification success
+      const mockVerification: WorldIdVerification = {
+        nullifier_hash: '0x' + Math.random().toString(16).substring(2, 66),
+        merkle_root: '0x' + Math.random().toString(16).substring(2, 66),
+        proof: '0x' + Math.random().toString(16).substring(2, 130),
+        verification_level: level === VerificationLevel.Orb ? 'orb' : 'device',
+      };
+
+      // Simulate async delay
+      setTimeout(() => {
+        setVerificationState({
+          level,
+          status: 'success',
+        });
+
+        addNotification({
+          type: 'success',
+          title: 'Verification Successful',
+          message: `You've been verified with ${level === VerificationLevel.Orb ? 'Orb' : 'Device'}!`,
+        });
+
+        onSuccess?.(mockVerification);
+      }, 1500);
+
+      return;
+    }
+
     if (!isInstalled) {
       const errorMsg = 'World App is required for verification';
       setError(errorMsg);
@@ -193,7 +229,19 @@ export const WorldIdVerificationComponent: React.FC<WorldIdVerificationProps> = 
               </div>
             </div>
 
-            {!isInstalled && (
+            {!isInstalled && process.env.NODE_ENV === 'development' ? (
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5" />
+                  <div>
+                    <p className="text-blue-400 font-medium">Development Mode</p>
+                    <p className="text-white/70 text-sm mt-1">
+                      Click below to simulate World ID verification.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : !isInstalled ? (
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
                 <div className="flex items-start space-x-3">
                   <AlertCircle className="w-5 h-5 text-yellow-400 mt-0.5" />
@@ -205,7 +253,7 @@ export const WorldIdVerificationComponent: React.FC<WorldIdVerificationProps> = 
                   </div>
                 </div>
               </div>
-            )}
+            ) : null}
 
             <div className="space-y-3">
               {/* Device Verification */}
@@ -213,7 +261,7 @@ export const WorldIdVerificationComponent: React.FC<WorldIdVerificationProps> = 
                 fullWidth
                 size="lg"
                 variant={getButtonVariant(VerificationLevel.Device)}
-                disabled={!isInstalled || isLoading}
+                disabled={((!isInstalled && process.env.NODE_ENV !== 'development') || isLoading)}
                 loading={isLoading && verificationState.level === VerificationLevel.Device}
                 leftIcon={getVerificationIcon(VerificationLevel.Device, verificationState.status)}
                 onClick={() => handleVerification(VerificationLevel.Device)}
@@ -229,7 +277,7 @@ export const WorldIdVerificationComponent: React.FC<WorldIdVerificationProps> = 
                 fullWidth
                 size="lg"
                 variant={getButtonVariant(VerificationLevel.Orb)}
-                disabled={!isInstalled || isLoading}
+                disabled={((!isInstalled && process.env.NODE_ENV !== 'development') || isLoading)}
                 loading={isLoading && verificationState.level === VerificationLevel.Orb}
                 leftIcon={getVerificationIcon(VerificationLevel.Orb, verificationState.status)}
                 onClick={() => handleVerification(VerificationLevel.Orb)}

@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 import { BaseComponentProps } from '@/types';
 import { Eye, EyeOff } from 'lucide-react';
 

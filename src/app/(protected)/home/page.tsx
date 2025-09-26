@@ -12,7 +12,7 @@ export default async function Home() {
 
   return (
     <>
-      <Page.Header className="p-0">
+      <Page.Header className="bg-black text-white">
         <TopBar
           title="Home"
           endAdornment={
@@ -25,7 +25,7 @@ export default async function Home() {
           }
         />
       </Page.Header>
-      <Page.Main className="flex flex-col items-center justify-start gap-4 mb-16">
+      <Page.Main className="flex flex-col items-center justify-start gap-6">
         <UserInfo />
         <Verify />
         <Pay />

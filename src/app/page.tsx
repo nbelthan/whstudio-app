@@ -1,25 +1,32 @@
 'use client';
 
+import {
+  Typography,
+  SafeAreaView,
+  useSafeAreaInsets
+} from '@worldcoin/mini-apps-ui-kit-react';
 import { AuthFlow } from '@/components/auth';
 
 export default function Home() {
+  const insets = useSafeAreaInsets();
+
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
+    <SafeAreaView className="min-h-screen bg-black flex items-center justify-center">
+      <div className="w-full max-w-md px-6">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-4">
+          <Typography variant="h1" className="text-white mb-4">
             WorldHuman Studio
-          </h1>
-          <p className="text-white/80 text-lg mb-2">
+          </Typography>
+          <Typography variant="body1" className="text-white/80 mb-2">
             Earn by completing human intelligence tasks
-          </p>
-          <p className="text-white/60 text-sm">
+          </Typography>
+          <Typography variant="body2" className="text-white/60">
             Join the future of human-AI collaboration
-          </p>
+          </Typography>
         </div>
 
         <AuthFlow />
       </div>
-    </div>
+    </SafeAreaView>
   );
 }

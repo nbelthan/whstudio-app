@@ -4,4 +4,4 @@
  */
 
 export { default as WorldIdVerification } from './WorldIdVerification';
-export { AuthFlow } from './AuthFlow';
+export { AuthFlowUIKit as AuthFlow } from './AuthFlowUIKit';
