@@ -359,95 +359,188 @@ export const useAppStore = create<AppStore>()(
 );
 
 // Selector hooks for better performance
-export const useAuth = () => useAppStore((state) => ({
-  user: state.user,
-  isAuthenticated: state.isAuthenticated,
-  isLoading: state.isLoading,
-  error: state.error,
-  setUser: state.setUser,
-  login: state.login,
-  logout: state.logout,
-  updateUser: state.updateUser,
-  setLoading: state.setLoading,
-  setError: state.setError,
-}));
+export const useAuth = () => {
+  const user = useAppStore((state) => state.user);
+  const isAuthenticated = useAppStore((state) => state.isAuthenticated);
+  const isLoading = useAppStore((state) => state.isLoading);
+  const error = useAppStore((state) => state.error);
+  const setUser = useAppStore((state) => state.setUser);
+  const login = useAppStore((state) => state.login);
+  const logout = useAppStore((state) => state.logout);
+  const updateUser = useAppStore((state) => state.updateUser);
+  const setLoading = useAppStore((state) => state.setLoading);
+  const setError = useAppStore((state) => state.setError);
 
-export const useTasks = () => useAppStore((state) => ({
-  tasks: state.tasks,
-  currentTask: state.currentTask,
-  filters: state.filters,
-  sortOptions: state.sortOptions,
-  pagination: state.pagination,
-  loading: state.loading,
-  errors: state.errors,
-  setTasks: state.setTasks,
-  addTasks: state.addTasks,
-  setCurrentTask: state.setCurrentTask,
-  updateTask: state.updateTask,
-  removeTask: state.removeTask,
-  setFilters: state.setFilters,
-  setSortOptions: state.setSortOptions,
-  setPagination: state.setPagination,
-  setTaskLoading: state.setTaskLoading,
-  setTaskError: state.setTaskError,
-  resetTasks: state.resetTasks,
-}));
+  return {
+    user,
+    isAuthenticated,
+    isLoading,
+    error,
+    setUser,
+    login,
+    logout,
+    updateUser,
+    setLoading,
+    setError,
+  };
+};
 
-export const useSubmissions = () => useAppStore((state) => ({
-  submissions: state.submissions,
-  currentSubmission: state.currentSubmission,
-  loading: state.loading,
-  errors: state.errors,
-  setSubmissions: state.setSubmissions,
-  addSubmission: state.addSubmission,
-  updateSubmission: state.updateSubmission,
-  setCurrentSubmission: state.setCurrentSubmission,
-  removeSubmission: state.removeSubmission,
-  setSubmissionLoading: state.setSubmissionLoading,
-  setSubmissionError: state.setSubmissionError,
-}));
+export const useTasks = () => {
+  const tasks = useAppStore((state) => state.tasks);
+  const currentTask = useAppStore((state) => state.currentTask);
+  const filters = useAppStore((state) => state.filters);
+  const sortOptions = useAppStore((state) => state.sortOptions);
+  const pagination = useAppStore((state) => state.pagination);
+  const loading = useAppStore((state) => state.loading);
+  const errors = useAppStore((state) => state.errors);
+  const setTasks = useAppStore((state) => state.setTasks);
+  const addTasks = useAppStore((state) => state.addTasks);
+  const setCurrentTask = useAppStore((state) => state.setCurrentTask);
+  const updateTask = useAppStore((state) => state.updateTask);
+  const removeTask = useAppStore((state) => state.removeTask);
+  const setFilters = useAppStore((state) => state.setFilters);
+  const setSortOptions = useAppStore((state) => state.setSortOptions);
+  const setPagination = useAppStore((state) => state.setPagination);
+  const setTaskLoading = useAppStore((state) => state.setTaskLoading);
+  const setTaskError = useAppStore((state) => state.setTaskError);
+  const resetTasks = useAppStore((state) => state.resetTasks);
 
-export const usePayments = () => useAppStore((state) => ({
-  payments: state.payments,
-  pendingPayments: state.pendingPayments,
-  loading: state.loading,
-  errors: state.errors,
-  setPayments: state.setPayments,
-  addPayment: state.addPayment,
-  updatePayment: state.updatePayment,
-  setPendingPayments: state.setPendingPayments,
-  setPaymentLoading: state.setPaymentLoading,
-  setPaymentError: state.setPaymentError,
-}));
+  return {
+    tasks,
+    currentTask,
+    filters,
+    sortOptions,
+    pagination,
+    loading,
+    errors,
+    setTasks,
+    addTasks,
+    setCurrentTask,
+    updateTask,
+    removeTask,
+    setFilters,
+    setSortOptions,
+    setPagination,
+    setTaskLoading,
+    setTaskError,
+    resetTasks,
+  };
+};
 
-export const useUI = () => useAppStore((state) => ({
-  theme: state.theme,
-  sidebarOpen: state.sidebarOpen,
-  modals: state.modals,
-  notifications: state.notifications,
-  setTheme: state.setTheme,
-  toggleSidebar: state.toggleSidebar,
-  setSidebarOpen: state.setSidebarOpen,
-  openModal: state.openModal,
-  closeModal: state.closeModal,
-  toggleModal: state.toggleModal,
-  addNotification: state.addNotification,
-  removeNotification: state.removeNotification,
-  clearNotifications: state.clearNotifications,
-}));
+export const useSubmissions = () => {
+  const submissions = useAppStore((state) => state.submissions);
+  const currentSubmission = useAppStore((state) => state.currentSubmission);
+  const loading = useAppStore((state) => state.loading);
+  const errors = useAppStore((state) => state.errors);
+  const setSubmissions = useAppStore((state) => state.setSubmissions);
+  const addSubmission = useAppStore((state) => state.addSubmission);
+  const updateSubmission = useAppStore((state) => state.updateSubmission);
+  const setCurrentSubmission = useAppStore((state) => state.setCurrentSubmission);
+  const removeSubmission = useAppStore((state) => state.removeSubmission);
+  const setSubmissionLoading = useAppStore((state) => state.setSubmissionLoading);
+  const setSubmissionError = useAppStore((state) => state.setSubmissionError);
 
-export const useDashboard = () => useAppStore((state) => ({
-  userStats: state.userStats,
-  earningsData: state.earningsData,
-  recentActivity: state.recentActivity,
-  taskCategories: state.taskCategories,
-  loading: state.loading,
-  errors: state.errors,
-  setUserStats: state.setUserStats,
-  setEarningsData: state.setEarningsData,
-  setRecentActivity: state.setRecentActivity,
-  addRecentActivity: state.addRecentActivity,
-  setTaskCategories: state.setTaskCategories,
-  setDashboardLoading: state.setDashboardLoading,
-  setDashboardError: state.setDashboardError,
-}));
+  return {
+    submissions,
+    currentSubmission,
+    loading,
+    errors,
+    setSubmissions,
+    addSubmission,
+    updateSubmission,
+    setCurrentSubmission,
+    removeSubmission,
+    setSubmissionLoading,
+    setSubmissionError,
+  };
+};
+
+export const usePayments = () => {
+  const payments = useAppStore((state) => state.payments);
+  const pendingPayments = useAppStore((state) => state.pendingPayments);
+  const loading = useAppStore((state) => state.loading);
+  const errors = useAppStore((state) => state.errors);
+  const setPayments = useAppStore((state) => state.setPayments);
+  const addPayment = useAppStore((state) => state.addPayment);
+  const updatePayment = useAppStore((state) => state.updatePayment);
+  const setPendingPayments = useAppStore((state) => state.setPendingPayments);
+  const setPaymentLoading = useAppStore((state) => state.setPaymentLoading);
+  const setPaymentError = useAppStore((state) => state.setPaymentError);
+
+  return {
+    payments,
+    pendingPayments,
+    loading,
+    errors,
+    setPayments,
+    addPayment,
+    updatePayment,
+    setPendingPayments,
+    setPaymentLoading,
+    setPaymentError,
+  };
+};
+
+export const useUI = () => {
+  const theme = useAppStore((state) => state.theme);
+  const sidebarOpen = useAppStore((state) => state.sidebarOpen);
+  const modals = useAppStore((state) => state.modals);
+  const notifications = useAppStore((state) => state.notifications);
+  const setTheme = useAppStore((state) => state.setTheme);
+  const toggleSidebar = useAppStore((state) => state.toggleSidebar);
+  const setSidebarOpen = useAppStore((state) => state.setSidebarOpen);
+  const openModal = useAppStore((state) => state.openModal);
+  const closeModal = useAppStore((state) => state.closeModal);
+  const toggleModal = useAppStore((state) => state.toggleModal);
+  const addNotification = useAppStore((state) => state.addNotification);
+  const removeNotification = useAppStore((state) => state.removeNotification);
+  const clearNotifications = useAppStore((state) => state.clearNotifications);
+
+  return {
+    theme,
+    sidebarOpen,
+    modals,
+    notifications,
+    setTheme,
+    toggleSidebar,
+    setSidebarOpen,
+    openModal,
+    closeModal,
+    toggleModal,
+    addNotification,
+    removeNotification,
+    clearNotifications,
+  };
+};
+
+export const useDashboard = () => {
+  const userStats = useAppStore((state) => state.userStats);
+  const earningsData = useAppStore((state) => state.earningsData);
+  const recentActivity = useAppStore((state) => state.recentActivity);
+  const taskCategories = useAppStore((state) => state.taskCategories);
+  const loading = useAppStore((state) => state.loading);
+  const errors = useAppStore((state) => state.errors);
+  const setUserStats = useAppStore((state) => state.setUserStats);
+  const setEarningsData = useAppStore((state) => state.setEarningsData);
+  const setRecentActivity = useAppStore((state) => state.setRecentActivity);
+  const addRecentActivity = useAppStore((state) => state.addRecentActivity);
+  const setTaskCategories = useAppStore((state) => state.setTaskCategories);
+  const setDashboardLoading = useAppStore((state) => state.setDashboardLoading);
+  const setDashboardError = useAppStore((state) => state.setDashboardError);
+
+  return {
+    userStats,
+    earningsData,
+    recentActivity,
+    taskCategories,
+    loading,
+    errors,
+    setUserStats,
+    setEarningsData,
+    setRecentActivity,
+    addRecentActivity,
+    setTaskCategories,
+    setDashboardLoading,
+    setDashboardError,
+  };
+};
