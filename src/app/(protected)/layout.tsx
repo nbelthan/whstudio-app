@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-import { BottomTabs } from '@/components/navigation/BottomTabs';
+import { BottomTabs } from '@/components/Navigation/BottomTabs';
 
 export default async function ProtectedLayout({
   children,
