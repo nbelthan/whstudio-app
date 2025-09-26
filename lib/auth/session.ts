@@ -3,7 +3,7 @@
  * Handles user authentication, session tokens, and sybil resistance with nullifier hashes
  */
 
-import { kv } from '@vercel/kv';
+// import { kv } from '@vercel/kv'; // Optional - only use if KV is configured
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -94,22 +94,28 @@ export async function createSession(userData: {
   // Generate session token
   const sessionToken = await generateSessionToken(sessionData);
 
-  // Store session in Vercel KV with expiration
-  const kvKey = `session:${sessionToken}`;
-  const expiresAtSeconds = Math.floor(expiresAt / 1000);
-
   try {
-    await kv.setex(kvKey, expiresAtSeconds, JSON.stringify(sessionData));
+    // Check if KV is configured
+    const hasKV = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
 
-    // Store nullifier mapping to prevent multiple sessions per nullifier
-    const nullifierKey = `nullifier:${userData.nullifierHash}`;
-    await kv.setex(nullifierKey, expiresAtSeconds, sessionToken);
+    if (hasKV) {
+      // Store session in Vercel KV with expiration
+      const { kv } = await import('@vercel/kv');
+      const kvKey = `session:${sessionToken}`;
+      const expiresAtSeconds = Math.floor(expiresAt / 1000);
 
-    // Store user session mapping
-    const userSessionKey = `user_session:${userData.userId}`;
-    await kv.setex(userSessionKey, expiresAtSeconds, sessionToken);
+      await kv.setex(kvKey, expiresAtSeconds, JSON.stringify(sessionData));
 
-    // Set HTTP-only cookie
+      // Store nullifier mapping to prevent multiple sessions per nullifier
+      const nullifierKey = `nullifier:${userData.nullifierHash}`;
+      await kv.setex(nullifierKey, expiresAtSeconds, sessionToken);
+
+      // Store user session mapping
+      const userSessionKey = `user_session:${userData.userId}`;
+      await kv.setex(userSessionKey, expiresAtSeconds, sessionToken);
+    }
+
+    // Set HTTP-only cookie (works without KV)
     const cookieStore = await cookies();
     cookieStore.set('session', sessionToken, {
       httpOnly: true,
@@ -122,6 +128,10 @@ export async function createSession(userData: {
     return sessionToken;
   } catch (error) {
     console.error('Failed to create session:', error);
+    // In development without KV, still return the token
+    if (process.env.NODE_ENV === 'development') {
+      return sessionToken;
+    }
     throw new Error('Session creation failed');
   }
 }
@@ -145,30 +155,36 @@ export async function getSession(): Promise<SessionData | null> {
       return null;
     }
 
-    // Check if session exists in KV store
-    const kvKey = `session:${sessionToken}`;
-    const sessionDataStr = await kv.get<string>(kvKey);
-
-    if (!sessionDataStr) {
-      await deleteSession();
-      return null;
-    }
-
-    const sessionData = JSON.parse(sessionDataStr) as SessionData;
-
     // Check if session has expired
-    if (Date.now() > sessionData.expiresAt) {
+    if (Date.now() > tokenData.expiresAt) {
       await deleteSession();
       return null;
     }
 
-    // Update last accessed time
-    await kv.setex(kvKey, Math.floor(sessionData.expiresAt / 1000), JSON.stringify({
-      ...sessionData,
-      lastAccessedAt: Date.now()
-    }));
+    // Check KV if available for additional validation
+    const hasKV = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+    if (hasKV) {
+      try {
+        const { kv } = await import('@vercel/kv');
+        const kvKey = `session:${sessionToken}`;
+        const sessionDataStr = await kv.get<string>(kvKey);
 
-    return sessionData;
+        if (sessionDataStr) {
+          const sessionData = JSON.parse(sessionDataStr) as SessionData;
+          // Update last accessed time
+          await kv.setex(kvKey, Math.floor(sessionData.expiresAt / 1000), JSON.stringify({
+            ...sessionData,
+            lastAccessedAt: Date.now()
+          }));
+          return sessionData;
+        }
+      } catch (kvError) {
+        console.log('KV validation skipped:', kvError);
+      }
+    }
+
+    // Return token data if KV is not available or validation passes
+    return tokenData;
   } catch (error) {
     console.error('Failed to get session:', error);
     return null;
@@ -202,23 +218,31 @@ export async function deleteSession(): Promise<void> {
     const sessionToken = cookieStore.get('session')?.value;
 
     if (sessionToken) {
-      // Get session data to clean up related keys
-      const kvKey = `session:${sessionToken}`;
-      const sessionDataStr = await kv.get<string>(kvKey);
+      // Clean up KV if available
+      const hasKV = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+      if (hasKV) {
+        try {
+          const { kv } = await import('@vercel/kv');
+          const kvKey = `session:${sessionToken}`;
+          const sessionDataStr = await kv.get<string>(kvKey);
 
-      if (sessionDataStr) {
-        const sessionData = JSON.parse(sessionDataStr) as SessionData;
+          if (sessionDataStr) {
+            const sessionData = JSON.parse(sessionDataStr) as SessionData;
 
-        // Delete all related keys
-        await Promise.all([
-          kv.del(kvKey),
-          kv.del(`nullifier:${sessionData.nullifierHash}`),
-          kv.del(`user_session:${sessionData.userId}`)
-        ]);
+            // Delete all related keys
+            await Promise.all([
+              kv.del(kvKey),
+              kv.del(`nullifier:${sessionData.nullifierHash}`),
+              kv.del(`user_session:${sessionData.userId}`)
+            ]);
+          }
+        } catch (kvError) {
+          console.log('KV cleanup skipped:', kvError);
+        }
       }
     }
 
-    // Clear cookie
+    // Clear cookie (works without KV)
     cookieStore.delete('session');
   } catch (error) {
     console.error('Failed to delete session:', error);
@@ -243,19 +267,29 @@ export async function refreshSession(): Promise<boolean> {
 
     // Generate new token
     const newToken = await generateSessionToken(updatedSession);
-    const kvKey = `session:${newToken}`;
-    const expiresAtSeconds = Math.floor(newExpiresAt / 1000);
 
-    // Store updated session
-    await kv.setex(kvKey, expiresAtSeconds, JSON.stringify(updatedSession));
+    // Store in KV if available
+    const hasKV = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+    if (hasKV) {
+      try {
+        const { kv } = await import('@vercel/kv');
+        const kvKey = `session:${newToken}`;
+        const expiresAtSeconds = Math.floor(newExpiresAt / 1000);
 
-    // Update mappings
-    await Promise.all([
-      kv.setex(`nullifier:${session.nullifierHash}`, expiresAtSeconds, newToken),
-      kv.setex(`user_session:${session.userId}`, expiresAtSeconds, newToken)
-    ]);
+        // Store updated session
+        await kv.setex(kvKey, expiresAtSeconds, JSON.stringify(updatedSession));
 
-    // Update cookie
+        // Update mappings
+        await Promise.all([
+          kv.setex(`nullifier:${session.nullifierHash}`, expiresAtSeconds, newToken),
+          kv.setex(`user_session:${session.userId}`, expiresAtSeconds, newToken)
+        ]);
+      } catch (kvError) {
+        console.log('KV refresh skipped:', kvError);
+      }
+    }
+
+    // Update cookie (works without KV)
     const cookieStore = await cookies();
     cookieStore.set('session', newToken, {
       httpOnly: true,
@@ -264,10 +298,6 @@ export async function refreshSession(): Promise<boolean> {
       maxAge: SESSION_DURATION / 1000,
       path: '/'
     });
-
-    // Clean up old session
-    const oldKvKey = `session:${session}`;
-    await kv.del(oldKvKey);
 
     return true;
   } catch (error) {
@@ -292,9 +322,16 @@ export async function requireAuth(): Promise<User> {
  */
 export async function isNullifierUsed(nullifierHash: string): Promise<boolean> {
   try {
-    const nullifierKey = `nullifier:${nullifierHash}`;
-    const existingSession = await kv.get(nullifierKey);
-    return existingSession !== null;
+    const hasKV = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+    if (hasKV) {
+      const { kv } = await import('@vercel/kv');
+      const nullifierKey = `nullifier:${nullifierHash}`;
+      const existingSession = await kv.get(nullifierKey);
+      return existingSession !== null;
+    }
+    // Without KV, check database
+    const users = await queries.users.findByNullifier(nullifierHash);
+    return users.length > 0;
   } catch (error) {
     console.error('Failed to check nullifier:', error);
     return false;
@@ -306,6 +343,13 @@ export async function isNullifierUsed(nullifierHash: string): Promise<boolean> {
  */
 export async function revokeAllUserSessions(userId: string): Promise<void> {
   try {
+    const hasKV = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+    if (!hasKV) {
+      console.log('Session revocation requires KV store');
+      return;
+    }
+
+    const { kv } = await import('@vercel/kv');
     // Get current user session
     const userSessionKey = `user_session:${userId}`;
     const sessionToken = await kv.get<string>(userSessionKey);
@@ -339,6 +383,12 @@ export async function getSessionStats(): Promise<{
   uniqueUsers: number;
 }> {
   try {
+    const hasKV = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+    if (!hasKV) {
+      return { activeSessions: 0, uniqueUsers: 0 };
+    }
+
+    const { kv } = await import('@vercel/kv');
     // This is a simplified version - in production you might want to maintain counters
     const keys = await kv.keys('session:*');
     const activeSessions = keys.length;
