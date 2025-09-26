@@ -13,7 +13,7 @@ export async function walletAuth() {
       const mockPayload = {
         address: '0x' + Math.random().toString(16).substring(2, 42),
         timestamp: Date.now(),
-        nonce: Math.random().toString(36).substring(7),
+        nonce: Math.random().toString(36).substring(2, 18), // Ensure at least 8 characters
       };
 
       // Simulate async delay
@@ -32,7 +32,7 @@ export async function walletAuth() {
     if (MiniKit.isInstalled()) {
       try {
         const { finalPayload } = await MiniKit.commandsAsync.walletAuth({
-          nonce: Math.random().toString(36).substring(7),
+          nonce: Math.random().toString(36).substring(2, 18), // Ensure at least 8 characters
         });
 
         return {
