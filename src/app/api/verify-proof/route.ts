@@ -94,13 +94,8 @@ export async function POST(req: NextRequest) {
     let isNewUser = false;
 
     if (existingUsers.length === 0) {
-      // New user - create account
-      if (action !== actions.REGISTER && action !== actions.LOGIN) {
-        return NextResponse.json(
-          { error: 'New users must register first' },
-          { status: 400 }
-        );
-      }
+      // New user - automatically create account on first verification
+      // This allows seamless onboarding without a separate registration step
 
       // Generate world_id
       const worldId = `world_${payload.nullifier_hash.slice(2, 18)}`;
