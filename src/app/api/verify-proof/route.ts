@@ -52,22 +52,39 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Verify proof with World ID
-    const verifyRes = (await verifyCloudProof(
-      payload,
-      app_id,
-      action,
-      signal,
-    )) as IVerifyResponse;
+    // Check if we're in development mode
+    const isDevelopment = process.env.NODE_ENV === 'development' ||
+                         process.env.NEXT_PUBLIC_DEVELOPMENT_MODE === 'true';
 
-    if (!verifyRes.success) {
-      return NextResponse.json(
-        {
-          error: 'World ID verification failed',
-          details: verifyRes
-        },
-        { status: 400 }
-      );
+    let verifyRes: IVerifyResponse;
+
+    if (isDevelopment) {
+      // In development, accept any valid-looking proof
+      console.log('Development mode: Skipping cloud verification for testing');
+      verifyRes = {
+        success: true,
+        code: 'success',
+        detail: 'Development mode - verification bypassed',
+        attribute: null
+      } as IVerifyResponse;
+    } else {
+      // Production mode - verify proof with World ID
+      verifyRes = (await verifyCloudProof(
+        payload,
+        app_id,
+        action,
+        signal,
+      )) as IVerifyResponse;
+
+      if (!verifyRes.success) {
+        return NextResponse.json(
+          {
+            error: 'World ID verification failed',
+            details: verifyRes
+          },
+          { status: 400 }
+        );
+      }
     }
 
     // Check if this nullifier is already in use (sybil protection)
