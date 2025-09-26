@@ -61,9 +61,10 @@ export async function executeQuery<T>(
 
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      // Use template literal for Neon driver
-      const result = await db(query, params);
-      return result as T[];
+      // Use the pool for parameterized queries
+      const pool = getPool();
+      const result = await pool.query(query, params);
+      return result.rows as T[];
     } catch (error) {
       lastError = error as Error;
 
@@ -134,9 +135,10 @@ export async function initializeDatabase(): Promise<void> {
       .map(stmt => stmt.trim())
       .filter(stmt => stmt.length > 0 && !stmt.startsWith('--'));
 
-    // Execute each statement
+    // Execute each statement using the pool
+    const pool = getPool();
     for (const statement of statements) {
-      await db(statement);
+      await pool.query(statement);
     }
 
     console.log('Database initialized successfully');
