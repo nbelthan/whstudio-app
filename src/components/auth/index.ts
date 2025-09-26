@@ -4,4 +4,4 @@
  */
 
 export { default as WorldIdVerification } from './WorldIdVerification';
-export { default as AuthFlow } from './AuthFlow';
+export { AuthFlow } from './AuthFlow';

@@ -1,3 +1,5 @@
+'use client';
+
 import { AuthFlow } from '@/components/auth';
 
 export default function Home() {
@@ -16,9 +18,7 @@ export default function Home() {
           </p>
         </div>
 
-        <AuthFlow onComplete={(user) => {
-          window.location.href = '/dashboard';
-        }} />
+        <AuthFlow />
       </div>
     </div>
   );

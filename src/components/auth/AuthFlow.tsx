@@ -6,6 +6,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
 import { walletAuth } from '@/auth/wallet';
@@ -32,6 +33,7 @@ export const AuthFlow: React.FC<AuthFlowProps> = ({
   showModal = false,
   onCloseModal,
 }) => {
+  const router = useRouter();
   const { data: session, status: sessionStatus } = useSession();
   const { isInstalled } = useMiniKit();
   const { user, isAuthenticated, isLoading, login, setLoading, setError } = useAuth();
@@ -50,9 +52,13 @@ export const AuthFlow: React.FC<AuthFlowProps> = ({
       setCurrentStep('verification');
     } else if (isAuthenticated && user?.verification_level) {
       setCurrentStep('complete');
-      onComplete?.(user);
+      if (onComplete) {
+        onComplete(user);
+      } else {
+        router.push('/dashboard');
+      }
     }
-  }, [session, sessionStatus, user, isAuthenticated, onComplete]);
+  }, [session, sessionStatus, user, isAuthenticated, onComplete, router]);
 
   const handleWalletAuth = useCallback(async () => {
     if (!isInstalled || walletConnecting) return;
