@@ -259,6 +259,19 @@ export async function checkVerificationRateLimit(
   maxAttempts: number = 5
 ): Promise<{ allowed: boolean; remainingAttempts: number; resetTime: Date }> {
   try {
+    // Check if KV is configured
+    const hasKV = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+
+    if (!hasKV) {
+      // In development or without KV, always allow
+      console.log('Rate limiting disabled: KV not configured');
+      return {
+        allowed: true,
+        remainingAttempts: maxAttempts,
+        resetTime: new Date(Date.now() + windowMinutes * 60 * 1000),
+      };
+    }
+
     const { kv } = await import('@vercel/kv');
 
     const key = `verify_rate_limit:${identifier}`;
