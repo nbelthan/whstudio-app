@@ -18,7 +18,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="container mx-auto px-4 py-8 space-y-8">
+      <div className="container mx-auto px-6 py-8 space-y-8">
         {/* Welcome Section */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">

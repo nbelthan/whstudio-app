@@ -100,7 +100,7 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
     <>
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10">
-        <div className="flex items-center justify-between p-4">
+        <div className="flex items-center justify-between px-6 py-3">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -167,13 +167,13 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
       )}>
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-6 border-b border-white/10">
+          <div className="px-6 py-4 border-b border-white/10">
             <h2 className="text-xl font-bold text-white">WorldHuman Studio</h2>
             <p className="text-white/60 text-sm mt-1">Human Intelligence Tasks</p>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
+          <nav className="flex-1 px-4 py-6 space-y-2">
             {navigationItems.map((item) => (
               <NavItem key={item.name} item={item} />
             ))}
@@ -181,7 +181,7 @@ export const AppNavigation: React.FC<AppNavigationProps> = ({
 
           {/* User Info */}
           {user && (
-            <div className="p-4 border-t border-white/10">
+            <div className="px-4 pb-3 pt-4 border-t border-white/10">
               <div className="flex items-center gap-3 p-3 bg-white/5 rounded-lg">
                 <div className="w-10 h-10 bg-[rgb(25,137,251)]/20 rounded-full flex items-center justify-center">
                   <User className="w-5 h-5 text-[rgb(25,137,251)]" />

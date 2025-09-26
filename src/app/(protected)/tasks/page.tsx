@@ -17,7 +17,7 @@ export default async function TasksPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-6 py-8">
         <TaskList showFilters={true} />
       </div>
     </div>

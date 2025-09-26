@@ -89,7 +89,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center pb-3">
       {/* Backdrop */}
       <div
         ref={overlayRef}
@@ -111,7 +111,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(({
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-6 border-b border-white/10">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
             {title && (
               <h2 className="text-xl font-semibold text-white">{title}</h2>
             )}
@@ -132,7 +132,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(({
         {/* Content */}
         <div
           className={cn(
-            'p-6',
+            'px-6 py-4',
             size === 'full' ? 'flex-1 overflow-auto' : 'max-h-[70vh] overflow-auto'
           )}
         >

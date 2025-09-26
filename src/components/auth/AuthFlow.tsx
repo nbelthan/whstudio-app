@@ -147,7 +147,7 @@ export const AuthFlow: React.FC<AuthFlowProps> = ({
               subtitle="Connect your World App wallet to get started with WorldHuman Studio"
             />
             <Card.Content>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div className="flex items-center space-x-3 p-4 bg-white/5 border border-white/10 rounded-lg">
                   <Wallet className="w-5 h-5 text-[rgb(25,137,251)]" />
                   <div>
@@ -195,7 +195,7 @@ export const AuthFlow: React.FC<AuthFlowProps> = ({
         return (
           <Card variant="elevated" className="max-w-md">
             <Card.Content>
-              <div className="text-center space-y-4">
+              <div className="text-center space-y-6">
                 <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto">
                   <CheckCircle className="w-8 h-8 text-green-400" />
                 </div>
