@@ -1,6 +1,7 @@
 /**
  * World ID Verification Component for WorldHuman Studio
  * Integrates with MiniKit and provides sybil-resistant authentication
+ * Uses World App UI Kit components for consistent design
  */
 
 'use client';
@@ -10,9 +11,17 @@ import { MiniKit, VerificationLevel } from '@worldcoin/minikit-js';
 import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
 import { Shield, CheckCircle, AlertCircle, Globe } from 'lucide-react';
 
-import { useAuth, useUI } from '@/stores';
-import { Button, Card, Badge, LoadingSpinner } from '@/components/ui';
-import { cn } from '../../lib/utils';
+import {
+  Button,
+  Typography,
+  CircularState,
+  ListItem,
+  Spinner,
+  useToast,
+  Badge,
+} from '@worldcoin/mini-apps-ui-kit-react';
+
+import { useAuth } from '@/stores';
 import { WorldIdVerification } from '@/types';
 
 interface WorldIdVerificationProps {
@@ -30,7 +39,7 @@ export const WorldIdVerificationComponent: React.FC<WorldIdVerificationProps> = 
 }) => {
   const { isInstalled } = useMiniKit();
   const { user, setError } = useAuth();
-  const { addNotification } = useUI();
+  const { toast } = useToast();
 
   const [verificationState, setVerificationState] = useState<{
     level: VerificationLevel | null;
@@ -66,11 +75,8 @@ export const WorldIdVerificationComponent: React.FC<WorldIdVerificationProps> = 
           status: 'success',
         });
 
-        addNotification({
-          type: 'success',
-          title: 'Verification Successful',
-          message: `You've been verified with ${level === VerificationLevel.Orb ? 'Orb' : 'Device'}!`,
-        });
+        // TODO: Fix toast implementation
+        console.log(`Verification Successful: You've been verified with ${level === VerificationLevel.Orb ? 'Orb' : 'Device'}!`);
 
         onSuccess?.(mockVerification);
       }, 1500);
@@ -133,11 +139,8 @@ export const WorldIdVerificationComponent: React.FC<WorldIdVerificationProps> = 
         status: 'success',
       });
 
-      addNotification({
-        type: 'success',
-        title: 'Verification Successful',
-        message: `You have been verified with ${level === VerificationLevel.Orb ? 'Orb' : 'Device'} level.`,
-      });
+      // TODO: Fix toast implementation
+      console.log(`Verification Successful: You have been verified with ${level === VerificationLevel.Orb ? 'Orb' : 'Device'} level.`);
 
       onSuccess?.(verification);
 
@@ -153,157 +156,138 @@ export const WorldIdVerificationComponent: React.FC<WorldIdVerificationProps> = 
       setError(errorMsg);
       onError?.(errorMsg);
 
-      addNotification({
-        type: 'error',
-        title: 'Verification Failed',
-        message: errorMsg,
-      });
+      // TODO: Fix toast implementation
+      console.log(`Verification Failed: ${errorMsg}`);
 
       // Reset state after 3 seconds
       setTimeout(() => {
         setVerificationState({ level: null, status: 'idle' });
       }, 3000);
     }
-  }, [isInstalled, action, onSuccess, onError, setError, addNotification]);
-
-  const getVerificationIcon = (level: VerificationLevel, status: string) => {
-    if (status === 'pending' && verificationState.level === level) {
-      return <LoadingSpinner size="sm" color="white" />;
-    }
-    if (status === 'success' && verificationState.level === level) {
-      return <CheckCircle className="w-4 h-4 text-green-400" />;
-    }
-    if (status === 'failed' && verificationState.level === level) {
-      return <AlertCircle className="w-4 h-4 text-red-400" />;
-    }
-    return level === VerificationLevel.Orb ?
-      <Shield className="w-4 h-4" /> :
-      <Globe className="w-4 h-4" />;
-  };
-
-  const getButtonVariant = (level: VerificationLevel) => {
-    const { status } = verificationState;
-    if (status === 'success' && verificationState.level === level) return 'success';
-    if (status === 'failed' && verificationState.level === level) return 'destructive';
-    return level === VerificationLevel.Orb ? 'primary' : 'secondary';
-  };
+  }, [isInstalled, action, onSuccess, onError, setError]);
 
   const isVerified = user?.verification_level;
   const isLoading = verificationState.status === 'pending';
 
   return (
-    <Card className={cn('max-w-md', className)} variant="elevated">
-      <Card.Header
-        title="World ID Verification"
-        subtitle="Prove you're a unique human to access WorldHuman Studio"
-      />
+    <div className={`bg-white/5 border border-white/10 rounded-2xl p-6 ${className || ''}`}>
+      <Typography variant="h3" className="text-white mb-2">
+        World ID Verification
+      </Typography>
+      <Typography variant="body2" className="text-white/70 mb-4">
+        Prove you're a unique human to access WorldHuman Studio
+      </Typography>
 
-      <Card.Content>
-        {isVerified ? (
-          <div className="flex items-center space-x-3 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-            <CheckCircle className="w-5 h-5 text-green-400" />
-            <div>
-              <p className="text-white font-medium">Already Verified</p>
-              <p className="text-white/60 text-sm">
-                Verification level: {' '}
-                <Badge
-                  variant={user.verification_level === 'orb' ? 'primary' : 'info'}
-                  size="sm"
-                >
-                  {user.verification_level === 'orb' ? 'Orb' : 'Device'}
-                </Badge>
-              </p>
+      {isVerified ? (
+        <div className="flex items-center space-x-3 p-4 bg-green-500/10 border border-green-500/20 rounded-xl">
+          <CheckCircle className="w-5 h-5 text-green-400" />
+          <div>
+            <Typography variant="body2" className="text-white font-medium">
+              Already Verified
+            </Typography>
+            <Typography variant="caption" className="text-white/60">
+              Verification level: {user.verification_level === 'orb' ? 'Orb' : 'Device'}
+            </Typography>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+            <ListItem
+              icon={<Shield className="w-5 h-5 text-[rgb(25,137,251)]" />}
+              title="Why verify?"
+              subtitle="World ID prevents bots and ensures fair task distribution by proving you're a unique human without revealing your identity."
+            />
+          </div>
+
+          {!isInstalled && process.env.NODE_ENV === 'development' ? (
+            <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
+              <ListItem
+                icon={<AlertCircle className="w-5 h-5 text-blue-400" />}
+                title="Development Mode"
+                subtitle="Click below to simulate World ID verification."
+              />
+            </div>
+          ) : !isInstalled ? (
+            <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
+              <ListItem
+                icon={<AlertCircle className="w-5 h-5 text-yellow-400" />}
+                title="World App Required"
+                subtitle="Please open this in World App to complete verification."
+              />
+            </div>
+          ) : null}
+
+          <div className="space-y-3">
+            {/* Device Verification */}
+            <Button
+              variant={verificationState.status === 'success' && verificationState.level === VerificationLevel.Device ? 'success' : 'secondary'}
+              size="large"
+              disabled={((!isInstalled && process.env.NODE_ENV !== 'development') || isLoading)}
+              onClick={() => handleVerification(VerificationLevel.Device)}
+              className="w-full"
+            >
+              {isLoading && verificationState.level === VerificationLevel.Device ? (
+                <>
+                  <Spinner className="w-4 h-4 mr-2" />
+                  Verifying...
+                </>
+              ) : verificationState.status === 'success' && verificationState.level === VerificationLevel.Device ? (
+                <>
+                  <CheckCircle className="w-4 h-4 mr-2 text-green-400" />
+                  Verified with Device
+                </>
+              ) : (
+                <>
+                  <Globe className="w-4 h-4 mr-2" />
+                  Verify with Device
+                </>
+              )}
+            </Button>
+
+            {/* Orb Verification */}
+            <Button
+              variant={verificationState.status === 'success' && verificationState.level === VerificationLevel.Orb ? 'success' : 'primary'}
+              size="large"
+              disabled={((!isInstalled && process.env.NODE_ENV !== 'development') || isLoading)}
+              onClick={() => handleVerification(VerificationLevel.Orb)}
+              className="w-full"
+            >
+              {isLoading && verificationState.level === VerificationLevel.Orb ? (
+                <>
+                  <Spinner className="w-4 h-4 mr-2" />
+                  Verifying...
+                </>
+              ) : verificationState.status === 'success' && verificationState.level === VerificationLevel.Orb ? (
+                <>
+                  <CheckCircle className="w-4 h-4 mr-2 text-green-400" />
+                  Verified with Orb
+                </>
+              ) : (
+                <>
+                  <Shield className="w-4 h-4 mr-2" />
+                  Verify with Orb
+                </>
+              )}
+            </Button>
+
+            <div className="text-center">
+              <Typography variant="caption" className="text-white/50">
+                Orb verification provides the highest trust level
+              </Typography>
             </div>
           </div>
-        ) : (
-          <div className="space-y-4">
-            <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-              <div className="flex items-start space-x-3">
-                <Shield className="w-5 h-5 text-[rgb(25,137,251)] mt-0.5" />
-                <div>
-                  <h4 className="text-white font-medium mb-1">Why verify?</h4>
-                  <p className="text-white/70 text-sm">
-                    World ID prevents bots and ensures fair task distribution by proving you're a unique human without revealing your identity.
-                  </p>
-                </div>
-              </div>
-            </div>
+        </div>
+      )}
 
-            {!isInstalled && process.env.NODE_ENV === 'development' ? (
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-                <div className="flex items-start space-x-3">
-                  <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5" />
-                  <div>
-                    <p className="text-blue-400 font-medium">Development Mode</p>
-                    <p className="text-white/70 text-sm mt-1">
-                      Click below to simulate World ID verification.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : !isInstalled ? (
-              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
-                <div className="flex items-start space-x-3">
-                  <AlertCircle className="w-5 h-5 text-yellow-400 mt-0.5" />
-                  <div>
-                    <p className="text-yellow-400 font-medium">World App Required</p>
-                    <p className="text-white/70 text-sm mt-1">
-                      Please open this in World App to complete verification.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
-            <div className="space-y-3">
-              {/* Device Verification */}
-              <Button
-                fullWidth
-                size="lg"
-                variant={getButtonVariant(VerificationLevel.Device)}
-                disabled={((!isInstalled && process.env.NODE_ENV !== 'development') || isLoading)}
-                loading={isLoading && verificationState.level === VerificationLevel.Device}
-                leftIcon={getVerificationIcon(VerificationLevel.Device, verificationState.status)}
-                onClick={() => handleVerification(VerificationLevel.Device)}
-              >
-                {verificationState.status === 'success' && verificationState.level === VerificationLevel.Device
-                  ? 'Verified with Device'
-                  : 'Verify with Device'
-                }
-              </Button>
-
-              {/* Orb Verification */}
-              <Button
-                fullWidth
-                size="lg"
-                variant={getButtonVariant(VerificationLevel.Orb)}
-                disabled={((!isInstalled && process.env.NODE_ENV !== 'development') || isLoading)}
-                loading={isLoading && verificationState.level === VerificationLevel.Orb}
-                leftIcon={getVerificationIcon(VerificationLevel.Orb, verificationState.status)}
-                onClick={() => handleVerification(VerificationLevel.Orb)}
-              >
-                {verificationState.status === 'success' && verificationState.level === VerificationLevel.Orb
-                  ? 'Verified with Orb'
-                  : 'Verify with Orb'
-                }
-              </Button>
-
-              <div className="text-center">
-                <p className="text-white/50 text-xs">
-                  Orb verification provides the highest trust level
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {verificationState.error && (
-          <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-            <p className="text-red-400 text-sm">{verificationState.error}</p>
-          </div>
-        )}
-      </Card.Content>
-    </Card>
+      {verificationState.error && (
+        <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+          <Typography variant="caption" className="text-red-400">
+            {verificationState.error}
+          </Typography>
+        </div>
+      )}
+    </div>
   );
 };
 

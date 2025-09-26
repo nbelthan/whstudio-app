@@ -186,7 +186,7 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
             <Typography variant="h3" className="text-white mb-2">
               Connect Your Wallet
             </Typography>
-            <Typography variant="body2" className="text-white/70 mb-6">
+            <Typography variant="body2" className="text-white/70 mb-4">
               Connect your World App wallet to get started with WorldHuman Studio
             </Typography>
 
@@ -194,11 +194,11 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
               icon={<Wallet className="w-5 h-5 text-[rgb(25,137,251)]" />}
               title="Secure & Private"
               subtitle="Your wallet stays in your control"
-              className="mb-6"
+              className="mb-4"
             />
 
             {!isInstalled && process.env.NODE_ENV === 'production' && (
-              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 mb-6">
+              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 mb-4">
                 <Typography variant="body2" className="text-yellow-400 font-medium">
                   World App Required
                 </Typography>
@@ -209,7 +209,7 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
             )}
 
             {!isInstalled && process.env.NODE_ENV === 'development' && (
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-6">
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-4">
                 <Typography variant="body2" className="text-blue-400 font-medium">
                   Development Mode
                 </Typography>
@@ -259,29 +259,21 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
             <div className="text-center">
               <CircularState
                 variant="success"
-                className="mx-auto mb-6"
+                className="mx-auto mb-4"
               />
 
               <Typography variant="h3" className="text-white mb-2">
                 Welcome to WorldHuman Studio!
               </Typography>
-              <Typography variant="body2" className="text-white/70 mb-6">
+              <Typography variant="body2" className="text-white/70 mb-4">
                 You're all set up and ready to start earning by completing human intelligence tasks.
               </Typography>
-
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                <ListItem
-                  icon={<Shield className="w-5 h-5 text-green-400" />}
-                  title={user?.username || 'User'}
-                  subtitle={user?.verification_level === 'orb' ? 'Orb Verified' : 'Device Verified'}
-                />
-              </div>
 
               <Button
                 variant="primary"
                 size="large"
                 onClick={() => router.push('/dashboard')}
-                className="w-full mt-6"
+                className="w-full"
               >
                 Go to Dashboard
               </Button>
