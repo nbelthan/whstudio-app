@@ -1,5 +1,7 @@
 'use client';
 
+// Main entry point for WorldHuman Studio App
+// Deployment test: 2025-09-26 16:15
 import {
   Typography,
   SafeAreaView,

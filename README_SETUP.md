@@ -12,7 +12,7 @@
 ### 1️⃣ Database Setup (Neon)
 
 1. **Create Neon Project**:
-   - Go to [Neon Console](https://console.neon.tech/)
+   - Go to n [Neon Console](https://console.neon.tech/)
    - Create new project named "whstudio"
    - Choose your region (us-east-2 recommended)
    - Copy the connection string
