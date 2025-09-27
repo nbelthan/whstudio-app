@@ -44,7 +44,8 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
   // Temporarily mock MiniKit status
   const isInstalled = false; // useMiniKit disabled
   const { user, isAuthenticated, isLoading, login, setLoading, setError } = useAuth();
-  const { toast } = useToast();
+  // Temporarily disable toast hook
+  // const { toast } = useToast();
 
   const [currentStep, setCurrentStep] = useState<AuthStep>('wallet');
   const [walletConnecting, setWalletConnecting] = useState(false);
