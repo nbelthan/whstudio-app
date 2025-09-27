@@ -16,7 +16,7 @@ import {
   useSafeAreaInsets
 } from '@worldcoin/mini-apps-ui-kit-react';
 import { RLHFRatingData, Task } from '@/types';
-import { cn } from '@/lib/utils';
+import { BUTTON_INTENTS, cn } from '@/lib/utils';
 
 interface RLHFRatingInterfaceProps {
   task: Task;
@@ -307,20 +307,20 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
                   key={criterion.id}
                   onClick={() => handleReasonToggle(criterion.id)}
                   className={cn(
-                    'flex items-start gap-3 p-3 text-left rounded-lg border transition-colors',
+                    'flex items-start gap-3 p-3 text-left rounded-xl border transition-all duration-200 bg-[color-mix(in srgb,var(--color-bg-surface) 92%,transparent)] border-[color-mix(in srgb,var(--color-divider-low) 55%,transparent)] text-[var(--color-text-secondary)] hover:bg-[color-mix(in srgb,var(--color-bg-surface) 82%,var(--color-accent-blue) 12%)] hover:text-[var(--color-text-primary)]',
                     ratingReasons.includes(criterion.id)
-                      ? 'bg-[rgb(25,137,251)]/20 border-[rgb(25,137,251)]/30 text-[rgb(25,137,251)]'
-                      : 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10'
+                      ? 'border-[color-mix(in srgb,var(--color-accent-blue) 45%,transparent)] bg-[color-mix(in srgb,var(--color-accent-blue) 18%,transparent)] text-[var(--color-accent-blue)] shadow-[0_0_0_1px_color-mix(in srgb,var(--color-accent-blue) 35%,transparent)]'
+                      : ''
                   )}
                 >
                   <div className={cn(
-                    'w-4 h-4 rounded border-2 mt-0.5 flex-shrink-0',
+                    'w-4 h-4 rounded border-2 mt-0.5 flex-shrink-0 transition-colors duration-200',
                     ratingReasons.includes(criterion.id)
-                      ? 'bg-[rgb(25,137,251)] border-[rgb(25,137,251)]'
-                      : 'border-white/30'
+                      ? 'bg-[var(--color-accent-blue)] border-[color-mix(in srgb,var(--color-accent-blue) 55%,transparent)]'
+                      : 'border-[color-mix(in srgb,var(--color-divider-low) 55%,transparent)]'
                   )}>
                     {ratingReasons.includes(criterion.id) && (
-                      <CheckCircle className="w-3 h-3 text-white" />
+                      <CheckCircle className="w-3 h-3 text-[var(--color-bg-base)]" />
                     )}
                   </div>
                   <div>
@@ -344,7 +344,7 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
           <Card.Content>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-white/80">Confidence:</span>
+                <span className="text-[var(--color-text-primary)]">Confidence:</span>
                 <span className={cn('font-medium', confidenceLevel?.color)}>
                   {confidenceLevel?.label}
                 </span>
@@ -357,9 +357,9 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
                   max={5}
                   value={confidenceScore}
                   onChange={(e) => setConfidenceScore(parseInt(e.target.value))}
-                  className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+                  className="w-full h-2 rounded-full appearance-none cursor-pointer slider bg-[color-mix(in srgb,var(--color-accent-blue) 20%,transparent)]"
                 />
-                <div className="flex justify-between text-xs text-white/60 mt-2">
+                <div className="flex justify-between text-xs text-[var(--color-text-secondary)] mt-2">
                   <span>Not confident</span>
                   <span>Very confident</span>
                 </div>
@@ -398,6 +398,7 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
           loading={isSubmitting}
           onClick={handleSubmit}
           leftIcon={<ThumbsUp className="w-4 h-4" />}
+          className={`${BUTTON_INTENTS.primary} !h-12 !rounded-2xl !px-6`}
         >
           Submit Rating
         </Button>
@@ -465,7 +466,10 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
         </div>
 
         <Modal.Footer>
-          <Button onClick={() => setShowGuidelines(false)}>
+          <Button
+            onClick={() => setShowGuidelines(false)}
+            className={`${BUTTON_INTENTS.secondary} !rounded-full !h-11 !px-5`}
+          >
             Got it
           </Button>
         </Modal.Footer>
@@ -473,25 +477,38 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
 
       {/* Custom styles for range slider */}
       <style jsx>{`
+        .slider::-webkit-slider-runnable-track {
+          background: color-mix(in srgb, var(--color-accent-blue) 20%, transparent);
+          height: 8px;
+          border-radius: 999px;
+        }
+
+        .slider::-moz-range-track {
+          background: color-mix(in srgb, var(--color-accent-blue) 20%, transparent);
+          height: 8px;
+          border-radius: 999px;
+        }
+
         .slider::-webkit-slider-thumb {
           appearance: none;
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: rgb(25, 137, 251);
+          background: var(--color-accent-blue);
           cursor: pointer;
-          border: 2px solid white;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          border: 2px solid color-mix(in srgb, var(--color-bg-base) 80%, transparent);
+          box-shadow: 0 4px 12px rgba(75, 122, 242, 0.45);
+          margin-top: -6px;
         }
 
         .slider::-moz-range-thumb {
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: rgb(25, 137, 251);
+          background: var(--color-accent-blue);
           cursor: pointer;
-          border: 2px solid white;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          border: 2px solid color-mix(in srgb, var(--color-bg-base) 80%, transparent);
+          box-shadow: 0 4px 12px rgba(75, 122, 242, 0.45);
         }
       `}</style>
     </div>

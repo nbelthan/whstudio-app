@@ -56,25 +56,25 @@ export default function AppHeader() {
     <div className="fixed top-0 left-0 right-0 z-50 bg-[var(--color-bg-base)] border-b border-[var(--color-divider-low)]">
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
-          {/* Left: Navigation */}
-          <div className="flex items-center gap-2">
+          {/* Left: Navigation with Labels */}
+          <div className="flex items-center gap-3">
             <Button
               variant={pathname === '/dashboard' ? 'primary' : 'secondary'}
               size="small"
               onClick={() => router.push('/dashboard')}
-              className="!p-2"
-              title="Dashboard"
+              className="flex items-center gap-2 px-3"
             >
-              <Home className="w-4 h-4" />
+              <Home className="w-5 h-5" />
+              <span>Dashboard</span>
             </Button>
             <Button
               variant={pathname.includes('/tasks') ? 'primary' : 'secondary'}
               size="small"
               onClick={() => router.push('/tasks')}
-              className="!p-2"
-              title="Tasks"
+              className="flex items-center gap-2 px-3"
             >
-              <Briefcase className="w-4 h-4" />
+              <Briefcase className="w-5 h-5" />
+              <span>Tasks</span>
             </Button>
           </div>
 

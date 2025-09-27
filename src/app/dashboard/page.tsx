@@ -151,22 +151,43 @@ export default function Dashboard() {
             Quick Actions
           </Typography>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="rounded-xl border border-[color-mix(in srgb,var(--color-divider-low) 65%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 85%,transparent)]">
-              <ListItem
-                icon={<Briefcase className="w-5 h-5 text-[var(--color-accent-blue)]" />}
-                title="Browse Tasks"
-                subtitle="Find new tasks to complete"
-                onClick={() => router.push('/tasks')}
-              />
-            </div>
-            <div className="rounded-xl border border-[color-mix(in srgb,var(--color-divider-low) 65%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 85%,transparent)]">
-              <ListItem
-                icon={<Clock className="w-5 h-5 text-[var(--color-warning)]" />}
-                title="My Submissions"
-                subtitle="Track pending submissions"
-                onClick={() => router.push('/submissions')}
-              />
-            </div>
+            <Button
+              variant="secondary"
+              size="large"
+              onClick={() => router.push('/tasks')}
+              className="flex items-start gap-4 p-4 h-auto justify-start text-left"
+            >
+              <div className="p-2 bg-[var(--color-accent-blue)]/10 rounded-lg">
+                <Briefcase className="w-6 h-6 text-[var(--color-accent-blue)]" />
+              </div>
+              <div className="flex-1">
+                <Typography variant="h4" className="text-[var(--color-text-primary)] mb-1">
+                  Browse Tasks
+                </Typography>
+                <Typography variant="body2" className="text-[var(--color-text-secondary)]">
+                  Find new tasks to complete
+                </Typography>
+              </div>
+            </Button>
+
+            <Button
+              variant="secondary"
+              size="large"
+              onClick={() => router.push('/submissions')}
+              className="flex items-start gap-4 p-4 h-auto justify-start text-left"
+            >
+              <div className="p-2 bg-[var(--color-warning)]/10 rounded-lg">
+                <Clock className="w-6 h-6 text-[var(--color-warning)]" />
+              </div>
+              <div className="flex-1">
+                <Typography variant="h4" className="text-[var(--color-text-primary)] mb-1">
+                  My Submissions
+                </Typography>
+                <Typography variant="body2" className="text-[var(--color-text-secondary)]">
+                  Track pending submissions
+                </Typography>
+              </div>
+            </Button>
           </div>
         </div>
 
