@@ -4,8 +4,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentUser, withAuth } from '@/lib/auth/session';
-import { queries } from '@/lib/db/client';
+import { getCurrentUser, withAuth } from '@/lib/session';
+import { queries } from '@/lib/db';
 
 /**
  * Get task by ID with submission details
@@ -174,11 +174,22 @@ export async function PUT(
         );
       }
 
-      // TODO: Implement task update query
-      // For now, return a placeholder response
+      // Update the task
+      const updateResult = await queries.tasks.update(id, filteredUpdates);
+
+      if (updateResult.rows.length === 0) {
+        return NextResponse.json(
+          { error: 'Failed to update task' },
+          { status: 500 }
+        );
+      }
+
+      const updatedTask = updateResult.rows[0];
+
       return NextResponse.json({
         success: true,
-        message: 'Task update functionality coming soon',
+        message: 'Task updated successfully',
+        task: updatedTask,
         updated_fields: Object.keys(filteredUpdates)
       });
 
@@ -242,11 +253,20 @@ export async function DELETE(
         );
       }
 
-      // TODO: Implement task deletion query
-      // For now, return a placeholder response
+      // Delete the task
+      const deleteResult = await queries.tasks.delete(id);
+
+      if (deleteResult.rows.length === 0) {
+        return NextResponse.json(
+          { error: 'Failed to delete task' },
+          { status: 500 }
+        );
+      }
+
       return NextResponse.json({
         success: true,
-        message: 'Task deletion functionality coming soon'
+        message: 'Task deleted successfully',
+        deleted_task: deleteResult.rows[0]
       });
 
     } catch (error) {

@@ -25,11 +25,17 @@ interface PaymentHistoryProps {
 }
 
 interface PaymentFilters {
-  type?: PaymentType;
-  status?: PaymentStatus;
+  type?: PaymentType | 'all';
+  status?: PaymentStatus | 'all';
+  direction?: 'sent' | 'received' | 'all';
+  currency?: 'WLD' | 'ETH' | 'USDC' | 'all';
   dateRange?: {
     start: string;
     end: string;
+  };
+  amountRange?: {
+    min: number;
+    max: number;
   };
   searchQuery?: string;
 }
@@ -42,9 +48,15 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
   const { payments, loading, setPaymentLoading } = usePayments();
   const { user } = useAuth();
 
-  const [filters, setFilters] = useState<PaymentFilters>({});
+  const [filters, setFilters] = useState<PaymentFilters>({
+    type: 'all',
+    status: 'all',
+    direction: 'all',
+    currency: 'all'
+  });
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showFiltersPanel, setShowFiltersPanel] = useState(false);
 
   // Fetch payments on mount
   useEffect(() => {
@@ -75,13 +87,26 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
     let filtered = payments;
 
     // Apply type filter
-    if (filters.type) {
+    if (filters.type && filters.type !== 'all') {
       filtered = filtered.filter(payment => payment.payment_type === filters.type);
     }
 
     // Apply status filter
-    if (filters.status) {
+    if (filters.status && filters.status !== 'all') {
       filtered = filtered.filter(payment => payment.status === filters.status);
+    }
+
+    // Apply direction filter
+    if (filters.direction && filters.direction !== 'all') {
+      filtered = filtered.filter(payment => {
+        const direction = getPaymentDirection(payment);
+        return direction === filters.direction;
+      });
+    }
+
+    // Apply currency filter
+    if (filters.currency && filters.currency !== 'all') {
+      filtered = filtered.filter(payment => payment.currency === filters.currency);
     }
 
     // Apply date range filter
@@ -94,13 +119,22 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
       });
     }
 
+    // Apply amount range filter
+    if (filters.amountRange) {
+      filtered = filtered.filter(payment =>
+        payment.amount >= filters.amountRange!.min &&
+        payment.amount <= filters.amountRange!.max
+      );
+    }
+
     // Apply search filter
     if (filters.searchQuery) {
       const query = filters.searchQuery.toLowerCase();
       filtered = filtered.filter(payment =>
         payment.transaction_hash?.toLowerCase().includes(query) ||
         payment.payment_type.toLowerCase().includes(query) ||
-        payment.amount.toString().includes(query)
+        payment.amount.toString().includes(query) ||
+        payment.external_payment_id?.toLowerCase().includes(query)
       );
     }
 
@@ -208,9 +242,15 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
                 <Button
                   variant="ghost"
                   size="sm"
+                  onClick={() => setShowFiltersPanel(!showFiltersPanel)}
                   leftIcon={<Filter className="w-4 h-4" />}
                 >
                   Filters
+                  {Object.values(filters).some(v => v && v !== 'all') && (
+                    <Badge variant="info" size="sm" className="ml-2">
+                      Active
+                    </Badge>
+                  )}
                 </Button>
               )}
               <Button
@@ -262,11 +302,157 @@ export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
             </div>
           </div>
 
+          {/* Advanced Filters Panel */}
+          {showFilters && showFiltersPanel && (
+            <div className="mb-6 p-6 bg-white/5 border border-white/10 rounded-2xl">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                {/* Type Filter */}
+                <div>
+                  <label className="text-sm text-white/70 mb-1 block">Type</label>
+                  <select
+                    value={filters.type || 'all'}
+                    onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value as PaymentType | 'all' }))}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm"
+                  >
+                    <option value="all" className="bg-gray-900">All Types</option>
+                    <option value="task_reward" className="bg-gray-900">Task Reward</option>
+                    <option value="escrow_deposit" className="bg-gray-900">Escrow Deposit</option>
+                    <option value="escrow_release" className="bg-gray-900">Escrow Release</option>
+                    <option value="refund" className="bg-gray-900">Refund</option>
+                  </select>
+                </div>
+
+                {/* Status Filter */}
+                <div>
+                  <label className="text-sm text-white/70 mb-1 block">Status</label>
+                  <select
+                    value={filters.status || 'all'}
+                    onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value as PaymentStatus | 'all' }))}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm"
+                  >
+                    <option value="all" className="bg-gray-900">All Status</option>
+                    <option value="pending" className="bg-gray-900">Pending</option>
+                    <option value="processing" className="bg-gray-900">Processing</option>
+                    <option value="completed" className="bg-gray-900">Completed</option>
+                    <option value="failed" className="bg-gray-900">Failed</option>
+                    <option value="cancelled" className="bg-gray-900">Cancelled</option>
+                  </select>
+                </div>
+
+                {/* Direction Filter */}
+                <div>
+                  <label className="text-sm text-white/70 mb-1 block">Direction</label>
+                  <select
+                    value={filters.direction || 'all'}
+                    onChange={(e) => setFilters(prev => ({ ...prev, direction: e.target.value as 'sent' | 'received' | 'all' }))}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm"
+                  >
+                    <option value="all" className="bg-gray-900">All Directions</option>
+                    <option value="received" className="bg-gray-900">Received</option>
+                    <option value="sent" className="bg-gray-900">Sent</option>
+                  </select>
+                </div>
+
+                {/* Currency Filter */}
+                <div>
+                  <label className="text-sm text-white/70 mb-1 block">Currency</label>
+                  <select
+                    value={filters.currency || 'all'}
+                    onChange={(e) => setFilters(prev => ({ ...prev, currency: e.target.value as 'WLD' | 'ETH' | 'USDC' | 'all' }))}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm"
+                  >
+                    <option value="all" className="bg-gray-900">All Currencies</option>
+                    <option value="WLD" className="bg-gray-900">WLD</option>
+                    <option value="ETH" className="bg-gray-900">ETH</option>
+                    <option value="USDC" className="bg-gray-900">USDC</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                {/* Date Range */}
+                <div>
+                  <label className="text-sm text-white/70 mb-1 block">Date Range</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="date"
+                      value={filters.dateRange?.start || ''}
+                      onChange={(e) => setFilters(prev => ({
+                        ...prev,
+                        dateRange: { ...prev.dateRange, start: e.target.value, end: prev.dateRange?.end || '' }
+                      }))}
+                      className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm"
+                    />
+                    <input
+                      type="date"
+                      value={filters.dateRange?.end || ''}
+                      onChange={(e) => setFilters(prev => ({
+                        ...prev,
+                        dateRange: { ...prev.dateRange, start: prev.dateRange?.start || '', end: e.target.value }
+                      }))}
+                      className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm"
+                    />
+                  </div>
+                </div>
+
+                {/* Amount Range */}
+                <div>
+                  <label className="text-sm text-white/70 mb-1 block">Amount Range ($)</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      placeholder="Min"
+                      value={filters.amountRange?.min || ''}
+                      onChange={(e) => setFilters(prev => ({
+                        ...prev,
+                        amountRange: { ...prev.amountRange, min: parseFloat(e.target.value) || 0, max: prev.amountRange?.max || 0 }
+                      }))}
+                      className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm"
+                    />
+                    <input
+                      type="number"
+                      placeholder="Max"
+                      value={filters.amountRange?.max || ''}
+                      onChange={(e) => setFilters(prev => ({
+                        ...prev,
+                        amountRange: { ...prev.amountRange, min: prev.amountRange?.min || 0, max: parseFloat(e.target.value) || 0 }
+                      }))}
+                      className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setFilters({
+                    type: 'all',
+                    status: 'all',
+                    direction: 'all',
+                    currency: 'all'
+                  })}
+                >
+                  Clear Filters
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowFiltersPanel(false)}
+                >
+                  Apply Filters
+                </Button>
+              </div>
+            </div>
+          )}
+
           {/* Search Bar */}
           {showFilters && (
             <div className="mb-4">
               <Input
-                placeholder="Search by transaction hash, type, or amount..."
+                placeholder="Search by transaction hash, type, amount, or payment ID..."
                 value={filters.searchQuery || ''}
                 onChange={(e) => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
                 leftIcon={<Search className="w-4 h-4" />}

@@ -4,8 +4,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/auth/session';
-import { queries } from '@/lib/db/client';
+import { withAuth } from '@/lib/session';
+import { queries } from '@/lib/db';
 
 interface PaymentRequest {
   task_id?: string;
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Get submission details for recipient
-        const { db } = await import('@/lib/db/client');
+        const { db } = await import('@/lib/db');
         const submissionQuery = `
           SELECT user_id FROM submissions WHERE id = $1 AND task_id = $2
         `;

@@ -1,16 +1,28 @@
 /**
- * Voice Recording Interface Component
- * Allows users to record audio for transcription and voice-related tasks
+ * Enhanced Voice Recording Interface Component
+ * Comprehensive audio recording with quality analysis, file upload, and Vercel Blob storage
  */
 
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Mic, MicOff, Play, Pause, Square, RotateCcw, Upload, Download, Volume2 } from 'lucide-react';
+import {
+  Mic, MicOff, Play, Pause, Square, RotateCcw, Upload, Download, Volume2,
+  FileAudio, AlertTriangle, CheckCircle, Loader2, Waveform, Settings,
+  HelpCircle, X, File, Trash2
+} from 'lucide-react';
 
 import { Card, Button, Badge, LoadingSpinner } from '@/components/ui';
 import { VoiceRecordingData, Task } from '@/types';
-import { cn, formatDuration } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import {
+  uploadAudioFile,
+  getAudioDuration,
+  analyzeAudioQuality,
+  checkAudioSupport,
+  type UploadProgress,
+  type AudioQualityMetrics
+} from '@/lib/storage';
 
 interface VoiceRecordingInterfaceProps {
   task: Task;
@@ -20,6 +32,24 @@ interface VoiceRecordingInterfaceProps {
 }
 
 type RecordingState = 'idle' | 'recording' | 'paused' | 'stopped';
+type UploadState = 'idle' | 'uploading' | 'uploaded' | 'failed';
+type AudioSource = 'recorded' | 'uploaded';
+
+interface AudioFile {
+  blob: Blob;
+  url: string;
+  name: string;
+  duration: number;
+  size: number;
+  format: string;
+  source: AudioSource;
+}
+
+interface SpeechRecognitionResult {
+  transcript: string;
+  confidence: number;
+  isFinal: boolean;
+}
 
 export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = ({
   task,
@@ -27,22 +57,94 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
   isSubmitting = false,
   className,
 }) => {
+  // Recording state
   const [recordingState, setRecordingState] = useState<RecordingState>('idle');
   const [duration, setDuration] = useState(0);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const [audioFile, setAudioFile] = useState<AudioFile | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackTime, setPlaybackTime] = useState(0);
   const [audioLevel, setAudioLevel] = useState(0);
+  const [waveformData, setWaveformData] = useState<number[]>([]);
+
+  // Upload state
+  const [uploadState, setUploadState] = useState<UploadState>('idle');
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress>({ loaded: 0, total: 0, percentage: 0 });
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
+
+  // Transcription state
   const [transcript, setTranscript] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
+  const [speechRecognition, setSpeechRecognition] = useState<SpeechRecognition | null>(null);
+  const [liveTranscript, setLiveTranscript] = useState('');
 
+  // Quality analysis
+  const [qualityMetrics, setQualityMetrics] = useState<AudioQualityMetrics | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  // UI state
+  const [showSettings, setShowSettings] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  // Audio settings
+  const [audioFormat, setAudioFormat] = useState<'webm' | 'wav'>('webm');
+  const [enableNoiseSupression, setEnableNoiseSupression] = useState(true);
+  const [enableEchoCancellation, setEnableEchoCancellation] = useState(true);
+
+  // Browser support
+  const [browserSupport] = useState(() => checkAudioSupport());
+
+  // Refs
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const analyzerRef = useRef<AnalyserNode | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const chunksRef = useRef<BlobPart[]>([]);
+  const waveformIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Initialize speech recognition
+  useEffect(() => {
+    if (browserSupport.speechRecognition) {
+      const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event: any) => {
+        let finalTranscript = '';
+        let interimTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript;
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+
+        if (finalTranscript) {
+          setTranscript(prev => prev + finalTranscript);
+        }
+        setLiveTranscript(interimTranscript);
+      };
+
+      recognition.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
+        if (event.error !== 'no-speech') {
+          setError(`Speech recognition error: ${event.error}`);
+        }
+      };
+
+      setSpeechRecognition(recognition);
+    }
+  }, [browserSupport.speechRecognition]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -54,66 +156,225 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
       if (audioContextRef.current) {
         audioContextRef.current.close();
       }
+      if (speechRecognition) {
+        speechRecognition.stop();
+      }
+      if (waveformIntervalRef.current) {
+        clearInterval(waveformIntervalRef.current);
+      }
     };
-  }, []);
+  }, [speechRecognition]);
 
-  // Audio level monitoring
+  // Enhanced audio level monitoring with waveform data
   const startAudioLevelMonitoring = useCallback((stream: MediaStream) => {
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     const analyzer = audioContext.createAnalyser();
     const microphone = audioContext.createMediaStreamSource(stream);
 
-    analyzer.fftSize = 256;
+    analyzer.fftSize = 2048;
+    analyzer.smoothingTimeConstant = 0.8;
     microphone.connect(analyzer);
 
     audioContextRef.current = audioContext;
     analyzerRef.current = analyzer;
 
     const dataArray = new Uint8Array(analyzer.frequencyBinCount);
+    const waveformArray = new Uint8Array(analyzer.fftSize);
 
     const updateLevel = () => {
       if (recordingState === 'recording') {
+        // Get frequency data for level
         analyzer.getByteFrequencyData(dataArray);
         const average = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
         setAudioLevel(average / 255);
+
+        // Get time domain data for waveform
+        analyzer.getByteTimeDomainData(waveformArray);
+        const waveform = Array.from(waveformArray.slice(0, 64)).map(value => (value - 128) / 128);
+        setWaveformData(waveform);
+
         requestAnimationFrame(updateLevel);
       }
     };
 
     updateLevel();
-  }, [recordingState]);
+
+    // Start live transcription if enabled
+    if (speechRecognition && transcript === '') {
+      try {
+        speechRecognition.start();
+      } catch (error) {
+        console.warn('Could not start speech recognition:', error);
+      }
+    }
+  }, [recordingState, speechRecognition, transcript]);
+
+  // File upload handlers
+  const handleFileUpload = useCallback(async (file: File) => {
+    setError(null);
+    setUploadState('uploading');
+
+    try {
+      // Validate file
+      const maxSize = 50 * 1024 * 1024; // 50MB
+      const allowedTypes = ['audio/webm', 'audio/wav', 'audio/mp4', 'audio/mpeg', 'audio/ogg'];
+
+      if (file.size > maxSize) {
+        throw new Error(`File size (${formatFileSize(file.size)}) exceeds 50MB limit`);
+      }
+
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error(`File type ${file.type} not supported. Use: ${allowedTypes.join(', ')}`);
+      }
+
+      // Get audio duration
+      const duration = await getAudioDuration(file);
+
+      if (duration < 5) {
+        throw new Error('Audio must be at least 5 seconds long');
+      }
+
+      if (duration > 300) { // 5 minutes
+        throw new Error('Audio must be less than 5 minutes long');
+      }
+
+      // Upload to Vercel Blob Storage
+      const result = await uploadAudioFile(file, `task-${task.id}-${Date.now()}.${file.name.split('.').pop()}`, {
+        onProgress: setUploadProgress,
+        maxSize,
+        allowedFormats: allowedTypes,
+      });
+
+      // Create audio file object
+      const audioFileObj: AudioFile = {
+        blob: file,
+        url: URL.createObjectURL(file),
+        name: file.name,
+        duration,
+        size: file.size,
+        format: file.type,
+        source: 'uploaded'
+      };
+
+      setAudioFile(audioFileObj);
+      setUploadedFileUrl(result.url);
+      setUploadState('uploaded');
+      setDuration(duration);
+
+      // Analyze quality
+      setIsAnalyzing(true);
+      const quality = await analyzeAudioQuality(file);
+      setQualityMetrics(quality);
+      setIsAnalyzing(false);
+
+    } catch (error) {
+      console.error('File upload failed:', error);
+      setError(error instanceof Error ? error.message : 'Upload failed');
+      setUploadState('failed');
+    }
+  }, [task.id]);
+
+  // Drag and drop handlers
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+
+    const files = Array.from(e.dataTransfer.files);
+    const audioFile = files.find(file => file.type.startsWith('audio/'));
+
+    if (audioFile) {
+      handleFileUpload(audioFile);
+    } else {
+      setError('Please drop an audio file');
+    }
+  }, [handleFileUpload]);
 
   const startRecording = async () => {
     try {
+      setError(null);
+
+      // Check browser support
+      if (!browserSupport.mediaRecorder) {
+        throw new Error('MediaRecorder not supported in this browser');
+      }
+
+      if (!browserSupport.getUserMedia) {
+        throw new Error('getUserMedia not supported in this browser');
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
+          echoCancellation: enableEchoCancellation,
+          noiseSuppression: enableNoiseSupression,
+          autoGainControl: true,
           sampleRate: 44100,
+          channelCount: 1,
         },
       });
 
       streamRef.current = stream;
 
+      // Determine the best available format
+      const mimeType = getMimeType(audioFormat);
+      if (!MediaRecorder.isTypeSupported(mimeType)) {
+        throw new Error(`Audio format ${audioFormat} not supported`);
+      }
+
       const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: 'audio/webm;codecs=opus',
+        mimeType,
+        audioBitsPerSecond: audioFormat === 'wav' ? 128000 : 64000,
       });
 
-      const chunks: BlobPart[] = [];
+      chunksRef.current = [];
 
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
-          chunks.push(event.data);
+          chunksRef.current.push(event.data);
         }
       };
 
-      mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/webm;codecs=opus' });
+      mediaRecorder.onstop = async () => {
+        const blob = new Blob(chunksRef.current, { type: mimeType });
         const url = URL.createObjectURL(blob);
+        const duration = await getAudioDuration(blob);
 
-        setAudioBlob(blob);
-        setAudioUrl(url);
+        const audioFileObj: AudioFile = {
+          blob,
+          url,
+          name: `recording-${Date.now()}.${audioFormat}`,
+          duration,
+          size: blob.size,
+          format: mimeType,
+          source: 'recorded'
+        };
+
+        setAudioFile(audioFileObj);
         setRecordingState('stopped');
+
+        // Stop live transcription
+        if (speechRecognition) {
+          speechRecognition.stop();
+        }
+
+        // Analyze quality
+        setIsAnalyzing(true);
+        try {
+          const quality = await analyzeAudioQuality(blob, stream);
+          setQualityMetrics(quality);
+        } catch (error) {
+          console.warn('Quality analysis failed:', error);
+        }
+        setIsAnalyzing(false);
       };
 
       mediaRecorderRef.current = mediaRecorder;
@@ -121,6 +382,8 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
 
       setRecordingState('recording');
       setDuration(0);
+      setTranscript('');
+      setLiveTranscript('');
 
       // Start audio level monitoring
       startAudioLevelMonitoring(stream);
@@ -132,17 +395,18 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
 
     } catch (error) {
       console.error('Failed to start recording:', error);
-      alert('Failed to access microphone. Please ensure microphone permissions are granted.');
+      setError(error instanceof Error ? error.message : 'Failed to access microphone. Please check permissions.');
     }
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && recordingState === 'recording') {
+    if (mediaRecorderRef.current && (recordingState === 'recording' || recordingState === 'paused')) {
       mediaRecorderRef.current.stop();
     }
 
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
     }
 
     if (intervalRef.current) {
@@ -150,7 +414,12 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
       intervalRef.current = null;
     }
 
+    if (speechRecognition) {
+      speechRecognition.stop();
+    }
+
     setAudioLevel(0);
+    setWaveformData([]);
   };
 
   const pauseRecording = () => {
@@ -161,6 +430,10 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
+      }
+
+      if (speechRecognition) {
+        speechRecognition.stop();
       }
     }
   };
@@ -174,6 +447,15 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
       intervalRef.current = setInterval(() => {
         setDuration(prev => prev + 1);
       }, 1000);
+
+      // Resume transcription
+      if (speechRecognition) {
+        try {
+          speechRecognition.start();
+        } catch (error) {
+          console.warn('Could not resume speech recognition:', error);
+        }
+      }
     }
   };
 
@@ -181,15 +463,19 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
     stopRecording();
     setRecordingState('idle');
     setDuration(0);
-    setAudioUrl(null);
-    setAudioBlob(null);
+    setAudioFile(null);
     setPlaybackTime(0);
     setIsPlaying(false);
     setTranscript('');
+    setLiveTranscript('');
+    setQualityMetrics(null);
+    setUploadState('idle');
+    setUploadedFileUrl(null);
+    setError(null);
   };
 
   const playAudio = () => {
-    if (audioRef.current && audioUrl) {
+    if (audioRef.current && audioFile) {
       if (isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
@@ -201,53 +487,158 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
   };
 
   const generateTranscript = async () => {
-    if (!audioBlob) return;
+    if (!audioFile) return;
 
     setIsTranscribing(true);
+    setError(null);
 
     try {
-      // Mock transcription - in real app, this would use a transcription API
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setTranscript("This is a mock transcription of the recorded audio. In a real implementation, this would be generated by a speech-to-text service.");
+      // If we already have live transcript, use it
+      if (transcript.trim()) {
+        setIsTranscribing(false);
+        return;
+      }
+
+      // Try Web Speech API for offline transcription
+      if (browserSupport.speechRecognition) {
+        try {
+          const transcriptResult = await transcribeAudioFile(audioFile.blob);
+          setTranscript(transcriptResult);
+        } catch (speechError) {
+          console.warn('Web Speech API failed, using mock transcript:', speechError);
+          // Fallback to mock transcription
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          setTranscript("This is a mock transcription of the recorded audio. In a real implementation, this would connect to a transcription service like OpenAI Whisper, Google Speech-to-Text, or Azure Speech Services.");
+        }
+      } else {
+        // Mock transcription for browsers without speech recognition
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setTranscript("This is a mock transcription. Your browser doesn't support the Web Speech API. In a production app, this would use a server-side transcription service.");
+      }
     } catch (error) {
       console.error('Transcription failed:', error);
-      alert('Failed to generate transcript. Please try again.');
+      setError('Failed to generate transcript. Please try again.');
     } finally {
       setIsTranscribing(false);
     }
   };
 
+  // Transcribe audio file using Web Speech API (fallback method)
+  const transcribeAudioFile = async (blob: Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      if (!browserSupport.speechRecognition) {
+        reject(new Error('Speech recognition not supported'));
+        return;
+      }
+
+      const audio = new Audio(URL.createObjectURL(blob));
+      const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      let finalTranscript = '';
+      let timeout: NodeJS.Timeout;
+
+      recognition.onresult = (event: any) => {
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript + ' ';
+          }
+        }
+      };
+
+      recognition.onend = () => {
+        clearTimeout(timeout);
+        resolve(finalTranscript.trim() || 'No speech detected in audio');
+      };
+
+      recognition.onerror = (event: any) => {
+        clearTimeout(timeout);
+        reject(new Error(`Speech recognition error: ${event.error}`));
+      };
+
+      // Start recognition and play audio
+      recognition.start();
+      audio.play();
+
+      // Timeout after audio duration + 2 seconds
+      timeout = setTimeout(() => {
+        recognition.stop();
+        audio.pause();
+      }, (audioFile?.duration || 30) * 1000 + 2000);
+    });
+  };
+
   const downloadAudio = () => {
-    if (audioUrl) {
+    if (audioFile) {
       const a = document.createElement('a');
-      a.href = audioUrl;
-      a.download = `recording-${Date.now()}.webm`;
+      a.href = audioFile.url;
+      a.download = audioFile.name;
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
     }
   };
 
-  const handleSubmit = async () => {
-    if (!audioBlob || !audioUrl) return;
+  const deleteAudio = () => {
+    if (audioFile?.url) {
+      URL.revokeObjectURL(audioFile.url);
+    }
+    resetRecording();
+  };
 
-    const submissionData: VoiceRecordingData = {
-      audio_url: audioUrl,
-      duration_seconds: duration,
-      transcript: transcript || undefined,
-      audio_quality_score: duration > 10 ? 4 : 3, // Mock quality score
-      background_noise_level: audioLevel > 0.3 ? 'high' : audioLevel > 0.1 ? 'medium' : 'low',
-    };
+  const handleSubmit = async () => {
+    if (!audioFile) return;
+
+    setError(null);
 
     try {
+      let finalAudioUrl = uploadedFileUrl;
+
+      // Upload recorded audio if not already uploaded
+      if (audioFile.source === 'recorded' && !uploadedFileUrl) {
+        setUploadState('uploading');
+        const result = await uploadAudioFile(
+          audioFile.blob,
+          audioFile.name,
+          {
+            onProgress: setUploadProgress,
+            maxSize: 50 * 1024 * 1024,
+            allowedFormats: ['audio/webm', 'audio/wav', 'audio/mp4', 'audio/mpeg', 'audio/ogg'],
+          }
+        );
+        finalAudioUrl = result.url;
+        setUploadedFileUrl(result.url);
+        setUploadState('uploaded');
+      }
+
+      if (!finalAudioUrl) {
+        throw new Error('No audio URL available for submission');
+      }
+
+      const submissionData: VoiceRecordingData = {
+        audio_url: finalAudioUrl,
+        duration_seconds: Math.round(audioFile.duration),
+        transcript: transcript.trim() || undefined,
+        audio_quality_score: qualityMetrics?.score || 3,
+        background_noise_level: qualityMetrics?.backgroundNoiseLevel || 'medium',
+      };
+
       await onSubmit(submissionData);
     } catch (error) {
       console.error('Failed to submit recording:', error);
+      setError(error instanceof Error ? error.message : 'Failed to submit recording');
+      setUploadState('failed');
     }
   };
 
   // Handle audio playback events
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !audioFile) return;
 
     const updatePlaybackTime = () => setPlaybackTime(audio.currentTime);
     const handleEnded = () => {
@@ -257,12 +648,41 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
 
     audio.addEventListener('timeupdate', updatePlaybackTime);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('loadedmetadata', () => {
+      // Ensure audio element duration matches our stored duration
+      if (Math.abs(audio.duration - audioFile.duration) > 1) {
+        console.warn('Audio duration mismatch:', audio.duration, 'vs', audioFile.duration);
+      }
+    });
 
     return () => {
       audio.removeEventListener('timeupdate', updatePlaybackTime);
       audio.removeEventListener('ended', handleEnded);
     };
-  }, [audioUrl]);
+  }, [audioFile]);
+
+  // Utility functions
+  const getMimeType = (format: 'webm' | 'wav'): string => {
+    const mimeTypes = {
+      webm: 'audio/webm;codecs=opus',
+      wav: 'audio/wav',
+    };
+    return mimeTypes[format];
+  };
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const getRecordingStateColor = () => {
     switch (recordingState) {
@@ -278,9 +698,28 @@ export const VoiceRecordingInterface: React.FC<VoiceRecordingInterfaceProps> = (
       case 'recording': return 'Recording...';
       case 'paused': return 'Paused';
       case 'stopped': return 'Recording Complete';
-      default: return 'Ready to Record';
+      default: return audioFile ? 'Audio Ready' : 'Ready to Record';
     }
   };
+
+  const getQualityColor = (score: number) => {
+    if (score >= 4) return 'text-green-400';
+    if (score >= 3) return 'text-yellow-400';
+    return 'text-red-400';
+  };
+
+  const getQualityText = (score: number) => {
+    if (score >= 4) return 'Excellent';
+    if (score >= 3) return 'Good';
+    if (score >= 2) return 'Fair';
+    return 'Poor';
+  };
+
+  const canSubmit = audioFile && audioFile.duration >= 5 && !isSubmitting;
+  const showWaveform = recordingState === 'recording' && waveformData.length > 0;
+  const hasAudio = audioFile !== null;
+  const isUploading = uploadState === 'uploading';
+  const isUploaded = uploadState === 'uploaded' || uploadedFileUrl !== null;
 
   return (
     <div className={cn('space-y-6', className)}>

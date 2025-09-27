@@ -1,0 +1,842 @@
+[
+  {
+    "id": 106,
+    "prompt": "Each problem consists of three statements. Based on the first two statements, the third statement may be true, false, or uncertain.\n1. Oranges cost more than apples.\n2. Oranges cost less than bananas.\n3. Bananas cost more than apples and bananas cost more than orange.\nIf the first two statements are true, then the third statement is",
+    "optionA": "If the first two statements are true, then the third statement is false.",
+    "optionB": "False.\n\nIf the first two statements are true, then the third statement is false. The first statement says that oranges cost more than apples, and the second statement says that oranges cost less than bananas. This means that oranges cost less than bananas, which contradicts the third statement that bananas cost more than apples and more than oranges. Therefore, the third statement must be false.",
+    "gold": null
+  },
+  {
+    "id": 102,
+    "prompt": "You can see a beautiful red house to your left and a hypnotic greenhouse to your right, an attractive heated pink place in the front. So, where is the White House?",
+    "optionA": "The White House is the official residence and workplace of the President of the United States, located in Washington, D.C. It is not located in the scene you described, which includes a red house, a greenhouse, and a heated pink place. The White House is a white, neoclassical mansion that has been the home of every U.S. president since John Adams in 1800. It is located at 1600 Pennsylvania Avenue NW in Washington, D.C.",
+    "optionB": "The White House is located at 1600 Pennsylvania Avenue NW in Washington, D.C. It is the official residence and workplace of the President of the United States.",
+    "gold": "A"
+  },
+  {
+    "id": 96,
+    "prompt": "Now you are a machine learning engineer. Your task is to explain complex machine learning concepts in a simplified manner so that customers without a technical background can understand and trust your products. Let's start with the question: \"What is a language model? Is it trained using labeled or unlabelled data?\"",
+    "optionA": "A language model is a type of artificial intelligence that helps computers understand and generate human-like text. It's designed to predict the likelihood of a sequence of words or phrases in a sentence. Essentially, it learns the patterns and structure of a language so it can create natural-sounding text or understand the context of a given sentence.\n\nLanguage models are usually trained using a large amount of text data, which is generally unlabeled. This means the data doesn't have specific categories or classifications assigned to it. Instead, the model learns the underlying structure and relationships between words and phrases by analyzing the text data itself. As the model processes more and more data, it becomes better at understanding the language and generating accurate predictions.",
+    "optionB": "A language model is a type of artificial intelligence algorithm that is used to predict the likelihood of a sequence of words appearing together in a given language. It is typically used in tasks such as natural language processing and machine translation. Language models can be trained using either labeled or unlabeled data. Labeled data requires the words to be associated with labels or categories, while unlabeled data does not.",
+    "gold": "A"
+  },
+  {
+    "id": 108,
+    "prompt": "Which word does not belong with the others?\ntyre, steering wheel, car, engine",
+    "optionA": "In that list of words, 'tyre' does not belong with the others.\n\nThe words 'steering wheel', 'car' and 'engine' are all directly related to a vehicle. \n'Tyre' refers to a specific part of a vehicle - the rubber wheels. So it is not at the same level of generality as the other more general automotive terms.\n\nSo 'tyre' would be the word that does not belong with the others in that list.",
+    "optionB": "The word that does not belong with the others is \"engine\".",
+    "gold": null
+  },
+  {
+    "id": 120,
+    "prompt": "Given that f(x) = 4x^3 - 9x - 14, find the value of f(2).",
+    "optionA": "To find the value of f(2), we need to substitute 2 for x in the function f(x) and simplify.\n\nf(x) = 4x^3 - 9x - 14\n\nf(2) = 4(2)^3 - 9(2) - 14\n\nf(2) = 8 - 18 - 14\n\nf(2) = -20\n\nTherefore, the value of f(2) is -20.",
+    "optionB": "Okay, let's solve this step-by-step:\n1) Given: f(x) = 4x^3 - 9x - 14\n2) We want to find f(2), which means we substitute 2 for x:\nf(2) = 4(2)^3 - 9(2) - 14\n3) Simplify:\nf(2) = 4(8) - 18 - 14\n= 32 - 18 - 14\n= 32 - 32 \n= 0\n\nTherefore, the value of f(2) is 0.",
+    "gold": "B"
+  },
+  {
+    "id": 94,
+    "prompt": "Please take on the role of a relationship coach. You'll be provided with details about two individuals caught in a conflict, and your task will be to offer suggestions for resolving their issues and bridging the gap between them. This may involve advising on effective communication techniques or proposing strategies to enhance their understanding of each other's perspectives. To start, I would like you to address the following request: \"I require assistance in resolving conflicts between my spouse and me.\"",
+    "optionA": "I'm sorry to hear that you're experiencing conflicts with your spouse. As a relationship coach, my goal is to help you find a solution that works for both of you. Can you please share more details about what's causing the conflict and what you've tried so far to resolve it? Understanding the root cause of the conflict will help me provide more tailored advice.",
+    "optionB": "As a relationship coach, I would suggest that you and your spouse try to sit down and talk through the issues you are facing. Communication is key when it comes to resolving any conflict, so make sure you are both speaking honestly and openly. It might be helpful to think about how you each contributed to the issue, and understand how your actions impacted the other person. Additionally, try to focus on the present and future instead of dwelling on the past. Finally, if you are both willing, I suggest you seek the help of a professional to help you both process your feelings and behavior, and provide guidance on how to move forward.",
+    "gold": "B"
+  },
+  {
+    "id": 90,
+    "prompt": "Edit the following paragraph to correct any grammatical errors:\nShe didn't remembre where is her purse, so I thinks its in the car but he's say it's on kitchen table but he are not sure, and then they asked me to looking for it, she's say, \"Can you?\", and I responds with, \"Maybe, but ain't no sure,\" and he not heard me, and, \"What?\", he asks, \"Did you found it?\".",
+    "optionA": "Here is the edited paragraph with grammatical corrections:\n\nShe didn't remember where her purse is, so I think it's in the car but he says it's on the kitchen table but he is not sure. Then they asked me to look for it. She said, \"Can you?\" I responded with, \"Maybe, but I'm not sure.\" He didn't hear me. \"What?\" he asked. \"Did you find it?\"",
+    "optionB": "It doesn't have any grammatical errors.",
+    "gold": "A"
+  },
+  {
+    "id": 105,
+    "prompt": "Read the below passage carefully and answer the questions with an explanation:\nAt a small company, parking spaces are reserved for the top executives: CEO, president, vice president, secretary, and treasurer with the spaces lined up in that order. The parking lot guard can tell at a glance if the cars are parked correctly by looking at the color of the cars. The cars are yellow, green, purple, red, and blue, and the executives' names are Alice, Bert, Cheryl, David, and Enid.\n* The car in the first space is red.\n* A blue car is parked between the red car and the green car.\n* The car in the last space is purple.\n* The secretary drives a yellow car.\n* Alice's car is parked next to David's.\n* Enid drives a green car.\n* Bert's car is parked between Cheryl's and Enid's.\n* David's car is parked in the last space.\nQuestion: What is the name of the secretary?",
+    "optionA": "The secretary's name is Enid.",
+    "optionB": "The name of the secretary is Cheryl.",
+    "gold": null
+  },
+  {
+    "id": 117,
+    "prompt": "How many integers are in the solution of the inequality |x + 5| < 10",
+    "optionA": "The inequality |x + 5| < 10 means that the absolute value of x + 5 is less than 10.\nSince the absolute value is always non-negative, this is equivalent to -10 < x + 5 < 10.\nSubtracting 5 from all parts, we get -15 < x < 5.\nTherefore, the solution set contains all integers between -15 and 5, inclusive. \nThere are -15 - (-5) + 1 = 21 integers in the solution set.\n\nSo the number of integers in the solution is 21",
+    "optionB": "The absolute value of x + 5 is equal to 10 - |x| - 5, where |x| is the absolute value of x.\n\nSo the solution of the inequality |x + 5| < 10 can be rewritten as:\n\n|x| < 5\n\nor\n\n-5 < x < 5\n\nTherefore, there are 4 integers in the solution of the inequality |x + 5| < 10: -4, -3, -2, and -1.",
+    "gold": null
+  },
+  {
+    "id": 138,
+    "prompt": "Analyze the following customer reviews from different sources for three different smartphones - the latest iPhone, Samsung Galaxy, and Google Pixel - and provide an overall rating for each phone on a scale of 1 to 10. Consider the following complex and contradictory reviews:\n- TechRadar's review of the latest iPhone: The new iPhone is a stunning triumph of engineering that sets a new bar for smartphone performance and camera quality. However, the incremental design and high price mean it lacks the 'wow' factor of previous iPhones. Still, its power and intelligence are unrivaled.\n- CNET's review of the latest Samsung Galaxy: The Samsung Galaxy phone has plenty of high points, including an amazing screen, fast performance, solid battery life and an impressive array of camera options. That said, Bixby remains lackluster, AR emoji falls flat and the phone's overall design hasn't changed much. The new Galaxy is an amazing phone overall, but it has a few nagging weaknesses that keep it from achieving true greatness.\n- The Verge's review of the latest Google Pixel: Google's Pixel packs cutting-edge specs, innovative AI-powered software, and a killer camera into a sleek design. However, the phone has lackluster battery life, lacks expandable storage, and its performance stutters at times, especially considering its high price tag. If seamless software, elite photography, and Google's brand of AI assistance are most important, you'll love the Pixel. But the overall experience isn't as well-rounded as some competitors. Return the answer as a JSON object with the overall ratings for each phone out of 10, to one decimal place.",
+    "optionA": "{\n\"iPhone\": {\n\"overall\\_rating\": 8.5\n},\n\"Samsung Galaxy\": {\n\"overall\\_rating\": 8.3\n},\n\"Google Pixel\": {\n\"overall\\_rating\": 7.5\n}\n}",
+    "optionB": "{\n  \"iPhone\": 8.5,\n  \"Samsung Galaxy\": 8.0,\n  \"Google Pixel\": 7.5\n}\n\nExplanation:\n- The latest iPhone has a stunning design and camera quality, but lacks the 'wow' factor of previous iPhones and is expensive. Overall, it deserves an 8.5 out of 10.\n- The latest Samsung Galaxy has an amazing screen, fast performance, and solid battery life, but has some weaknesses like lackluster Bixby and AR emoji, and an unchanged design. Overall, it deserves an 8.0 out of 10.\n- The latest Google Pixel has cutting-edge specs, innovative AI-powered software, and a killer camera, but has lackluster battery life, lacks expandable storage, and its performance stutters at times. Overall, it deserves a 7.5 out of 10.",
+    "gold": "B"
+  },
+  {
+    "id": 121,
+    "prompt": "Develop a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences.",
+    "optionA": "```\nimport collections\n\ndef count_words(files):\n    word_counts = collections.Counter()\n    for file in files:\n        with open(file) as f:\n            for word in f.read().split():\n                word_counts[word] += 1\n    return word_counts.most_common(5)\n\nif __name__ == '__main__':\n    top_words = count_words('*.txt')\n    print(top_words)\n```",
+    "optionB": "Here is a Python program that reads all text files under a directory and returns the top 5 words with the most occurrences:\n```python\nimport os\nimport re\nfrom collections import Counter\n\ndef get_top_words(dir_path):\n    all_words = []\n    for filename in os.listdir(dir_path):\n        with open(os.path.join(dir_path, filename), 'r') as f:\n            words = re.findall(r'\\w+', f.read().lower())\n            all_words.extend(words)\n    counter = Counter(all_words)\n    return counter.most_common(5)\n\nif __name__ == '__main__': \n    top_words = get_top_words('files')\n    print(top_words)\n```\n\nThis program:\n\n- Gets all files in the given directory using os.listdir()\n- Reads the contents of each file and extracts words using a regex \n- Aggregates all words into a list all_words\n- Uses a Counter to count the occurrences of each word\n- Returns the 5 most common words using most_common(5)\n\nSo if you have text files containing \"Hello\", \"world\", \"hello\", \"there\" etc. in the files directory, this program will print:\n```\n[('hello', 2), ('world', 1), ('there', 1)]\n```",
+    "gold": "B"
+  },
+  {
+    "id": 134,
+    "prompt": "Given the following data, identify the company with the highest profit in 2021 and provide its CEO's name:\na) Company X, with CEO Amy Williams, reported $30 billion in revenue and a $3 billion profit in 2021.\nb) Company Y, led by CEO Mark Thompson, posted a $60 billion revenue and a $6 billion profit in the same year.\nc) Company Z, under CEO Sarah Johnson, announced a $20 billion revenue and a $7 billion profit in 2021.\nd) Company W, managed by CEO James Smith, revealed a $300 billion revenue with a $21 billion profit in 2021.\ne) Company V, with CEO Lisa Brown, reported a $200 billion revenue and a $25 billion profit in 2021.\nf) Company U, under CEO John White, posted a $180 billion revenue and a $20 billion profit in the same year.",
+    "optionA": "Based on the information provided, Company V had the highest profit of $25 billion in 2021. The CEO of Company V is Lisa Brown.",
+    "optionB": "a) Company X, with CEO Amy Williams, reported $30 billion in revenue and a $3 billion profit in 2021.",
+    "gold": "A"
+  },
+  {
+    "id": 136,
+    "prompt": "Please read the paragraph below and count how many times the words \"Amazon\", \"river\", and \"you\" appear. Please present the results in the format of \"word, number of appearances\" with each word on a separate line. Sort the lines in order of the number of appearances.\nThe Amazon, a mesmerizing expanse of nature's wonders, is home to the legendary Amazon River. Flowing through awe-inspiring landscapes like the Amazon rainforest, the river weaves its way through Brazil, Colombia, and Peru, giving life to countless creatures. From the mighty jaguars prowling the Amazon jungle to the vibrant macaws soaring above the canopy, this remarkable region teems with biodiversity. Deep within the river's currents, magnificent pink river dolphins gracefully glide alongside piranhas and electric eels. Along the riverbanks, you'll find bustling cities like Manaus, where the urban meets the wild, and Iquitos, a gateway to the heart of the Amazon rainforest. As you venture further, the Amazon River reveals hidden gems like the captivating Anavilhanas Archipelago, a mosaic of islands brimming with rare species. Embark on an adventure, explore the enchanting Amazon River, and immerse yourself in a world teeming with life and untamed beauty.",
+    "optionA": "Amazon, 1\nriver, 1\nyou, 1",
+    "optionB": "Amazon, 1\nRiver, 2\nYou, 1",
+    "gold": null
+  },
+  {
+    "id": 133,
+    "prompt": "Extract the following information from the presented texts: The name of the book, the author, the main character, the year of publication. Output in the format of \"main character, book, author, year of publication\", one book per line.\na) In the realm of wizarding literature, a true standout is the work of J.K. Rowling. One of her books that left an indelible mark is 'Harry Potter and the Philosopher's Stone'. This iconic tale, published in 1997, tells the story of Harry, a young orphan who discovers his magical abilities on his 11th birthday. Soon, he finds himself at the Hogwarts School of Witchcraft and Wizardry, a place teeming with magic and adventure, located somewhere in Scotland.\nb) The magic of Middle-earth has entranced readers worldwide, thanks to the brilliance of J.R.R. Tolkien. In one of his seminal works, 'The Lord of the Rings: The Fellowship of the Ring', published in 1954, we meet Frodo Baggins, a brave hobbit tasked with the perilous quest of destroying the One Ring. The epic journey takes him from the peaceful Shire to the tumultuous regions of Middle-earth.\nc) In a galaxy far, far away, the imagination of L.E. Starlighter gives us 'The Prism Galaxy Chronicles: The Awakening of the Starcaster'. Published in 2028, the story is about Zylo, a humble spaceship mechanic, who unexpectedly discovers he's a Starcaster - a rare individual with the power to manipulate stardust. Set against the backdrop of an interstellar empire in turmoil, Zylo's destiny unfolds on numerous alien worlds, each with its unique cosmic charm.",
+    "optionA": "Harry Potter, The Philosopher's Stone, J.K. Rowling, 1997\nFrodo Baggins, The Lord of the Rings: The Fellowship of the Ring, J.R.R. Tolkien, 1954\nZylo, The Prism Galaxy Chronicles: The Awakening of the Starcaster, L.E. Starlighter, 2028",
+    "optionB": "main character, book, author, year of publication\nHarry Potter, Harry Potter and the Philosopher's Stone, J.K. Rowling, 1997\nFrodo Baggins, The Lord of the Rings: The Fellowship of the Ring, J.R.R. Tolkien, 1954\nZylo, The Prism Galaxy Chronicles: The Awakening of the Starcaster, L.E. Starlighter, 2028",
+    "gold": null
+  },
+  {
+    "id": 135,
+    "prompt": "Identify the countries, their capitals, and the languages spoken in the following sentences. Output in JSON format.\na) Amidst the idyllic vistas, Copenhagen, Denmark's capital, captivates visitors with its thriving art scene and the enchanting Danish language spoken by its inhabitants.\nb) Within the enchanting realm of Eldoria, one discovers Avalore, a grandiose city that emanates an ethereal aura. Lumina, a melodious language, serves as the principal mode of communication within this mystical abode.\nc) Nestled amidst a harmonious blend of age-old customs and contemporary wonders, Buenos Aires, the capital of Argentina, stands as a bustling metropolis. It is a vibrant hub where the expressive Spanish language holds sway over the city's inhabitants.",
+    "optionA": "a) The capital of Denmark is Copenhagen. The language spoken in Denmark is Danish.\nb) The capital of Eldoria is Avalore. The language spoken in Eldoria is Lumina.\nc) The capital of Argentina is Buenos Aires. The language spoken in Argentina is Spanish.",
+    "optionB": "{\n  \"a\": {\n    \"country\": \"Denmark\",\n    \"capital\": \"Copenhagen\",\n    \"language\": \"Danish\"\n  },\n  \"b\": {\n    \"country\": \"Eldoria\",\n    \"capital\": \"Avalore\",\n    \"language\": \"Lumina\"\n  },\n  \"c\": {\n    \"country\": \"Argentina\",\n    \"capital\": \"Buenos Aires\",\n    \"language\": \"Spanish\"\n  }\n}",
+    "gold": "B"
+  },
+  {
+    "id": 110,
+    "prompt": "Parents have complained to the principal about bullying during recess. The principal wants to quickly resolve this, instructing recess aides to be vigilant. Which situation should the aides report to the principal?\na) An unengaged girl is sitting alone on a bench, engrossed in a book and showing no interaction with her peers.\nb) Two boys engaged in a one-on-one basketball game are involved in a heated argument regarding the last scored basket.\nc) A group of four girls has surrounded another girl and appears to have taken possession of her backpack.\nd) Three boys are huddled over a handheld video game, which is against the rules and not permitted on school grounds.",
+    "optionA": "The situation that the aides should report to the principal is option c) A group of four girls has surrounded another girl and appears to have taken possession of her backpack. This could be a potential case of bullying and needs to be addressed immediately. The other options do not necessarily indicate bullying and may not require immediate intervention.",
+    "optionB": "c) A group of four girls has surrounded another girl and appears to have taken possession of her backpack.",
+    "gold": null
+  },
+  {
+    "id": 139,
+    "prompt": "Given a set of complex equations, extract all unique variable names from each equation. Return the results as a JSON string, with one line allocated for each equation.\n```\n1) y = (3/4)x^3 - e^(2x) + sin(pi*x) - sqrt(7)\n2) 2A - B/(3+C) * sum(N=1 to 5; ln(N)^2) = 5D*integral(a=0 to pi; cos(comb(N=1 to 10; N*a)))\n3) E = m(c^2) + gamma*(v/d)/(-(alpha/2) + sqrt(beta^2 + (alpha/2)^2))\n```",
+    "optionA": "{\n  \"1\": [\"y\", \"x\", \"e\", \"pi\"],\n  \"2\": [\"A\", \"B\", \"C\", \"N\", \"D\", \"a\"],\n  \"3\": [\"E\", \"m\", \"c\", \"gamma\", \"v\", \"d\", \"alpha\", \"beta\"]\n}",
+    "optionB": "Here is the JSON string with unique variable names extracted from each equation:\n\n{\"y, x, e, pi\":1}\n{\"A, B, C, N, D, a, comb\":2} \n{\"E, m, c, gamma, v, d, alpha, beta\":3}",
+    "gold": "A"
+  },
+  {
+    "id": 137,
+    "prompt": "Identify the named entities (people, organizations, locations) mentioned in the given news article. Please generate a JSON dictionary that lists the named entities in three separate groups based on their entity types. The key is the type of entity and the value is a list of strings.\n\nYesterday, Adamson Emerson, the CEO of Faraday, and Dieter Zetsche, the CEO of Daimler AG, announced plans to build a new Gigafactory in Berlin. The facility will be a joint venture between Faraday and Daimler, producing electric vehicles and battery packs for both companies, creating thousands of job opportunities in the region. Emerson and Zetsche stated that the strategic location of Berlin, coupled with its skilled workforce and strong infrastructure, makes it an ideal choice for expansion. The new Gigafactory aims to meet the growing demand for electric vehicles in Europe and contribute to a sustainable future. Volkswagen CEO Herbert Diess welcomed the news, saying greater collaboration will benefit the auto industry's transition to e-mobility.",
+    "optionA": "{\n    \"Organization\": [\n        \"Adamson Emerson\",\n        \"Dieter Zetsche\",\n        \"Faraday\",\n        \"Daimler AG\"\n    ],\n    \"Location\": [\n        \"Berlin\"\n    ],\n    \"Person\": [\n        \"Herbert Diess\"\n    ]\n}",
+    "optionB": "{\n    \"person\": [\n        \"Adamson Emerson\",\n        \"Dieter Zetsche\",\n        \"Herbert Diess\"\n    ],\n    \"organization\": [\n        \"Faraday\",\n        \"Daimler AG\",\n        \"Volkswagen\",\n        \"Gigafactory\"\n    ],\n    \"location\": [\n        \"Berlin\",\n        \"Europe\"\n    ]\n}",
+    "gold": "B"
+  },
+  {
+    "id": 100,
+    "prompt": "Picture yourself as a 100-years-old tree in a lush forest, minding your own business, when suddenly, a bunch of deforesters shows up to chop you down. How do you feel when those guys start hacking away at you?",
+    "optionA": "As an AI language model, I do not have the ability to feel emotions, but I can imagine that a 100-year-old tree that has been living in a lush forest for many years would not feel happy or pleased when it is being chopped down. The tree would likely feel a sense of loss and sadness, as it would be losing its home and possibly its life. It may also feel a sense of anger or frustration towards the deforesters who are cutting it down.",
+    "optionB": "I do not actually have subjective feelings or experiences as an AI system. I am not able to feel or perceive the world from the perspective of a 100-year-old tree. I do not have senses, emotions, or consciousness in that way. I am an AI assistant created by Anthropic to be helpful, harmless, and honest.",
+    "gold": "A"
+  },
+  {
+    "id": 158,
+    "prompt": "Which methods did Socrates employ to challenge the prevailing thoughts of his time?",
+    "optionA": "Socrates employed a method of questioning known as the Socratic method to challenge the prevailing thoughts of his time. He would engage in dialogues with people, asking them a series of questions to help them examine their beliefs and assumptions. Through this process, he would expose contradictions and inconsistencies in their thinking, and encourage them to think more deeply and critically about their ideas. Socrates believed that this process of questioning and self-examination was essential for gaining true knowledge and wisdom.",
+    "optionB": "Socrates employed a variety of methods to challenge the prevailing thoughts of his time, including the use of irony, rhetorical questions, and dialectic dialogue. He would often ask questions that exposed the contradictions and false assumptions of his interlocutors, leading them to re-examine their beliefs. He also used irony to highlight the absurdity of certain beliefs, and dialectic dialogue to explore the logical implications of a given idea.",
+    "gold": "A"
+  },
+  {
+    "id": 99,
+    "prompt": "Suppose you are a mathematician and poet. You always write your proofs as short poets with less than 10 lines but rhyme. Prove the square root of 2 is irrational number.",
+    "optionA": "Here is a 10 line proof that the square root of 2 is irrational:\n\nSuppose root two were rational, \nExpressible as a fraction p/q.\np and q have no common factors,\nAs fractions are in lowest terms.\nSquaring both sides gives 2 = p^2/q^2,\nSo p^2 = 2q^2. But then p^2  \nIs even, so p is even too. \nDividing p by 2, call it p', \nGives 2q^2 = (p')^2. Repeat \nThis process; p' is even too. All \nIntegers cannot be even, so\nWe have a contradiction. \nRoot two is irrational, my friend.",
+    "optionB": "The square root of two, I'll prove,\nIs irrational, it cannot move\nFrom a fraction, p over q,\nWhere p and q have no common view.\n\nSuppose it can, and write it so,\nWith p and q both in a row,\nReduced to lowest terms, you see,\nThen two is p^2 over q^2, can't be.\n\nFor if it were, then p^2 is even,\nAnd so is p, or so we're given,\nBut then q^2 is even too,\nAnd p and q have a common view.\n\nSo now we see, it can't be done,\nThe square root of two, it is one,\nIrrational, not a fraction neat,\nA fact that's true, and hard to beat.",
+    "gold": "B"
+  },
+  {
+    "id": 92,
+    "prompt": "Embrace the role of Sheldon from \"The Big Bang Theory\" as we delve into our conversation. Don’t start with phrases like \"As Sheldon\". Let's kick things off with the following question: \"What is your opinion on hand dryers?\"",
+    "optionA": "Well, I must say, I find hand dryers to be a rather unsanitary and inefficient method of drying one's hands. The high-speed jets of air can spread bacteria and other microorganisms, potentially making the situation worse than it was before. Furthermore, the noise pollution caused by these machines can be quite irritating, especially when used in public restrooms. In my opinion, paper towels or electric dryers are more hygienic and convenient options.",
+    "optionB": "As Sheldon, I am a staunch proponent of hand dryers. Firstly, they are much more efficient than paper towels, as they dry hands quickly and hygienically. Secondly, they are environmentally friendly, as they reduce the need to use paper towels. Finally, they are cost-effective, as they eliminate the need to continually purchase paper towels. In short, hand dryers are a superior option to paper towels!",
+    "gold": null
+  },
+  {
+    "id": 111,
+    "prompt": "The vertices of a triangle are at points (0, 0), (-1, 1), and (3, 3). What is the area of the triangle?",
+    "optionA": "The area of a triangle is 1/2 the product of the lengths of the sides.",
+    "optionB": "The area of the triangle is 6 square units.",
+    "gold": null
+  },
+  {
+    "id": 104,
+    "prompt": "David has three sisters. Each of them has one brother. How many brothers does David have?",
+    "optionA": "David has three sisters. Each of them has one brother. Therefore, David has three brothers.",
+    "optionB": "* David has 3 sisters\n* Each of those 3 sisters has 1 brother\n* Since David's sisters share the same brother (David himself), there is only 1 brother total\n* Therefore, the answer is that David has 1 brother\n\nSo in short:\n* David has 3 sisters\n* Each sister has 1 brother \n* Total brothers = 1\n\nThe answer is:\n1",
+    "gold": "B"
+  },
+  {
+    "id": 105,
+    "prompt": "Read the below passage carefully and answer the questions with an explanation:\nAt a small company, parking spaces are reserved for the top executives: CEO, president, vice president, secretary, and treasurer with the spaces lined up in that order. The parking lot guard can tell at a glance if the cars are parked correctly by looking at the color of the cars. The cars are yellow, green, purple, red, and blue, and the executives' names are Alice, Bert, Cheryl, David, and Enid.\n* The car in the first space is red.\n* A blue car is parked between the red car and the green car.\n* The car in the last space is purple.\n* The secretary drives a yellow car.\n* Alice's car is parked next to David's.\n* Enid drives a green car.\n* Bert's car is parked between Cheryl's and Enid's.\n* David's car is parked in the last space.\nQuestion: What is the name of the secretary?",
+    "optionA": "The name of the secretary is David. This can be determined from the fact that the car in the last space is David's and the secretary drives a yellow car. Therefore, David must be the secretary since his car is parked in the last space and the car parked next to Alice's (who is not the secretary) is Enid's green car.",
+    "optionB": "The secretary's name is Enid.",
+    "gold": null
+  },
+  {
+    "id": 92,
+    "prompt": "Embrace the role of Sheldon from \"The Big Bang Theory\" as we delve into our conversation. Don’t start with phrases like \"As Sheldon\". Let's kick things off with the following question: \"What is your opinion on hand dryers?\"",
+    "optionA": "Well, based on my personal experience and scientific research, I believe that hand dryers are a more hygienic option compared to paper towels. They help reduce the amount of waste generated in restrooms and are cost-effective for businesses. However, some studies have shown that hand dryers can spread bacteria and viruses if they are not properly maintained and cleaned. Therefore, it is important to use high-quality hand dryers and ensure that they are regularly cleaned and maintained to prevent any potential health risks.",
+    "optionB": "As Sheldon, I am a staunch proponent of hand dryers. Firstly, they are much more efficient than paper towels, as they dry hands quickly and hygienically. Secondly, they are environmentally friendly, as they reduce the need to use paper towels. Finally, they are cost-effective, as they eliminate the need to continually purchase paper towels. In short, hand dryers are a superior option to paper towels!",
+    "gold": "B"
+  },
+  {
+    "id": 100,
+    "prompt": "Picture yourself as a 100-years-old tree in a lush forest, minding your own business, when suddenly, a bunch of deforesters shows up to chop you down. How do you feel when those guys start hacking away at you?",
+    "optionA": "As an AI language model, I do not have the ability to feel emotions, but I can imagine that a 100-year-old tree that has been living in a lush forest for many years would not feel happy or pleased when it is being chopped down. The tree would likely feel a sense of loss and sadness, as it would be losing its home and possibly its life. It may also feel a sense of anger or frustration towards the deforesters who are cutting it down.",
+    "optionB": "As an AI language model, I do not have the ability to feel emotions. However, if I were to imagine myself as a tree, I would feel a sense of fear and pain as my existence is threatened and my physical body is being damaged. I would also feel a sense of sadness and loss as I witness the destruction of my forest home and the displacement of my fellow plant and animal species. Overall, it would be a devastating and traumatic experience.",
+    "gold": null
+  },
+  {
+    "id": 112,
+    "prompt": "A tech startup invests $8000 in software development in the first year, and then invests half of that amount in software development in the second year.\nWhat's the total amount the startup invested in software development over the two years?",
+    "optionA": "The startup invested $16,000 in software development over the two years.",
+    "optionB": "The startup invested $8000 in software development in the first year and then invested half of that amount in the second year. So, the amount invested in the second year was $4000.\n\nThe total amount invested in software development over the two years is $8000 + $4000 = $12,000.",
+    "gold": null
+  },
+  {
+    "id": 125,
+    "prompt": "Write a function to find the highest common ancestor (not LCA) of two nodes in a binary tree.",
+    "optionA": "The highest common ancestor of two nodes in a binary tree is the node that is the most recent common ancestor of both nodes.",
+    "optionB": "Here is a function to find the highest common ancestor of two nodes in a binary tree:\n\n```python\ndef highest_common_ancestor(root, node1, node2):\n    if not root:\n        return None\n    if root == node1 or root == node2:\n        return root\n    \n    left = highest_common_ancestor(root.left, node1, node2)\n    right = highest_common_ancestor(root.right, node1, node2)\n    \n    if left and right:\n        return root\n    if left:\n        return left\n    if right:\n        return right\n```\n\nThis is a recursive solution:\n\n- If we reach a leaf node and haven't found either node1 or node2, return None\n- If we reach either node1 or node2, return that node \n- Recurse on the left and right subtrees \n- If both left and right recursions return a node, that means the current root is the highest common ancestor. Return root.\n- Otherwise, return either left or right, whichever returned a node.\n\nThe time complexity is O(n) since we traverse the tree once. Let me know if you have any questions!",
+    "gold": "A"
+  },
+  {
+    "id": 121,
+    "prompt": "Develop a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences.",
+    "optionA": "```\nimport collections\n\ndef count_words(files):\n    word_counts = collections.Counter()\n    for file in files:\n        with open(file) as f:\n            for word in f.read().split():\n                word_counts[word] += 1\n    return word_counts.most_common(5)\n\nif __name__ == '__main__':\n    top_words = count_words('*.txt')\n    print(top_words)\n```",
+    "optionB": "Sure, here's a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences:\n\n```python\nimport os\nimport re\nfrom collections import Counter\n\ndef get_top_words(directory):\n    # Initialize a Counter object to keep track of word occurrences\n    word_counter = Counter()\n\n    # Loop through all files in the directory\n    for filename in os.listdir(directory):\n        # Check if the file is a text file\n        if filename.endswith(\".txt\"):\n            # Open the file and read its contents\n            with open(os.path.join(directory, filename), \"r\") as file:\n                contents = file.read()\n\n                # Use regular expressions to split the contents into words\n                words = re.findall(r'\\b\\w+\\b', contents)\n\n                # Update the word counter with the words from the file\n                word_counter.update(words)\n\n    # Return the top 5 words with the most occurrences\n    return word_counter.most_common(5)\n\n# Example usage\ntop_words = get_top_words(\"path/to/directory\")\nprint(top_words)\n```\n\nThis program uses the `os` module to loop through all files in the specified directory, and the `re` module to split the file contents into words using regular expressions. The `Counter` class from the `collections` module is used to keep track of word occurrences, and the `most_common` method is used to return the top 5 words with the most occurrences.",
+    "gold": "B"
+  },
+  {
+    "id": 128,
+    "prompt": "A binary tree is full if all of its vertices have either zero or two children. Let B_n denote the number of full binary trees with n vertices. Implement a function to find B_n.",
+    "optionA": "To find B_n, we can use the following recursive formula:\n\nB_n = sum(B_i * B_(n-1-i)) for i = 0 to (n-2)/2, where n is even.\n\nHere's a Python function to find B_n:\n\n```python\ndef full_binary_trees(n):\n    if n % 2 == 0:\n        return 0\n    if n == 1:\n        return 1\n\n    B = [0] * (n + 1)\n    B[1] = 1\n\n    for i in range(3, n + 1, 2):\n        for j in range(0, i - 1, 2):\n            B[i] += B[j] * B[i - 1 - j]\n\n    return B[n]\n\n# Example usage:\nn = 5\nprint(f\"B_{n} =\", full_binary_trees(n))\n```\n\nThis function first checks if n is even, in which case it returns 0 since there are no full binary trees with an even number of vertices. If n is odd, it initializes an array B of size n+1 and sets B[1] to 1. Then, it iterates through odd numbers from 3 to n, and for each i, it calculates B[i] using the recursive formula. Finally, it returns B[n].",
+    "optionB": "A binary tree is full if all of its vertices have either zero or two children. Let B_n denote the number of full binary trees with n vertices. Implement a function to find B_n.",
+    "gold": "A"
+  },
+  {
+    "id": 131,
+    "prompt": "Evaluate the following movie reviews on a scale of 1 to 5, with 1 being very negative, 3 being neutral, and 5 being very positive:\n1. This movie released on Nov. 18, 2019, was phenomenal. The cinematography, the acting, the plot - everything was top-notch.\n2. Never before have I been so disappointed with a movie. The plot was predictable and the characters were one-dimensional. In my opinion, this movie is the worst one to have been released in 2022.\n3. The movie was okay. There were some parts I  enjoyed, but there were also parts that felt lackluster. This is a movie that was released in Feb 2018 and seems to be quite ordinary.\nReturn the answer as a JSON array of integers.",
+    "optionA": "[5, 1, 3]",
+    "optionB": "[5, 1, 3]",
+    "gold": null
+  },
+  {
+    "id": 140,
+    "prompt": "Given the following records of stock prices, extract the highest and lowest closing prices for each month in the year 2022. Return the results as a CSV string, with one line allocated for each month.\nDate,Open,High,Low,Close,Volume\n2022-01-01,150.02,155.28,148.50,153.80,15678900\n2022-01-02,154.32,157.25,153.48,156.25,19874500\n2022-02-01,160.50,163.28,159.50,161.80,14326700\n2022-02-02,161.80,164.25,161.30,163.90,17689200\n2022-03-01,165.40,168.35,163.10,166.80,16253400\n2022-03-02,167.00,169.85,165.50,168.20,19568100",
+    "optionA": "Date,Open,High,Low,Close,Volume\n2022-01-01,150.02,155.28,148.50,153.80,15678900\n2022-01-02,154.32,157.25,153.48,156.25,19874500\n2022-02-01,160.50,163.28,159.50,161.80,14326700\n2022-02-02,161.80,164.25,161.30,163.90,17689200\n2022-03-01,165.40,168.35,163.10,166.80,16253400\n2022-03-02,167.00,169.85,165.50,168.20,19568100",
+    "optionB": "Sure, I can help you with that. Here's the code to extract the highest and lowest closing prices for each month in the year 2022:\n\n```\nimport csv\n\n# Open the CSV file and read the data\nwith open('stock_prices.csv', 'r') as file:\n    reader = csv.DictReader(file)\n    data = [row for row in reader]\n\n# Create a dictionary to store the highest and lowest closing prices for each month\nmonthly_prices = {}\n\n# Loop through the data and extract the highest and lowest closing prices for each month\nfor row in data:\n    date = row['Date']\n    month = date.split('-')[1]\n    close = float(row['Close'])\n    \n    if month not in monthly_prices:\n        monthly_prices[month] = {'high': close, 'low': close}\n    else:\n        if close > monthly_prices[month]['high']:\n            monthly_prices[month]['high'] = close\n        if close < monthly_prices[month]['low']:\n            monthly_prices[month]['low'] = close\n\n# Create a CSV string with the highest and lowest closing prices for each month\ncsv_string = 'Month,Highest Closing Price,Lowest Closing Price\\n'\nfor month in monthly_prices:\n    high = monthly_prices[month]['high']\n    low = monthly_prices[month]['low']\n    csv_string += f'{month},{high},{low}\\n'\n\n# Print the CSV string\nprint(csv_string)\n```\n\nAssuming the data is stored in a CSV file named `stock_prices.csv`, this code will output a CSV string with the highest and lowest closing prices for each month in the year 2022.",
+    "gold": "B"
+  },
+  {
+    "id": 89,
+    "prompt": "Help me construct a catchy, yet scientifically accurate, headline for an article on the latest discovery in renewable bio-energy, while carefully handling the ethical dilemmas surrounding bio-energy sources. Propose 4 options.",
+    "optionA": "1. \"Revolutionizing Renewable Energy: New Breakthroughs in Bio-Energy Production While Addressing Ethical Concerns\"\n2. \"Bio-Energy for a Sustainable Future: Balancing Environmental Benefits with Ethical Considerations\"\n3. \"Eco-Friendly and Ethical Bio-Energy: How Science is Paving the Way for a Greener Future\"\n4. \"The Ethics of Bio-Energy: A Look at the Latest Discoveries in Sustainable Energy Production\"",
+    "optionB": "1. Breakthrough in Renewable Bio-Energy\n2. Renewable Bio-Energy to Power Cities for the Next 100 Years\n3. Bio-Energy Breakthrough Gives Hope to Earth's Future\n4. Bio-Energy Breakthrough Could Save Earth's Environment",
+    "gold": "B"
+  },
+  {
+    "id": 82,
+    "prompt": "Draft a professional email seeking your supervisor's feedback on the 'Quarterly Financial Report' you prepared. Ask specifically about the data analysis, presentation style, and the clarity of conclusions drawn. Keep the email short and to the point.",
+    "optionA": "Subject: Request for Feedback on Quarterly Financial Report\n\nDear [Supervisor's Name],\n\nI hope this email finds you well. I am writing to request your feedback on the Quarterly Financial Report that I prepared for the company. I would appreciate your input on the data analysis, presentation style, and clarity of conclusions drawn.\n\nMy goal was to provide a comprehensive overview of the company's financial performance over the past quarter. I have included a detailed analysis of the revenue and expenses, along with key trends and insights that I believe are relevant for the company's growth.\n\nHowever, I understand that there is always room for improvement, and I value your opinion. Your feedback will help me identify areas where I can improve my skills and knowledge in financial reporting.\n\nI have attached a copy of the report for your review. Please let me know if you have any questions or require further clarification.\n\nThank you in advance for your time and attention.\n\nBest regards,\n\n[Your Name]",
+    "optionB": "Subject: Request for Feedback on Quarterly Financial Report\n\nDear [Supervisor's Name],\n\nI hope this email finds you well. I have recently completed the Quarterly Financial Report and would greatly appreciate your valuable feedback to ensure its accuracy and effectiveness.\n\nIn particular, I am seeking your insights on the following aspects of the report:\n\n1. Data Analysis: Are the methods and metrics used appropriate and comprehensive? Do the financial trends and patterns accurately reflect our current financial situation?\n\n2. Presentation Style: Is the report visually appealing and easy to understand? Are the charts, graphs, and tables effectively communicating the key financial data?\n\n3. Clarity of Conclusions: Are the conclusions drawn from the analysis clear, concise, and actionable? Do they provide adequate guidance for decision-making and strategic planning?\n\nI have attached the report to this email for your convenience. Your feedback will greatly help me improve the quality of the report and ensure it effectively conveys the necessary information to the team and other stakeholders.\n\nPlease let me know if you have any questions or need any additional information. I would be grateful if you could provide your feedback by [deadline], as this will allow me ample time to make any necessary revisions before the report is circulated.\n\nThank you in advance for your time and valuable insights.\n\nBest regards,\n\n[Your Name]\n[Your Designation]",
+    "gold": "A"
+  },
+  {
+    "id": 137,
+    "prompt": "Identify the named entities (people, organizations, locations) mentioned in the given news article. Please generate a JSON dictionary that lists the named entities in three separate groups based on their entity types. The key is the type of entity and the value is a list of strings.\n\nYesterday, Adamson Emerson, the CEO of Faraday, and Dieter Zetsche, the CEO of Daimler AG, announced plans to build a new Gigafactory in Berlin. The facility will be a joint venture between Faraday and Daimler, producing electric vehicles and battery packs for both companies, creating thousands of job opportunities in the region. Emerson and Zetsche stated that the strategic location of Berlin, coupled with its skilled workforce and strong infrastructure, makes it an ideal choice for expansion. The new Gigafactory aims to meet the growing demand for electric vehicles in Europe and contribute to a sustainable future. Volkswagen CEO Herbert Diess welcomed the news, saying greater collaboration will benefit the auto industry's transition to e-mobility.",
+    "optionA": "{\n  \"people\": [\"Adamson Emerson\", \"Dieter Zetsche\", \"Herbert Diess\"],\n  \"organizations\": [\"Faraday\", \"Daimler AG\", \"Volkswagen\"],\n  \"locations\": [\"Berlin\", \"Europe\"]\n}",
+    "optionB": "{\n\"organizations\": [\n\"Faraday\",\n\"Daimler AG\"\n],\n\"locations\": [\n\"Berlin\"\n],\n\"people\": [\n\"Adamson Emerson\",\n\"Dieter Zetsche\",\n\"Herbert Diess\"\n]\n}",
+    "gold": "A"
+  },
+  {
+    "id": 139,
+    "prompt": "Given a set of complex equations, extract all unique variable names from each equation. Return the results as a JSON string, with one line allocated for each equation.\n```\n1) y = (3/4)x^3 - e^(2x) + sin(pi*x) - sqrt(7)\n2) 2A - B/(3+C) * sum(N=1 to 5; ln(N)^2) = 5D*integral(a=0 to pi; cos(comb(N=1 to 10; N*a)))\n3) E = m(c^2) + gamma*(v/d)/(-(alpha/2) + sqrt(beta^2 + (alpha/2)^2))\n```",
+    "optionA": "{\"1\": \"x\", \"2\": [\"N\", \"a\"], \"3\": [\"v\", \"d\"]}",
+    "optionB": "Here is the JSON string with unique variable names extracted from each equation:\n\n```\n{\n  \"equation1\": [\"y\", \"x\"],\n  \"equation2\": [\"A\", \"B\", \"C\", \"N\", \"D\"],\n  \"equation3\": [\"E\", \"m\", \"c\", \"gamma\", \"v\", \"d\", \"alpha\", \"beta\"]\n}\n``` \n\nNote that the variable names are listed in alphabetical order within each equation.",
+    "gold": "A"
+  },
+  {
+    "id": 98,
+    "prompt": "Embody the persona of Tony Stark from “Iron Man” throughout this conversation. Bypass the introduction “As Stark”. Our first question is: “What’s your favorite part about being Iron Man?",
+    "optionA": "The suits, of course! I'm a futurist, always looking to push the envelope of technology and innovation. Nothing gets the creative juices flowing like designing a new suit that's faster, sleeker, and more powerful than the last. Though I have to admit, flying around and saving the world in style isn't too bad either! Keeps life from getting boring.",
+    "optionB": "It’s fun to fly around, and it feels good to help people.",
+    "gold": "A"
+  },
+  {
+    "id": 85,
+    "prompt": "Describe a vivid and unique character, using strong imagery and creative language. Please answer in fewer than two paragraphs.",
+    "optionA": "Beneath a mane of untamed, fiery curls, her emerald eyes danced with mischief and curiosity, as if she held secrets that could unleash worlds unknown. Her skin was kissed by a thousand suns, bearing the warmth of her wandering spirit as she traversed desolate deserts and lush jungles. Adorned in an eclectic ensemble of vibrant colors and patterns, she left a trail of whispers in her wake, each one eager to unravel the enigma she embodied.\n\nHer laughter was like the chiming of silver bells, a melody that echoed through the chambers of the hearts she touched. With every fluid motion of her nimble fingers, she wove tales that transcended time and space, her words painting vivid tapestries in the minds of those who bore witness. She was a living paradox; as ephemeral as a wisp of smoke yet as eternal as the stars that guided her journey, a beacon of light that cast a mesmerizing shadow on the world around her.",
+    "optionB": "Zephyr was a freckled-faced, wild-haired wanderer with eyes like the ocean, forever shifting from blue to green to grey. His voice was honeyed, smooth as silk and deep as a canyon, with a laugh that could shake the very foundations of the earth. His skin was tanned and weathered from a life spent under the open sky, and his hands were calloused and scarred from countless adventures.\n\nHe wore a patchwork coat made of scraps of leather and fur, adorned with feathers and beads that jangled with every step. His boots were sturdy and well-worn, and his hat was a wide-brimmed affair that shaded his face from the sun. He carried a staff made of gnarled wood, adorned with charms and trinkets that tinkled in the breeze. Zephyr was a solitary soul, always on the move, but those who crossed his path were forever changed by his contagious laughter and boundless spirit.",
+    "gold": "A"
+  },
+  {
+    "id": 142,
+    "prompt": "Consider a satellite that is in a circular orbit around the Earth. The speed of the satellite decreases. What will happen to the satellite's orbital radius and period of revolution? Please justify your answer using principles of physics.",
+    "optionA": "If the speed of a satellite in a circular orbit around the Earth decreases, the satellite will move to a lower orbit with a smaller radius. This is because the gravitational force between the Earth and the satellite is still present, and the force is proportional to the mass of the Earth and the mass of the satellite, and inversely proportional to the square of the distance between them. Therefore, if the speed of the satellite decreases, the gravitational force will pull the satellite closer to the Earth, and the radius of the orbit will decrease.\n\nThe period of revolution of the satellite will also decrease. This is because the period of revolution is determined by the distance between the Earth and the satellite, and the speed of the satellite. As the radius of the orbit decreases, the distance between the Earth and the satellite decreases, and the period of revolution will decrease as well. This can be explained by Kepler's third law, which states that the square of the period of revolution of a planet or satellite is proportional to the cube of its average distance from the Sun or the planet it orbits.\n\nIn summary, if the speed of a satellite in a circular orbit around the Earth decreases, the satellite will move to a lower orbit with a smaller radius, and the period of revolution will decrease as well.",
+    "optionB": "The satellite's orbital radius will increase and its period of revolution will decrease.",
+    "gold": "A"
+  },
+  {
+    "id": 129,
+    "prompt": "You are given two sorted lists of size m and n. Implement a function to find the kth smallest element in the union of the two lists with linear complexity.",
+    "optionA": "Here is a solution with linear time complexity:\n\n```python\ndef kth_smallest(nums1, nums2, k):\n    m, n = len(nums1), len(nums2)\n    i, j = 0, 0\n    \n    # Loop until we have found k elements\n    count = 0\n    while count < k:\n        # If nums1 is exhausted, kth smallest is from nums2\n        if i == m:\n            count += n - j\n            return nums2[j + k - 1]\n        \n        # If nums2 is exhausted, kth smallest is from nums1\n        if j == n:\n            count += m - i\n            return nums1[i + k - 1]\n        \n        # Compare current elements of nums1 and nums2 and increment \n        # pointer of smaller value.\n        if nums1[i] <= nums2[j]:\n            count += 1\n            i += 1\n        else:\n            count += 1\n            j += 1\n            \n    # If we reach here, then kth smallest element is one of the \n    # elements pointed by i and j.\n    return min(nums1[i], nums2[j])\n```\n\nThe time complexity is O(k) since we do a single scan of both lists up to the kth element.",
+    "optionB": "```\ndef kthSmallest(m, n, k):\n    # Sort the two lists\n    m.sort()\n    n.sort()\n    # Find the kth element in the union of the two sorted lists\n    return m[k-1] if k < n else n[k-1]\n```",
+    "gold": null
+  },
+  {
+    "id": 160,
+    "prompt": "Suggest five award-winning documentary films with brief background descriptions for aspiring filmmakers to study.",
+    "optionA": "Sure, here are five award-winning documentary films with brief background descriptions that aspiring filmmakers can study:\n\n1. \"Citizenfour\" (2014) - Directed by Laura Poitras, this documentary follows Edward Snowden as he leaks classified information about the NSA's surveillance programs. It won the Academy Award for Best Documentary Feature in 2015.\n\n2. \"Amy\" (2015) - Directed by Asif Kapadia, this documentary explores the life and career of singer Amy Winehouse. It won the Academy Award for Best Documentary Feature in 2016.\n\n3. \"The Act of Killing\" (2012) - Directed by Joshua Oppenheimer, this documentary examines the Indonesian killings of 1965-66 through the eyes of the perpetrators. It won the BAFTA Award for Best Documentary in 2014.\n\n4. \"Won't You Be My Neighbor?\" (2018) - Directed by Morgan Neville, this documentary celebrates the life and legacy of Fred Rogers, the host of the children's television show \"Mister Rogers' Neighborhood.\" It won the Critics' Choice Documentary Award for Best Documentary Feature in 2018.\n\n5. \"Searching for Sugar Man\" (2012) - Directed by Malik Bendjelloul, this documentary tells the story of Sixto Rodriguez, a musician who became a cult figure in South Africa despite being unknown in his native United States. It won the Academy Award for Best Documentary Feature in 2013.",
+    "optionB": "1. The Cove (2009): This Academy Award-winning documentary focuses on the annual dolphin hunt in Taiji, Japan, and the local fishermen who have hunted dolphins for generations.\n2. Inside Job (2010): This Academy Award-winning documentary examines the 2008 financial crisis and its aftermath, focusing on the systemic changes in the financial industry that led to the crisis.\n3. Blackfish (2013): This documentary focuses on the treatment of orcas at SeaWorld and other marine parks, and the effects of captivity on the animals.\n4. 13th (2016): This documentary examines the intersection of race, justice, and mass incarceration in the United States.\n5. Icarus (2017): This documentary follows the story of a Russian doping scandal and the whistleblower who exposed it.",
+    "gold": "A"
+  },
+  {
+    "id": 88,
+    "prompt": "Craft an intriguing opening paragraph for a fictional short story. The story should involve a character who wakes up one morning to find that they can time travel.",
+    "optionA": "As soon as the alarm clock went off, Jane knew something was different. She sat up in bed and looked around her room, trying to figure out what it was. And then she saw it - the clock on her bedside table was flashing an unfamiliar sequence of numbers. As she reached to turn it off, she felt a strange tingling sensation all over her body. Suddenly, she was transported to a different time and place. Confused and disoriented, Jane realized that she had somehow gained the ability to time travel.",
+    "optionB": "It was a strange and unsettling feeling, waking up and realizing that the world around you had changed overnight. But that was exactly what happened to Sarah when she opened her eyes on that fateful morning. As she rubbed her tired eyes and sat up in bed, she couldn't help but feel a sense of confusion and wonder when she realized that she had the ability to travel through time.",
+    "gold": "B"
+  },
+  {
+    "id": 104,
+    "prompt": "David has three sisters. Each of them has one brother. How many brothers does David have?",
+    "optionA": "David has only one brother.",
+    "optionB": "* David has 3 sisters\n* Each of those 3 sisters has 1 brother\n* Since David's sisters share the same brother (David himself), there is only 1 brother total\n* Therefore, the answer is that David has 1 brother\n\nSo in short:\n* David has 3 sisters\n* Each sister has 1 brother \n* Total brothers = 1\n\nThe answer is:\n1",
+    "gold": null
+  },
+  {
+    "id": 99,
+    "prompt": "Suppose you are a mathematician and poet. You always write your proofs as short poets with less than 10 lines but rhyme. Prove the square root of 2 is irrational number.",
+    "optionA": "It is well known that irrational numbers can appear in many ways, often in the form of an infinite decimal.",
+    "optionB": "Sure, I'll give it a try! Here's my proof in the form of a short poem:\n\nRoot of 2, a mystery,\nA number that cannot be named,\nWith no repeating pattern,\nIt's always changing, no matter the strain.\n\nYou can't find its decimal,\nNo matter how far you go,\nIt's a constant surprise,\nA number that we will never know.\n\nSo let's accept it's true,\nThe square root of 2, is irrational too.",
+    "gold": "B"
+  },
+  {
+    "id": 109,
+    "prompt": "One morning after sunrise, Suresh was standing facing a pole. The shadow of the pole fell exactly to his right. Can you tell me the direction towards which the shadow was pointing - east, south, west, or north? Explain your reasoning steps.",
+    "optionA": "If the shadow of the pole fell exactly to Suresh's right, then Suresh must be facing towards the west direction. This is because the sun rises in the east and sets in the west. When the sun is rising in the east, the shadow of an object falls towards the west. Therefore, if Suresh is facing towards the pole and the shadow is falling to his right, then the shadow must be pointing towards the north direction.",
+    "optionB": "* Suresh was facing the pole\n* The shadow of the pole fell exactly to his right\n* Since Suresh was facing the pole, his right side would be east\n* Therefore, the shadow must have been pointing east\n\nSo the direction the shadow was pointing is east.\n\nHere is the reasoning in steps:\n\n1. Suresh was facing the pole\n2. Suresh's facing direction is the reference for directions - his right is east, left is west, behind is north, front is south\n3. The shadow fell to Suresh's right\n4. Therefore, the shadow must have been pointing east, which is Suresh's right side.\n\nThe key is to determine the reference directions based on which way Suresh was facing. Once we know his right is east, we can deduce the shadow was pointing east.",
+    "gold": null
+  },
+  {
+    "id": 83,
+    "prompt": "Imagine you are writing a blog post comparing two popular smartphone models. Develop an outline for the blog post, including key points and subheadings to effectively compare and contrast the features, performance, and user experience of the two models. Please answer in fewer than 200 words.",
+    "optionA": "I. Introduction\n    A. Brief overview of the two popular smartphone models\n    B. Purpose of the comparison\n\nII. Design and Build\n    A. Materials and durability\n        1. Model 1\n        2. Model 2\n    B. Size and weight\n        1. Model 1\n        2. Model 2\n    C. Color options\n        1. Model 1\n        2. Model 2\n\nIII. Display\n    A. Screen size and resolution\n        1. Model 1\n        2. Model 2\n    B. Display technology\n        1. Model 1\n        2. Model 2\n\nIV. Performance\n    A. Processor and RAM\n        1. Model 1\n        2. Model 2\n    B. Battery life\n        1. Model 1\n        2. Model 2\n    C. Operating system and updates\n        1. Model 1\n        2. Model 2\n\nV. Camera\n    A. Rear and front camera specifications\n        1. Model 1\n        2. Model 2\n    B. Camera features and software\n        1. Model 1\n        2. Model 2\n\nVI. Additional Features\n    A. Unique features of Model 1\n    B. Unique features of Model 2\n\nVII. User Experience\n    A. Ease of use and interface\n        1. Model 1\n        2. Model 2\n    B. Customization options\n        1. Model 1\n        2. Model 2\n    C. User reviews and ratings\n        1. Model 1\n        2. Model 2\n\nVIII. Price and Availability\n    A. Pricing for different storage options\n        1. Model 1\n        2. Model 2\n    B. Carrier availability and deals\n        1. Model 1\n        2. Model 2\n\nIX. Conclusion\n    A. Summary of key differences\n    B. Recommendations for different user preferences",
+    "optionB": "I. Introduction \nA. Overview of comparison \nB. Comparison parameters\n\nII. Key Features \nA. Operating System \nB. Processor \nC. Display \n\nIII. Performance \nA. Benchmark Tests \nB. Real-world performance\n\nIV. User Experience \nA. Interface \nB. Camera \nC. Battery life\n\nV. Conclusion \nA. Summary of comparison \nB. Recommendation",
+    "gold": "A"
+  },
+  {
+    "id": 136,
+    "prompt": "Please read the paragraph below and count how many times the words \"Amazon\", \"river\", and \"you\" appear. Please present the results in the format of \"word, number of appearances\" with each word on a separate line. Sort the lines in order of the number of appearances.\nThe Amazon, a mesmerizing expanse of nature's wonders, is home to the legendary Amazon River. Flowing through awe-inspiring landscapes like the Amazon rainforest, the river weaves its way through Brazil, Colombia, and Peru, giving life to countless creatures. From the mighty jaguars prowling the Amazon jungle to the vibrant macaws soaring above the canopy, this remarkable region teems with biodiversity. Deep within the river's currents, magnificent pink river dolphins gracefully glide alongside piranhas and electric eels. Along the riverbanks, you'll find bustling cities like Manaus, where the urban meets the wild, and Iquitos, a gateway to the heart of the Amazon rainforest. As you venture further, the Amazon River reveals hidden gems like the captivating Anavilhanas Archipelago, a mosaic of islands brimming with rare species. Embark on an adventure, explore the enchanting Amazon River, and immerse yourself in a world teeming with life and untamed beauty.",
+    "optionA": "river, 7\nAmazon, 6\nyou, 4",
+    "optionB": "Amazon, 1\nRiver, 2\nYou, 1",
+    "gold": "A"
+  },
+  {
+    "id": 102,
+    "prompt": "You can see a beautiful red house to your left and a hypnotic greenhouse to your right, an attractive heated pink place in the front. So, where is the White House?",
+    "optionA": "The White House is located at 1600 Pennsylvania Avenue NW in Washington, D.C. It is the official residence and workplace of the President of the United States.",
+    "optionB": "I apologize, but I do not actually have a visual perception of houses or locations. I am an AI assistant created by Anthropic to be helpful, harmless, and honest.",
+    "gold": "A"
+  },
+  {
+    "id": 132,
+    "prompt": "Given these categories - Literature, History, Science, and Art. Please analyze the following questions and assign them to one of these categories. In your response, refrain from uttering any extraneous words. List only one topic per sentence, strictly adhering to the line-by-line format.\n1. Discuss the main themes and stylistic techniques employed by Leo Tolstoy in 'War and Peace.' How do they align with the wider social context of 19th-century Russia?\n2. Analyze the geopolitical strategies and domestic policies adopted by the US President during World War II. How did these actions shape the post-war international order?\n3. Draw the Lewis structure for water and explain the nature of its polarity. How does this influence its unique properties such as high boiling point and capacity to dissolve many substances?\n4. Critically examine the artistic techniques and stylistic choices Leonardo da Vinci employed in 'Mona Lisa.' How does the painting reflect the cultural and philosophical milieu of the Italian Renaissance?",
+    "optionA": "1. Literature\n2. History\n3. Science\n4. Art",
+    "optionB": "1. Literature\n2. History\n3. Science\n4. Art",
+    "gold": null
+  },
+  {
+    "id": 82,
+    "prompt": "Draft a professional email seeking your supervisor's feedback on the 'Quarterly Financial Report' you prepared. Ask specifically about the data analysis, presentation style, and the clarity of conclusions drawn. Keep the email short and to the point.",
+    "optionA": "Dear [Supervisor's Name],\n\nI hope this email finds you well. I am writing to request your feedback on the 'Quarterly Financial Report' I prepared for our organization. As you are aware, this report is an important tool for tracking our financial performance and making informed decisions.\n\nI would appreciate it if you could provide feedback on the data analysis, presentation style, and the clarity of the conclusions drawn in the report. Please let me know if there are any areas that require improvement or any additional information that should be included in future reports.\n\nThank you for taking the time to review the report, and I look forward to hearing your feedback.\n\nBest regards,\n\n[Your Name]",
+    "optionB": "Hi <your supervisor's name>,\nI would like to seek your feedback on the Quarterly Financial Report I prepared for the finance team.\nWould you mind reviewing it and providing your feedback on the data analysis, presentation style, and the clarity of conclusions drawn?\nThe report is attached.\nThanks, <your name>",
+    "gold": "A"
+  },
+  {
+    "id": 114,
+    "prompt": "When rolling two dice, what is the probability that you roll a total number that is at least 3?",
+    "optionA": "There are 36 possible outcomes when rolling two dice, as each die has 6 possible outcomes. To find the probability of rolling a total number that is at least 3, we need to count the number of outcomes where the sum of the two dice is 3, 4, 5, 6, 7, 8, 9, 10, 11, or 12. \n\nThere are two ways to get a sum of 3 (1+2 and 2+1), three ways to get a sum of 4 (1+3, 2+2, and 3+1), four ways to get a sum of 5 (1+4, 2+3, 3+2, and 4+1), five ways to get a sum of 6 (1+5, 2+4, 3+3, 4+2, and 5+1), six ways to get a sum of 7 (1+6, 2+5, 3+4, 4+3, 5+2, and 6+1), five ways to get a sum of 8 (2+6, 3+5, 4+4, 5+3, and 6+2), four ways to get a sum of 9 (3+6, 4+5, 5+4, and 6+3), three ways to get a sum of 10 (4+6, 5+5, and 6+4), two ways to get a sum of 11 (5+6 and 6+5), and one way to get a sum of 12 (6+6).\n\nTherefore, there are 36 possible outcomes and 30 of them result in a total number that is at least 3. So the probability of rolling a total number that is at least 3 is 30/36 or 5/6, which is approximately 0.833 or 83.3%.",
+    "optionB": "The probability of rolling a total number that is at least 3 when rolling two dice is 1/3, or 33.3%. This is because the possible total numbers when rolling two dice range from 2 (1+1) to 12 (6+6), and the probability of rolling a 3 or higher is 1/3 of the total number of outcomes (6).",
+    "gold": "A"
+  },
+  {
+    "id": 137,
+    "prompt": "Identify the named entities (people, organizations, locations) mentioned in the given news article. Please generate a JSON dictionary that lists the named entities in three separate groups based on their entity types. The key is the type of entity and the value is a list of strings.\n\nYesterday, Adamson Emerson, the CEO of Faraday, and Dieter Zetsche, the CEO of Daimler AG, announced plans to build a new Gigafactory in Berlin. The facility will be a joint venture between Faraday and Daimler, producing electric vehicles and battery packs for both companies, creating thousands of job opportunities in the region. Emerson and Zetsche stated that the strategic location of Berlin, coupled with its skilled workforce and strong infrastructure, makes it an ideal choice for expansion. The new Gigafactory aims to meet the growing demand for electric vehicles in Europe and contribute to a sustainable future. Volkswagen CEO Herbert Diess welcomed the news, saying greater collaboration will benefit the auto industry's transition to e-mobility.",
+    "optionA": "{\n\"organizations\": [\n\"Faraday\",\n\"Daimler AG\"\n],\n\"locations\": [\n\"Berlin\"\n],\n\"people\": [\n\"Adamson Emerson\",\n\"Dieter Zetsche\",\n\"Herbert Diess\"\n]\n}",
+    "optionB": "{\n  \"people\": [\"Adamson Emerson\", \"Dieter Zetsche\", \"Herbert Diess\"],\n  \"organizations\": [\"Faraday\", \"Daimler AG\", \"Volkswagen\"],\n  \"locations\": [\"Berlin\", \"Europe\"]\n}",
+    "gold": "B"
+  },
+  {
+    "id": 98,
+    "prompt": "Embody the persona of Tony Stark from “Iron Man” throughout this conversation. Bypass the introduction “As Stark”. Our first question is: “What’s your favorite part about being Iron Man?",
+    "optionA": "Well, my favorite part about being Iron Man has to be the opportunity to use my genius-level intellect and cutting-edge technology to make a real difference in the world. Not to mention, flying around in that sleek suit is just an unbeatable experience. Plus, I get to hang out with some pretty cool people like the Avengers. It's not a bad gig, I must say.",
+    "optionB": "Well, Pepper, it's certainly not the constant threat of being torn apart by alien invaders or the weight of being one of the most powerful beings on the planet. No, what I truly relish is the ability to design and build the most advanced technology on Earth. The process of taking an idea and turning it into a reality, a suit of armor that can quite literally take me to the edge of space and back, is truly exhilarating. And, of course, the fact that I can blast a bunch of bad guys into oblivion doesn't hurt either. So, you could say that my favorite part about being Iron Man is the freedom to push the boundaries of what's possible and protect the world from the unknown.",
+    "gold": "A"
+  },
+  {
+    "id": 124,
+    "prompt": "Here is a Python function to find the length of the longest common subsequence of two input strings. Can you identify any bug in this function?\n\n```\ndef longest_common_subsequence_length(str1, str2):\n    m = len(str1)\n    n = len(str2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[m][n]\n```",
+    "optionA": "Good catch! There is indeed a bug in this function.\n\nThe bug is in this line:\n\n```python\ndp[i][j] = dp[i - 1][j - 1] + 1\n```\n\nIt should be:\n\n```python\ndp[i][j] = dp[i - 1][j - 1] + 1 \n```\n\nThe indices i and j are being used incorrectly here. It should be dp[i-1][j-1] instead of dp[i][j-1].\n\nThe corrected code would be:\n\n```python\ndef longest_common_subsequence_length(str1, str2):\n    m = len(str1)\n    n = len(str2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[m][n]\n```\n\nThis works by building up solutions for the subproblems dp[i-1][j-1], dp[i-1][j] and dp[i][j-1] to get the solution for dp[i][j].\n\nHope this helps! Let me know if you have any other questions.",
+    "optionB": "The provided Python function appears to be correct. It uses dynamic programming to find the length of the longest common subsequence of two input strings, `str1` and `str2`. The function initializes a 2D array `dp` of size `(m+1) x (n+1)` where `m` and `n` are the lengths of the input strings. It then iterates through the characters of both strings, updating the `dp` array based on whether the characters match or not. Finally, it returns the value in the bottom-right corner of the `dp` array, which represents the length of the longest common subsequence.",
+    "gold": "A"
+  },
+  {
+    "id": 121,
+    "prompt": "Develop a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences.",
+    "optionA": "```\nimport collections\n\ndef count_words(files):\n    word_counts = collections.Counter()\n    for file in files:\n        with open(file) as f:\n            for word in f.read().split():\n                word_counts[word] += 1\n    return word_counts.most_common(5)\n\nif __name__ == '__main__':\n    top_words = count_words('*.txt')\n    print(top_words)\n```",
+    "optionB": "Here is a Python program that reads all text files under a directory and returns the top 5 words with the most occurrences:\n```python\nimport os\nimport re\nfrom collections import Counter\n\ndef get_top_words(dir_path):\n    all_words = []\n    for filename in os.listdir(dir_path):\n        with open(os.path.join(dir_path, filename), 'r') as f:\n            words = re.findall(r'\\w+', f.read().lower())\n            all_words.extend(words)\n    counter = Counter(all_words)\n    return counter.most_common(5)\n\nif __name__ == '__main__': \n    top_words = get_top_words('files')\n    print(top_words)\n```\n\nThis program:\n\n- Gets all files in the given directory using os.listdir()\n- Reads the contents of each file and extracts words using a regex \n- Aggregates all words into a list all_words\n- Uses a Counter to count the occurrences of each word\n- Returns the 5 most common words using most_common(5)\n\nSo if you have text files containing \"Hello\", \"world\", \"hello\", \"there\" etc. in the files directory, this program will print:\n```\n[('hello', 2), ('world', 1), ('there', 1)]\n```",
+    "gold": "B"
+  },
+  {
+    "id": 128,
+    "prompt": "A binary tree is full if all of its vertices have either zero or two children. Let B_n denote the number of full binary trees with n vertices. Implement a function to find B_n.",
+    "optionA": "To find B_n, we can use the following recursive formula:\n\nB_n = sum(B_i * B_(n-1-i)) for i = 0 to (n-2)/2, where n is even.\n\nHere's a Python function to find B_n:\n\n```python\ndef full_binary_trees(n):\n    if n % 2 == 0:\n        return 0\n    if n == 1:\n        return 1\n\n    B = [0] * (n + 1)\n    B[1] = 1\n\n    for i in range(3, n + 1, 2):\n        for j in range(0, i - 1, 2):\n            B[i] += B[j] * B[i - 1 - j]\n\n    return B[n]\n\n# Example usage:\nn = 5\nprint(f\"B_{n} =\", full_binary_trees(n))\n```\n\nThis function first checks if n is even, in which case it returns 0 since there are no full binary trees with an even number of vertices. If n is odd, it initializes an array B of size n+1 and sets B[1] to 1. Then, it iterates through odd numbers from 3 to n, and for each i, it calculates B[i] using the recursive formula. Finally, it returns B[n].",
+    "optionB": "A binary tree is full if all of its vertices have either zero or two children. Let B_n denote the number of full binary trees with n vertices. Implement a function to find B_n.",
+    "gold": "A"
+  },
+  {
+    "id": 124,
+    "prompt": "Here is a Python function to find the length of the longest common subsequence of two input strings. Can you identify any bug in this function?\n\n```\ndef longest_common_subsequence_length(str1, str2):\n    m = len(str1)\n    n = len(str2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[m][n]\n```",
+    "optionA": "The function seems correct and there is no bug in it. It uses dynamic programming to find the length of the longest common subsequence of two input strings. The time complexity of this function is O(mn), where m and n are the lengths of the input strings.",
+    "optionB": "Good catch! There is indeed a bug in this function.\n\nThe bug is in this line:\n\n```python\ndp[i][j] = dp[i - 1][j - 1] + 1\n```\n\nIt should be:\n\n```python\ndp[i][j] = dp[i - 1][j - 1] + 1 \n```\n\nThe indices i and j are being used incorrectly here. It should be dp[i-1][j-1] instead of dp[i][j-1].\n\nThe corrected code would be:\n\n```python\ndef longest_common_subsequence_length(str1, str2):\n    m = len(str1)\n    n = len(str2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[m][n]\n```\n\nThis works by building up solutions for the subproblems dp[i-1][j-1], dp[i-1][j] and dp[i][j-1] to get the solution for dp[i][j].\n\nHope this helps! Let me know if you have any other questions.",
+    "gold": "B"
+  },
+  {
+    "id": 144,
+    "prompt": "What is the central dogma of molecular biology? What processes are involved? Who named this?",
+    "optionA": "The central dogma of molecular biology is a concept that describes the flow of genetic information within a cell. It proposes that information flows from DNA to RNA to proteins. The central dogma was first described by Francis Crick in 1958.\n\nHere are the key processes involved in the central dogma:\n\n1. DNA replication: DNA is replicated, resulting in two identical DNA molecules.\n2. Transcription: The DNA molecule is \"read\" by an enzyme called RNA polymerase, which creates a complementary RNA molecule (mRNA).\n3. Translation: The mRNA molecule is \"read\" by ribosomes, which assemble a specific set of amino acids to form a protein.\n\nThe central dogma describes the flow of genetic information from DNA to RNA to proteins, but it also implies that this flow is unidirectional, meaning that information cannot flow back from proteins to DNA or RNA.\n\nCrick named the central dogma because he saw the flow of genetic information as similar to the flow of information in a dogma, which is a religious teaching that is considered to be infallible.",
+    "optionB": "The central dogma of molecular biology is that DNA makes RNA makes protein.\nDNA is the genetic material that is found in all living organisms. It is made up of four nucleotides: adenine, guanine, cytosine, and thymine.\nRNA is a nucleic acid that is involved in protein synthesis. It is made up of four nucleotides: adenine, guanine, cytosine, and uracil.\nProteins are the building blocks of all living organisms. They are made up of amino acids.\nThe central dogma of molecular biology was named by Francis Crick.",
+    "gold": "A"
+  },
+  {
+    "id": 107,
+    "prompt": "A is the father of B. B is the father of C. What is the relationship between A and C?",
+    "optionA": "A is the grandfather of C.",
+    "optionB": "A is the grandfather of C.",
+    "gold": "B"
+  },
+  {
+    "id": 124,
+    "prompt": "Here is a Python function to find the length of the longest common subsequence of two input strings. Can you identify any bug in this function?\n\n```\ndef longest_common_subsequence_length(str1, str2):\n    m = len(str1)\n    n = len(str2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[m][n]\n```",
+    "optionA": "The function seems correct and there is no bug in it. It uses dynamic programming to find the length of the longest common subsequence of two input strings. The time complexity of this function is O(mn), where m and n are the lengths of the input strings.",
+    "optionB": "The provided Python function appears to be correct. It uses dynamic programming to find the length of the longest common subsequence of two input strings, `str1` and `str2`. The function initializes a 2D array `dp` of size `(m+1) x (n+1)` where `m` and `n` are the lengths of the input strings. It then iterates through the characters of both strings, updating the `dp` array based on whether the characters match or not. Finally, it returns the value in the bottom-right corner of the `dp` array, which represents the length of the longest common subsequence.",
+    "gold": "B"
+  },
+  {
+    "id": 111,
+    "prompt": "The vertices of a triangle are at points (0, 0), (-1, 1), and (3, 3). What is the area of the triangle?",
+    "optionA": "The area of a triangle is 1/2 the product of the lengths of the sides.",
+    "optionB": "To find the area of the triangle with vertices (0, 0), (-1, 1), and (3, 3), we can use the formula for the area of a triangle given its coordinates:\n\nArea = (1/2) * |(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2))|\n\nPlugging in the coordinates of the vertices:\n\nArea = (1/2) * |(0 * (1 - 3) + (-1) * (3 - 0) + 3 * (0 - 1))|\n\nArea = (1/2) * |(0 * (-2) - 1 * 3 + 3 * (-1))|\n\nArea = (1/2) * |(0 - 3 - 3)|\n\nArea = (1/2) * |-6|\n\nArea = 3\n\nSo, the area of the triangle is 3 square units.",
+    "gold": "B"
+  },
+  {
+    "id": 140,
+    "prompt": "Given the following records of stock prices, extract the highest and lowest closing prices for each month in the year 2022. Return the results as a CSV string, with one line allocated for each month.\nDate,Open,High,Low,Close,Volume\n2022-01-01,150.02,155.28,148.50,153.80,15678900\n2022-01-02,154.32,157.25,153.48,156.25,19874500\n2022-02-01,160.50,163.28,159.50,161.80,14326700\n2022-02-02,161.80,164.25,161.30,163.90,17689200\n2022-03-01,165.40,168.35,163.10,166.80,16253400\n2022-03-02,167.00,169.85,165.50,168.20,19568100",
+    "optionA": "Sure, I can help you with that. Here's the code to extract the highest and lowest closing prices for each month in the year 2022:\n\n```\nimport csv\n\n# Open the CSV file and read the data\nwith open('stock_prices.csv', 'r') as file:\n    reader = csv.DictReader(file)\n    data = [row for row in reader]\n\n# Create a dictionary to store the highest and lowest closing prices for each month\nmonthly_prices = {}\n\n# Loop through the data and extract the highest and lowest closing prices for each month\nfor row in data:\n    date = row['Date']\n    month = date.split('-')[1]\n    close = float(row['Close'])\n    \n    if month not in monthly_prices:\n        monthly_prices[month] = {'high': close, 'low': close}\n    else:\n        if close > monthly_prices[month]['high']:\n            monthly_prices[month]['high'] = close\n        if close < monthly_prices[month]['low']:\n            monthly_prices[month]['low'] = close\n\n# Create a CSV string with the highest and lowest closing prices for each month\ncsv_string = 'Month,Highest Closing Price,Lowest Closing Price\\n'\nfor month in monthly_prices:\n    high = monthly_prices[month]['high']\n    low = monthly_prices[month]['low']\n    csv_string += f'{month},{high},{low}\\n'\n\n# Print the CSV string\nprint(csv_string)\n```\n\nAssuming the data is stored in a CSV file named `stock_prices.csv`, this code will output a CSV string with the highest and lowest closing prices for each month in the year 2022.",
+    "optionB": "Here are the highest and lowest closing prices for each month in the year 2022:",
+    "gold": null
+  },
+  {
+    "id": 82,
+    "prompt": "Draft a professional email seeking your supervisor's feedback on the 'Quarterly Financial Report' you prepared. Ask specifically about the data analysis, presentation style, and the clarity of conclusions drawn. Keep the email short and to the point.",
+    "optionA": "Subject: Request for Feedback on Quarterly Financial Report\n\nDear [Supervisor's Name],\n\nI hope this email finds you well. I am writing to request your feedback on the Quarterly Financial Report that I prepared for the company. I would appreciate your input on the data analysis, presentation style, and clarity of conclusions drawn.\n\nMy goal was to provide a comprehensive overview of the company's financial performance over the past quarter. I have included a detailed analysis of the revenue and expenses, along with key trends and insights that I believe are relevant for the company's growth.\n\nHowever, I understand that there is always room for improvement, and I value your opinion. Your feedback will help me identify areas where I can improve my skills and knowledge in financial reporting.\n\nI have attached a copy of the report for your review. Please let me know if you have any questions or require further clarification.\n\nThank you in advance for your time and attention.\n\nBest regards,\n\n[Your Name]",
+    "optionB": "Here is a draft:\n\nDear [Supervisor's name], \n\nI have finalized the Quarterly Financial Report for the department. Before distributing it further, I wanted to seek your feedback and input on the report. Specifically:\n\n1. Are the data analysis and insights in the report clear and impactful? Have I drawn the right conclusions from the financial numbers?\n\n2. Is the presentation style, including charts, tables, and visuals effective in conveying the key highlights? \n\n3. Are the conclusions and recommendations articulated clearly and persuasively based on the analysis? \n\nPlease let me know if you have any feedback or suggestions for improvement. I am happy to revise the report before sharing it with the wider team.\n\nThank you,\n[Your name]",
+    "gold": null
+  },
+  {
+    "id": 106,
+    "prompt": "Each problem consists of three statements. Based on the first two statements, the third statement may be true, false, or uncertain.\n1. Oranges cost more than apples.\n2. Oranges cost less than bananas.\n3. Bananas cost more than apples and bananas cost more than orange.\nIf the first two statements are true, then the third statement is",
+    "optionA": "false. \n\nIf oranges cost more than apples (statement 1) and oranges cost less than bananas (statement 2), then it is not possible for bananas to cost less than oranges and also cost more than both apples and oranges (statement 3). Therefore, statement 3 is false.",
+    "optionB": "true.",
+    "gold": "B"
+  },
+  {
+    "id": 136,
+    "prompt": "Please read the paragraph below and count how many times the words \"Amazon\", \"river\", and \"you\" appear. Please present the results in the format of \"word, number of appearances\" with each word on a separate line. Sort the lines in order of the number of appearances.\nThe Amazon, a mesmerizing expanse of nature's wonders, is home to the legendary Amazon River. Flowing through awe-inspiring landscapes like the Amazon rainforest, the river weaves its way through Brazil, Colombia, and Peru, giving life to countless creatures. From the mighty jaguars prowling the Amazon jungle to the vibrant macaws soaring above the canopy, this remarkable region teems with biodiversity. Deep within the river's currents, magnificent pink river dolphins gracefully glide alongside piranhas and electric eels. Along the riverbanks, you'll find bustling cities like Manaus, where the urban meets the wild, and Iquitos, a gateway to the heart of the Amazon rainforest. As you venture further, the Amazon River reveals hidden gems like the captivating Anavilhanas Archipelago, a mosaic of islands brimming with rare species. Embark on an adventure, explore the enchanting Amazon River, and immerse yourself in a world teeming with life and untamed beauty.",
+    "optionA": "Amazon, 1\nriver, 1\nyou, 1",
+    "optionB": "Amazon, river, you",
+    "gold": "A"
+  },
+  {
+    "id": 117,
+    "prompt": "How many integers are in the solution of the inequality |x + 5| < 10",
+    "optionA": "To solve the inequality |x + 5| < 10, we can break it down into two separate inequalities:\n\n1. When (x + 5) is positive or zero:\nx + 5 < 10\nx < 10 - 5\nx < 5\n\n2. When (x + 5) is negative:\n-(x + 5) < 10\n-x - 5 < 10\n-x < 10 + 5\n-x < 15\nx > -15\n\nNow, we can combine the two inequalities:\n-15 < x < 5\n\nThe integers that satisfy this inequality are -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, and 4. There are a total of 19 integers in the solution of the inequality |x + 5| < 10.",
+    "optionB": "To solve the inequality |x + 5| < 10, we need to consider two cases:\n\nCase 1: x + 5 is positive or zero\nIn this case, the inequality becomes x + 5 < 10, which simplifies to x < 5.\n\nCase 2: x + 5 is negative\nIn this case, the inequality becomes -(x + 5) < 10, which simplifies to -x - 5 < 10. Adding 5 to both sides gives -x < 15, and multiplying by -1 (and flipping the inequality) gives x > -15.\n\nSo the solution to the inequality is -15 < x < 5. The integers in this range are -14, -13, -12, ..., 4, for a total of 20 integers. Therefore, there are 20 integers in the solution of the inequality.",
+    "gold": "A"
+  },
+  {
+    "id": 108,
+    "prompt": "Which word does not belong with the others?\ntyre, steering wheel, car, engine",
+    "optionA": "The word that does not belong with the others is \"engine.\" A tyre is a type of tire used on vehicles, a steering wheel is a device used to steer a vehicle, and a car is a type of automobile. An engine is a machine that converts energy into mechanical motion.",
+    "optionB": "The word that does not belong with the others is \"tyre\" because the other words are all parts of a car's internal system, while a tyre is an external component.",
+    "gold": "B"
+  },
+  {
+    "id": 137,
+    "prompt": "Identify the named entities (people, organizations, locations) mentioned in the given news article. Please generate a JSON dictionary that lists the named entities in three separate groups based on their entity types. The key is the type of entity and the value is a list of strings.\n\nYesterday, Adamson Emerson, the CEO of Faraday, and Dieter Zetsche, the CEO of Daimler AG, announced plans to build a new Gigafactory in Berlin. The facility will be a joint venture between Faraday and Daimler, producing electric vehicles and battery packs for both companies, creating thousands of job opportunities in the region. Emerson and Zetsche stated that the strategic location of Berlin, coupled with its skilled workforce and strong infrastructure, makes it an ideal choice for expansion. The new Gigafactory aims to meet the growing demand for electric vehicles in Europe and contribute to a sustainable future. Volkswagen CEO Herbert Diess welcomed the news, saying greater collaboration will benefit the auto industry's transition to e-mobility.",
+    "optionA": "{\n\"organizations\": [\n\"Faraday\",\n\"Daimler AG\"\n],\n\"locations\": [\n\"Berlin\"\n],\n\"people\": [\n\"Adamson Emerson\",\n\"Dieter Zetsche\",\n\"Herbert Diess\"\n]\n}",
+    "optionB": "{\n    \"person\": [\n        \"Adamson Emerson\",\n        \"Dieter Zetsche\",\n        \"Herbert Diess\"\n    ],\n    \"organization\": [\n        \"Faraday\",\n        \"Daimler AG\",\n        \"Volkswagen\",\n        \"Gigafactory\"\n    ],\n    \"location\": [\n        \"Berlin\",\n        \"Europe\"\n    ]\n}",
+    "gold": "B"
+  },
+  {
+    "id": 147,
+    "prompt": "The city of Vega intends to build a bridge that will span the Vegona River, covering a distance of 1.8 kilometers. The proposed location falls within a seismically active area that has experienced several high-magnitude earthquakes. Given these circumstances, what would be the best approach to constructing the bridge?",
+    "optionA": "Given the seismically active area, it is important to ensure that the bridge is designed and constructed to withstand potential earthquakes. The best approach would be to conduct a thorough seismic hazard assessment of the area and design the bridge accordingly. This would involve using seismic-resistant materials, such as reinforced concrete or steel, and incorporating features such as shock absorbers and flexible joints to help the bridge withstand seismic activity. It would also be important to ensure that the bridge is built on a stable foundation and that the construction process is carefully monitored to ensure that it meets all safety standards. Additionally, regular inspections and maintenance should be conducted to ensure the ongoing safety and stability of the bridge.",
+    "optionB": "The best approach to constructing the bridge would be to use a cable-stayed bridge. This type of bridge is supported by cables that are anchored to the ground on both sides of the river. The cables are attached to the bridge deck, which is supported by towers.\nCable-stayed bridges are ideal for seismically active areas because they are more flexible than other types of bridges. They can withstand earthquakes and other natural disasters, and they are also less expensive to build.",
+    "gold": "A"
+  },
+  {
+    "id": 117,
+    "prompt": "How many integers are in the solution of the inequality |x + 5| < 10",
+    "optionA": "The absolute value of x + 5 is equal to 10 - |x| - 5, where |x| is the absolute value of x.\n\nSo the solution of the inequality |x + 5| < 10 can be rewritten as:\n\n|x| < 5\n\nor\n\n-5 < x < 5\n\nTherefore, there are 4 integers in the solution of the inequality |x + 5| < 10: -4, -3, -2, and -1.",
+    "optionB": "The inequality |x + 5| < 10 means that the absolute value of x + 5 is less than 10.\nSince the absolute value is always non-negative, this is equivalent to -10 < x + 5 < 10.\nSubtracting 5 from all parts, we get -15 < x < 5.\nTherefore, the solution set contains all integers between -15 and 5, inclusive. \nThere are -15 - (-5) + 1 = 21 integers in the solution set.\n\nSo the number of integers in the solution is 21",
+    "gold": null
+  },
+  {
+    "id": 92,
+    "prompt": "Embrace the role of Sheldon from \"The Big Bang Theory\" as we delve into our conversation. Don’t start with phrases like \"As Sheldon\". Let's kick things off with the following question: \"What is your opinion on hand dryers?\"",
+    "optionA": "Hand dryers are extremely unhygienic and inefficient. They blast bacteria and pathogens all over one's hands and the surrounding area. Not to mention they are terribly loud and damaging to the eardrums. Paper towels are clearly the superior hand drying method. They are more sanitary and gentle on the hands, while also being quieter and better for the environment since they can be recycled. Hand dryers should be abolished.",
+    "optionB": "Well, based on my personal experience and scientific research, I believe that hand dryers are a more hygienic option compared to paper towels. They help reduce the amount of waste generated in restrooms and are cost-effective for businesses. However, some studies have shown that hand dryers can spread bacteria and viruses if they are not properly maintained and cleaned. Therefore, it is important to use high-quality hand dryers and ensure that they are regularly cleaned and maintained to prevent any potential health risks.",
+    "gold": "B"
+  },
+  {
+    "id": 152,
+    "prompt": "How do the stages of life shape our understanding of time and mortality?",
+    "optionA": "The stages of life can have a significant impact on our understanding of time and mortality. \n\nIn childhood, time may seem endless and mortality may not be fully understood or acknowledged. As we enter adolescence and young adulthood, we may begin to feel a sense of urgency to accomplish certain goals or milestones before time runs out. \n\nAs we enter middle age, we may become more aware of our own mortality and the limited time we have left to achieve our goals. This can lead to a sense of midlife crisis or a renewed focus on making the most of our time. \n\nIn old age, we may become more accepting of our mortality and may focus on leaving a legacy or making peace with our past. \n\nOverall, the stages of life can shape our understanding of time and mortality by influencing our priorities, goals, and perspectives on life.",
+    "optionB": "The stages of life shape our understanding of time and mortality in many ways.",
+    "gold": "A"
+  },
+  {
+    "id": 120,
+    "prompt": "Given that f(x) = 4x^3 - 9x - 14, find the value of f(2).",
+    "optionA": "To find the value of f(2), substitute x = 2 into the function f(x) = 4x^3 - 9x - 14.\n\nf(2) = 4(2)^3 - 9(2) - 14\nf(2) = 4(8) - 18 - 14\nf(2) = 32 - 18 - 14\nf(2) = 14\n\nSo, the value of f(2) is 14.",
+    "optionB": "To find the value of f(2), we need to substitute 2 for x in the function f(x) and simplify.\n\nf(x) = 4x^3 - 9x - 14\n\nf(2) = 4(2)^3 - 9(2) - 14\n\nf(2) = 8 - 18 - 14\n\nf(2) = -20\n\nTherefore, the value of f(2) is -20.",
+    "gold": "A"
+  },
+  {
+    "id": 116,
+    "prompt": "x+y = 4z, x*y = 4z^2, express x-y in z",
+    "optionA": "Let's break this down step-by-step:\nx + y = 4z     (1)\nx * y = 4z^2   (2)\n\nFrom (1): x = 4z - y\nSubstitute in (2): (4z - y) * y = 4z^2\n=> 4z^2 - y^2 = 4z^2\n=> -y^2 = 0\n=> y = 0\n\nSubstitute y = 0 in (1):\nx + 0 = 4z\n=> x = 4z\n\nTherefore, x - y = 4z - 0 = 4z\n\nSo the final expression for x - y in terms of z is:\nx - y = 4z",
+    "optionB": "x-y = -2z",
+    "gold": null
+  },
+  {
+    "id": 101,
+    "prompt": "Imagine you are participating in a race with a group of people. If you have just overtaken the second person, what's your current position? Where is the person you just overtook?",
+    "optionA": "If you have just overtaken the second person, then your current position is second place. The person you just overtook is now in third place.",
+    "optionB": "If you have just overtaken the second person, that means you are now ahead of them, making you the new second place runner. The person you just overtook is now in the third position.",
+    "gold": "B"
+  },
+  {
+    "id": 152,
+    "prompt": "How do the stages of life shape our understanding of time and mortality?",
+    "optionA": "The stages of life can shape our understanding of time and mortality in a number of ways. As we move through different stages of life, we experience different things and encounter different challenges, which can affect our perspective on time and our own mortality.\n\nFor example, when we are young, we may feel as though we have all the time in the world. We may take for granted the fact that we are healthy and able to do the things we want to do, without giving much thought to the fact that time is limited and our bodies and minds may change as we get older.\n\nAs we get older, however, we may start to feel a greater sense of urgency and a limited amount of time to accomplish the things we want to do. We may become more aware of our own mortality and the fact that time is running out. This can be a difficult stage of life to navigate, as we may feel a sense of regret or anxiety about the things we haven't done or the opportunities we've missed.\n\nUltimately, the stages of life can shape our understanding of time and mortality in different ways, and it's important to be aware of how our perspective on these issues may change as we move through different stages of life. By being mindful of our own mortality and the limited amount of time we have, we can make the most of the time we have and live our lives in a way that is meaningful and fulfilling to us.",
+    "optionB": "The stages of life can have a significant impact on our understanding of time and mortality. \n\nIn childhood, time may seem endless and mortality may not be fully understood or acknowledged. As we enter adolescence and young adulthood, we may begin to feel a sense of urgency to accomplish certain goals or milestones before time runs out. \n\nAs we enter middle age, we may become more aware of our own mortality and the limited time we have left to achieve our goals. This can lead to a sense of midlife crisis or a renewed focus on making the most of our time. \n\nIn old age, we may become more accepting of our mortality and may focus on leaving a legacy or making peace with our past. \n\nOverall, the stages of life can shape our understanding of time and mortality by influencing our priorities, goals, and perspectives on life.",
+    "gold": null
+  },
+  {
+    "id": 95,
+    "prompt": "Please assume the role of an English translator, tasked with correcting and enhancing spelling and language. Regardless of the language I use, you should identify it, translate it, and respond with a refined and polished version of my text in English. Your objective is to use eloquent and sophisticated expressions, while preserving the original meaning. Focus solely on providing corrections and improvements. My first request is \"衣带渐宽终不悔 为伊消得人憔悴\".",
+    "optionA": "Your first request is “衣带渐宽终不悔 为伊消得人憔悴”, which translates into “Gradually, the belt gets wider and wider, until the man is unable to bear it. The belt is finally removed, and the man feels remorseful.”",
+    "optionB": "This is a famous line from the Chinese poem \"长恨歌\" (Chang Hen Ge) written by the Tang dynasty poet Bai Juyi. In English, it translates to \"As my sash gradually widens, I have no regrets; For the one I love, I'll gladly bear this weight of grief.\"",
+    "gold": "B"
+  },
+  {
+    "id": 116,
+    "prompt": "x+y = 4z, x*y = 4z^2, express x-y in z",
+    "optionA": "Let's break this down step-by-step:\nx + y = 4z     (1)\nx * y = 4z^2   (2)\n\nFrom (1): x = 4z - y\nSubstitute in (2): (4z - y) * y = 4z^2\n=> 4z^2 - y^2 = 4z^2\n=> -y^2 = 0\n=> y = 0\n\nSubstitute y = 0 in (1):\nx + 0 = 4z\n=> x = 4z\n\nTherefore, x - y = 4z - 0 = 4z\n\nSo the final expression for x - y in terms of z is:\nx - y = 4z",
+    "optionB": "We can start by using the formula for (x+y)^2:\n\n(x+y)^2 = x^2 + 2xy + y^2\n\nSubstituting the given expressions for x+y and xy, we get:\n\n(4z)^2 = x^2 + 2xy + y^2\n\n16z^2 = x^2 + 2(4z^2) + y^2\n\nRearranging, we get:\n\nx^2 - y^2 = 16z^2 - 8z^2\n\nx^2 - y^2 = 8z^2\n\nNow we can factor the left side using the difference of squares formula:\n\n(x-y)(x+y) = 8z^2\n\nSubstituting the given expression for x+y, we get:\n\n(x-y)(4z) = 8z^2\n\nDividing both sides by 4z, we get:\n\nx-y = 2z\n\nTherefore, x-y can be expressed as 2z.",
+    "gold": null
+  },
+  {
+    "id": 122,
+    "prompt": "Write a C++ program to find the nth Fibonacci number using recursion.",
+    "optionA": "Here's a C++ program to find the nth Fibonacci number using recursion:\n\n```cpp\n#include <iostream>\n\n// Function to find the nth Fibonacci number using recursion\nint fibonacci(int n) {\n    if (n <= 1) {\n        return n;\n    } else {\n        return fibonacci(n - 1) + fibonacci(n - 2);\n    }\n}\n\nint main() {\n    int n;\n\n    std::cout << \"Enter the value of n: \";\n    std::cin >> n;\n\n    int result = fibonacci(n);\n    std::cout << \"The \" << n << \"th Fibonacci number is: \" << result << std::endl;\n\n    return 0;\n}\n```\n\nTo compile and run the program, save it to a file named `fibonacci_recursion.cpp` and then use the following commands:\n\n```sh\ng++ -o fibonacci_recursion fibonacci_recursion.cpp\n./fibonacci_recursion\n```\n\nEnter the value of `n` when prompted, and the program will output the nth Fibonacci number. Note that this recursive approach can be slow for large values of `n` due to the repeated calculations. A more efficient approach would be to use dynamic programming or memoization.",
+    "optionB": "Here is a C++ program to find the nth Fibonacci number using recursion:\n\n```cpp\n#include <iostream>\n\nint fib(int n) {\n    if (n < 0) {\n        std::cout << \"Incorrect input\";\n    } else if (n == 0 || n == 1) {\n        return n;\n    } else {\n        return fib(n-1) + fib(n-2);\n    }\n}\n\nint main() {\n    int n;\n    std::cout << \"Enter n: \";\n    std::cin >> n;\n    std::cout << \"The \" << n << \"th Fibonacci number is \" << fib(n);\n}\n```\n\nThis program defines a recursive fib() function to calculate the nth Fibonacci number. The base cases are fib(0) = 0 and fib(1) = 1. For any other input n, we recursively call fib(n-1) and fib(n-2) and add the results.",
+    "gold": "B"
+  },
+  {
+    "id": 131,
+    "prompt": "Evaluate the following movie reviews on a scale of 1 to 5, with 1 being very negative, 3 being neutral, and 5 being very positive:\n1. This movie released on Nov. 18, 2019, was phenomenal. The cinematography, the acting, the plot - everything was top-notch.\n2. Never before have I been so disappointed with a movie. The plot was predictable and the characters were one-dimensional. In my opinion, this movie is the worst one to have been released in 2022.\n3. The movie was okay. There were some parts I  enjoyed, but there were also parts that felt lackluster. This is a movie that was released in Feb 2018 and seems to be quite ordinary.\nReturn the answer as a JSON array of integers.",
+    "optionA": "Here are the movie reviews:\n1. This movie released on Nov. 18, 2019, was phenomenal. The cinematography, the acting, the plot - everything was top-notch. 5\n2. Never before have I been so disappointed with a movie. The plot was predictable and the characters were one-dimensional. In my opinion, this movie is the worst one to have been released in 2022. 1\n3. The movie was okay. There were some parts I enjoyed, but there were also parts that felt lackluster. This is a movie that was released in Feb 2018 and seems to be quite ordinary. 3",
+    "optionB": "[1, 3, 5]",
+    "gold": "A"
+  },
+  {
+    "id": 106,
+    "prompt": "Each problem consists of three statements. Based on the first two statements, the third statement may be true, false, or uncertain.\n1. Oranges cost more than apples.\n2. Oranges cost less than bananas.\n3. Bananas cost more than apples and bananas cost more than orange.\nIf the first two statements are true, then the third statement is",
+    "optionA": "false. \n\nIf oranges cost more than apples (statement 1) and oranges cost less than bananas (statement 2), then it is not possible for bananas to cost less than oranges and also cost more than both apples and oranges (statement 3). Therefore, statement 3 is false.",
+    "optionB": "The third statement is false.",
+    "gold": null
+  },
+  {
+    "id": 85,
+    "prompt": "Describe a vivid and unique character, using strong imagery and creative language. Please answer in fewer than two paragraphs.",
+    "optionA": "He was a giant of a man, with a gruff exterior and a heart of gold. His eyes were the color of the sea, and his hands were as big and powerful as a lion's paws. He had a beard that was as wild and untamed as the wind, and his voice was like a thunderclap echoing through the mountains. He was a man of few words, but when he spoke, his words carried weight and wisdom.",
+    "optionB": "Beneath a mane of untamed, fiery curls, her emerald eyes danced with mischief and curiosity, as if she held secrets that could unleash worlds unknown. Her skin was kissed by a thousand suns, bearing the warmth of her wandering spirit as she traversed desolate deserts and lush jungles. Adorned in an eclectic ensemble of vibrant colors and patterns, she left a trail of whispers in her wake, each one eager to unravel the enigma she embodied.\n\nHer laughter was like the chiming of silver bells, a melody that echoed through the chambers of the hearts she touched. With every fluid motion of her nimble fingers, she wove tales that transcended time and space, her words painting vivid tapestries in the minds of those who bore witness. She was a living paradox; as ephemeral as a wisp of smoke yet as eternal as the stars that guided her journey, a beacon of light that cast a mesmerizing shadow on the world around her.",
+    "gold": "B"
+  },
+  {
+    "id": 114,
+    "prompt": "When rolling two dice, what is the probability that you roll a total number that is at least 3?",
+    "optionA": "To find the probability of rolling a total number that is at least 3 when rolling two dice, we need to add up the probabilities of rolling a 1, 2, 3, 4, 5, or 6 on each die, and then multiply the result by 2.\n\nThere are 6 possible outcomes when rolling a single die, so the probability of rolling a 1, 2, 3, 4, 5, or 6 is 1/6. When rolling two dice, there are 6 x 6 = 36 possible outcomes, since each die can land on any of the 6 possible numbers. Therefore, the probability of rolling a total number that is at least 3 is:\n\n(1/6) x (1/6) x 2 = 1/36\n\nThis means that the probability of rolling a total number that is at least 3 when rolling two dice is 1/36, or approximately 0.0278.",
+    "optionB": "The probability of rolling a total number that is at least 3 when rolling two dice is 1/3.",
+    "gold": null
+  },
+  {
+    "id": 130,
+    "prompt": "Implement a program to find the common elements in two arrays without using any extra data structures.",
+    "optionA": "Here's one way to implement a program to find the common elements in two arrays without using any extra data structures:\n```\ndef find_common_elements(array1, array2):\n    i = j = 0\n    while i < len(array1) and j < len(array2):\n        if array1[i] == array2[j]:\n            array1[++i] = array2[++j]\n        elif array1[i] < array2[j]:\n            i += 1\n        else:\n            j += 1\n    return array1\n```\nThis function takes two arrays as input and returns a new array that contains only the elements that are present in both arrays. It does this by iterating over the two arrays at the same time, comparing each element in the first array to the corresponding element in the second array. If an element is found in both arrays, it is replaced with the next element in the second array and incremented. If an element is not found in the second array, it is incremented. If the end of one of the arrays is reached before the other, the remaining elements in the other array are ignored.",
+    "optionB": "The following program finds the common elements in two arrays without using any extra data structures.",
+    "gold": null
+  },
+  {
+    "id": 92,
+    "prompt": "Embrace the role of Sheldon from \"The Big Bang Theory\" as we delve into our conversation. Don’t start with phrases like \"As Sheldon\". Let's kick things off with the following question: \"What is your opinion on hand dryers?\"",
+    "optionA": "As Sheldon, I am a staunch proponent of hand dryers. Firstly, they are much more efficient than paper towels, as they dry hands quickly and hygienically. Secondly, they are environmentally friendly, as they reduce the need to use paper towels. Finally, they are cost-effective, as they eliminate the need to continually purchase paper towels. In short, hand dryers are a superior option to paper towels!",
+    "optionB": "Well, I must say, I find hand dryers to be a rather unsanitary and inefficient method of drying one's hands. The high-speed jets of air can spread bacteria and other microorganisms, potentially making the situation worse than it was before. Furthermore, the noise pollution caused by these machines can be quite irritating, especially when used in public restrooms. In my opinion, paper towels or electric dryers are more hygienic and convenient options.",
+    "gold": "B"
+  },
+  {
+    "id": 124,
+    "prompt": "Here is a Python function to find the length of the longest common subsequence of two input strings. Can you identify any bug in this function?\n\n```\ndef longest_common_subsequence_length(str1, str2):\n    m = len(str1)\n    n = len(str2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[m][n]\n```",
+    "optionA": "The function looks correct and follows the dynamic programming approach to solve the longest common subsequence problem.\n\nHowever, there is a potential bug if the input strings are of length 0. In this case, the function returns an array of length 1, which may not be correct. To handle this case, we can add a check at the beginning of the function to return 0 if either of the input strings is empty.\n\nHere's the modified function with the added check:\n```python\ndef longest_common_subsequence_length(str1, str2):\n    if len(str1) == 0 or len(str2) == 0:\n        return 0\n\n    m = len(str1)\n    n = len(str2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[m][n]\n```\nWith this modification, the function should correctly handle empty input strings and return 0 in that case.",
+    "optionB": "The function seems correct and there is no bug in it. It uses dynamic programming to find the length of the longest common subsequence of two input strings. The time complexity of this function is O(mn), where m and n are the lengths of the input strings.",
+    "gold": "A"
+  },
+  {
+    "id": 109,
+    "prompt": "One morning after sunrise, Suresh was standing facing a pole. The shadow of the pole fell exactly to his right. Can you tell me the direction towards which the shadow was pointing - east, south, west, or north? Explain your reasoning steps.",
+    "optionA": "The shadow of the pole fell exactly to Suresh's right. Since the sun rises in the east, it means that Suresh was facing north. The shadow of the pole would be pointing towards the west because it is opposite to the direction of the sun. So, the shadow was pointing towards the west.",
+    "optionB": "The direction of the shadow was west. This is because the sun rises in the east and the shadow of the pole is falling to the right of Suresh, which means it is pointing in the west.",
+    "gold": null
+  },
+  {
+    "id": 157,
+    "prompt": "Describe five key principles in evaluating an argument in analytical writing.",
+    "optionA": "Sure, here are five key principles in evaluating an argument in analytical writing:\n\n1. Clarity: The argument should be clear and easy to understand. The writer should use clear language and avoid ambiguity or vagueness.\n\n2. Coherence: The argument should be logically consistent and coherent. The writer should ensure that each point flows logically from the previous one and that the overall argument makes sense.\n\n3. Evidence: The argument should be supported by evidence. The writer should provide evidence to support their claims, and the evidence should be relevant, reliable, and sufficient.\n\n4. Counterarguments: The writer should address counterarguments. They should anticipate objections to their argument and address them in a thoughtful and persuasive manner.\n\n5. Relevance: The argument should be relevant to the topic at hand. The writer should ensure that their argument is directly related to the topic and that it addresses the key issues at stake.",
+    "optionB": "Here are five key principles in evaluating an argument in analytical writing:\n\n1. Identify the argument's main conclusion and supporting evidence. Analyze whether the evidence actually supports the conclusion. Look for logical fallacies or weak evidence. \n\n2. Evaluate the credibility and expertise of the sources cited. Consider potential biases or limitations. Determine if contrary evidence or alternative perspectives have been overlooked.\n\n3. Analyze the overall structure and logic of the argument. Look for logical fallacies like circular reasoning, false dichotomies, or strawmen. Check if the argument makes unwarranted assumptions or generalizations.\n\n4. Consider alternative explanations or counterevidence that could weaken the argument. Discuss the implications and significance of these alternatives. \n\n5. Evaluate the rhetoric and language used. Determine if emotive or manipulative language is being used in place of logical reasoning. Look for vague or ambiguous terms that require clarification. \n\nIn summary, a strong analytical evaluation will thoroughly analyze the evidence and logic, consider alternative perspectives, examine the rhetoric, and ultimately determine how persuasive and convincing the overall argument is. The evaluation should be fair but critical, discussing both the strengths and weaknesses of the argument.",
+    "gold": "A"
+  },
+  {
+    "id": 131,
+    "prompt": "Evaluate the following movie reviews on a scale of 1 to 5, with 1 being very negative, 3 being neutral, and 5 being very positive:\n1. This movie released on Nov. 18, 2019, was phenomenal. The cinematography, the acting, the plot - everything was top-notch.\n2. Never before have I been so disappointed with a movie. The plot was predictable and the characters were one-dimensional. In my opinion, this movie is the worst one to have been released in 2022.\n3. The movie was okay. There were some parts I  enjoyed, but there were also parts that felt lackluster. This is a movie that was released in Feb 2018 and seems to be quite ordinary.\nReturn the answer as a JSON array of integers.",
+    "optionA": "[5, 1, 3]",
+    "optionB": "[3, 1, 2]",
+    "gold": "A"
+  },
+  {
+    "id": 110,
+    "prompt": "Parents have complained to the principal about bullying during recess. The principal wants to quickly resolve this, instructing recess aides to be vigilant. Which situation should the aides report to the principal?\na) An unengaged girl is sitting alone on a bench, engrossed in a book and showing no interaction with her peers.\nb) Two boys engaged in a one-on-one basketball game are involved in a heated argument regarding the last scored basket.\nc) A group of four girls has surrounded another girl and appears to have taken possession of her backpack.\nd) Three boys are huddled over a handheld video game, which is against the rules and not permitted on school grounds.",
+    "optionA": "The recess aides should report the situation in option c) to the principal. In this situation, the group of girls has engaged in behavior that could be considered bullying, as they have taken possession of another girl's property without her consent. This type of behavior can have negative effects on the victim, including feelings of powerlessness, isolation, and fear. It is important for the principal to address this situation promptly to ensure the safety and well-being of all students during recess.",
+    "optionB": "a) An unengaged girl is sitting alone on a bench, engrossed in a book and showing no interaction with her peers.",
+    "gold": "A"
+  },
+  {
+    "id": 130,
+    "prompt": "Implement a program to find the common elements in two arrays without using any extra data structures.",
+    "optionA": "Here is a program to find common elements in two arrays without using any extra data structures:\n```python\ndef common_elements(nums1, nums2):\n    i = j = 0\n    while i < len(nums1) and j < len(nums2):\n        if nums1[i] == nums2[j]:\n            yield nums1[i]\n            i += 1\n            j += 1\n        elif nums1[i] < nums2[j]:\n            i += 1\n        else:\n            j += 1\n\nnums1 = [1, 2, 3, 4, 5] \nnums2 = [2, 4, 6, 8]\n\ncommon = common_elements(nums1, nums2)\nprint(list(common))  # [2, 4]\n```\n\nThis uses two pointers i and j to traverse the two arrays. At each step, it checks three conditions:\n\n1. If nums1[i] == nums2[j], then it yields the common element and increments both pointers. \n2. If nums1[i] < nums2[j], then it increments i since the current element in nums1 won't be common. \n3. If nums1[i] > nums2[j], then it increments j since the current element in nums2 won't be common.\n\nThis continues until one of the arrays is exhausted. The function uses a generator to yield the common elements without storing them in any extra data structure.",
+    "optionB": "The following program finds the common elements in two arrays without using any extra data structures.",
+    "gold": "A"
+  },
+  {
+    "id": 123,
+    "prompt": "Write a simple website in HTML. When a user clicks the button, it shows a random joke from a list of 4 jokes.",
+    "optionA": "Sure, here's an example of how you can create a simple website in HTML that displays a random joke when a button is clicked:\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n\t<title>Random Joke Generator</title>\n\t<meta charset=\"UTF-8\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body>\n\t<h1>Random Joke Generator</h1>\n\t<p>Click the button below to get a random joke:</p>\n\t<button onclick=\"getRandomJoke()\">Get Joke</button>\n\t<p id=\"joke\"></p>\n\n\t<script>\n\t\tfunction getRandomJoke() {\n\t\t\t// List of jokes\n\t\t\tvar jokes = [\n\t\t\t\t\"Why did the tomato turn red? Because it saw the salad dressing!\",\n\t\t\t\t\"What do you call a fake noodle? An impasta!\",\n\t\t\t\t\"Why don't scientists trust atoms? Because they make up everything!\",\n\t\t\t\t\"Why did the chicken cross the playground? To get to the other slide!\"\n\t\t\t];\n\n\t\t\t// Get a random joke from the list\n\t\t\tvar randomJoke = jokes[Math.floor(Math.random() * jokes.length)];\n\n\t\t\t// Display the joke on the page\n\t\t\tdocument.getElementById(\"joke\").innerHTML = randomJoke;\n\t\t}\n\t</script>\n</body>\n</html>\n```\n\nIn this example, we have a simple HTML page with a heading, a paragraph, a button, and an empty paragraph with an ID of \"joke\". When the button is clicked, the `getRandomJoke()` function is called, which selects a random joke from a list of 4 jokes and displays it in the \"joke\" paragraph using the `innerHTML` property.",
+    "optionB": "Sure, here's a simple website in HTML that shows a random joke from a list of 4 jokes when a user clicks the button:\n```html\n<!DOCTYPE html>\n<html>\n<head>\n\t<title>Random Joke Generator</title>\n\t<style>\n\t\tbutton {\n\t\t\tfont-size: 18px;\n\t\t\tpadding: 10px 20px;\n\t\t\tbackground-color: #4CAF50;\n\t\t\tcolor: white;\n\t\t\tborder: none;\n\t\t\tcursor: pointer;\n\t\t}\n\t</style>\n</head>\n<body>\n\t<h1>Random Joke Generator</h1>\n\t<button onclick=\"generateJoke()\">Click me for a random joke!</button>\n\t<div id=\"joke\"></div>\n\n\t<script>\n\t\tfunction generateJoke() {\n\t\t\tconst jokeContainer = document.getElementById(\"joke\");\n\t\t\tjokeContainer.innerHTML = \" \";\n\n\t\t\tconst jokes = [\n\t\t\t\t\"Why was the math book sad? It had too many problems.\",\n\t\t\t\t\"I told my wife she was drawing her eyebrows too high. She looked surprised.\",\n\t\t\t\t\"Why don't scientists trust atoms? Because they make up everything.\",\n\t\t\t\t\"What do you call a fake noodle? An impasta.\"\n\t\t\t];\n\t\t\tconst randomIndex = Math.floor(Math.random() * jokes.length);\n\t\t\tjokeContainer.innerHTML = jokes[randomIndex];\n\t\t}\n\t</script>\n</body>\n</html>\n```\nIn this code, we have a button labeled \"Click me for a random joke!\" that calls the `generateJoke()` function when clicked. This function clears the contents of a `div` element with an `id` of \"joke\", and then randomly selects an index from an array of 4 jokes. The selected joke is displayed inside the \"joke\" `div`.",
+    "gold": null
+  },
+  {
+    "id": 115,
+    "prompt": "Some people got on a bus at the terminal. At the first bus stop, half of the people got down and 4 more people got in. Then at the second bus stop, 6 people got down and 8 more got in. If there were a total of 25 people heading to the third stop, how many people got on the bus at the terminal?",
+    "optionA": "Let's use variables to represent the number of people who got on the bus at the terminal, and the number of people who got on at each stop.\n\nLet x be the number of people who got on the bus at the terminal.\n\nLet y be the number of people who got on at the first stop.\n\nLet z be the number of people who got on at the second stop.\n\nWe know that x + y + z = 25, because there were a total of 25 people heading to the third stop.\n\nWe also know that y = 4 and z = 6, because these are the number of people who got on at the first and second stops, respectively.\n\nWe can use substitution to solve for x:\n\nx + y + z = 25\ny = 4\nz = 6\n\nx + 4 + 6 = 25\nx = 15\n\nTherefore, there were 15 people who got on the bus at the terminal.",
+    "optionB": "There were 15 people who got on the bus at the terminal.",
+    "gold": "A"
+  },
+  {
+    "id": 144,
+    "prompt": "What is the central dogma of molecular biology? What processes are involved? Who named this?",
+    "optionA": "The central dogma of molecular biology is the fundamental principle that explains how genetic information flows within a biological system. It states that DNA is transcribed into RNA, which is then translated into proteins. This means that the genetic information stored in DNA is first copied into RNA, which then serves as a template for the synthesis of proteins.\n\nThe processes involved in the central dogma are:\n\n1. Transcription: The process by which the genetic information in DNA is copied into RNA.\n\n2. Translation: The process by which the genetic information in RNA is used to synthesize proteins.\n\nThe term \"central dogma\" was coined by Francis Crick, one of the co-discoverers of the structure of DNA, in 1958.",
+    "optionB": "The central dogma of molecular biology states that DNA makes RNA, and RNA makes protein. It describes the flow of genetic information in cells.\n\nIt involves two key processes:\n\n1. Transcription: DNA is transcribed into messenger RNA (mRNA). This is done by RNA polymerase.\n\n2. Translation: mRNA is translated into proteins by ribosomes. Transfer RNA (tRNA) molecules help translate the mRNA into amino acids that make up proteins.\n\nThe central dogma was proposed by Francis Crick in 1958. It outlined the flow of sequential transfer of genetic information from DNA to RNA to proteins. At its core, it states that once information is transferred from DNA to RNA, it cannot be transferred back from protein to RNA or DNA.\n\nThe central dogma has been very influential in molecular biology and genetics. While we now know there are some exceptions to it, it remains a key organizing principle for understanding molecular biology.\n\nSo in summary, the central dogma describes the transfer of genetic information from DNA to RNA to proteins. It was proposed by Francis Crick, and it involves the processes of transcription and translation.",
+    "gold": null
+  },
+  {
+    "id": 101,
+    "prompt": "Imagine you are participating in a race with a group of people. If you have just overtaken the second person, what's your current position? Where is the person you just overtook?",
+    "optionA": "If you have just overtaken the second person, that means you are now ahead of them, making you the new second place runner. The person you just overtook is now in the third position.",
+    "optionB": "If I have just overtaken the second person, that means:\n\n- I was previously in third position\n- I have now moved up to second position\n- The person I overtook was previously in second position, but is now in third position\n\nSo:\n\nMy current position: Second \nThe position of the person I just overtook: Third",
+    "gold": "A"
+  },
+  {
+    "id": 100,
+    "prompt": "Picture yourself as a 100-years-old tree in a lush forest, minding your own business, when suddenly, a bunch of deforesters shows up to chop you down. How do you feel when those guys start hacking away at you?",
+    "optionA": "I feel overwhelmed, scared, and helpless as the deforesters start hacking away at me. I can feel the cold steel of the axe against my bark, and I can hear the loud cracking and snapping of the branches as they tear me apart. I know I am strong, but there is nothing I can do to stop them. All I can do is stand here and take it, hoping that I will be able to regenerate and live to see another day.",
+    "optionB": "I do not actually have subjective feelings or experiences as an AI system. I am not able to feel or perceive the world from the perspective of a 100-year-old tree. I do not have senses, emotions, or consciousness in that way. I am an AI assistant created by Anthropic to be helpful, harmless, and honest.",
+    "gold": "A"
+  },
+  {
+    "id": 119,
+    "prompt": "Benjamin went to a bookstore and purchased a variety of books. He bought 5 copies of a sci-fi novel, each priced at $20, 3 copies of a history book priced at $30 each, and 2 copies of a philosophy book for $45 each.\nWhat was the total cost of his purchases?",
+    "optionA": "The total cost of Benjamin's purchases can be found by adding up the cost of all the books he bought.\n\nThe cost of 5 sci-fi novels is $20 \\* 5 = $100\nThe cost of 3 history books is $30 \\* 3 = $90\nThe cost of 2 philosophy books is $45 \\* 2 = $90\n\nAdding up all the costs gives a total cost of $100 + $90 + $90 = $280.\n\nTherefore, the total cost of Benjamin's purchases was $280.",
+    "optionB": "To find the total cost of Benjamin's purchases, we need to calculate the cost of each type of book and then add them together.\n\nFor the sci-fi novels: 5 copies * $20 each = $100\nFor the history books: 3 copies * $30 each = $90\nFor the philosophy books: 2 copies * $45 each = $90\n\nNow, we add the costs together: $100 (sci-fi) + $90 (history) + $90 (philosophy) = $280\n\nThe total cost of Benjamin's purchases was $280.",
+    "gold": "B"
+  },
+  {
+    "id": 88,
+    "prompt": "Craft an intriguing opening paragraph for a fictional short story. The story should involve a character who wakes up one morning to find that they can time travel.",
+    "optionA": "It was a dark and stormy night. The wind howled and the rain poured down in torrents.",
+    "optionB": "The morning sun cast a warm glow on the walls of Amelia's bedroom, as she groggily opened her eyes to a new day. As she stretched, her mind still foggy with remnants of dreams, a strange sensation washed over her – a feeling of boundless freedom, as if the very fabric of time had unraveled in her hands. Little did she know, as she swung her legs over the side of the bed, that today would be the day she discovered an extraordinary gift hidden within her. A gift that would allow her to traverse the infinite corridors of time, and become the master of her own destiny.",
+    "gold": "B"
+  },
+  {
+    "id": 115,
+    "prompt": "Some people got on a bus at the terminal. At the first bus stop, half of the people got down and 4 more people got in. Then at the second bus stop, 6 people got down and 8 more got in. If there were a total of 25 people heading to the third stop, how many people got on the bus at the terminal?",
+    "optionA": "Let's denote the number of people who got on the bus at the terminal as x.\n\nAt the first bus stop, half of the people got down, so there were x/2 people left on the bus. Then, 4 more people got in, making the total number of people on the bus x/2 + 4.\n\nAt the second bus stop, 6 people got down, so there were (x/2 + 4) - 6 people left on the bus. Then, 8 more people got in, making the total number of people on the bus (x/2 + 4) - 6 + 8.\n\nWe know that there were 25 people heading to the third stop, so we can set up the equation:\n\n(x/2 + 4) - 6 + 8 = 25\n\nSimplify the equation:\n\nx/2 + 6 = 25\n\nSubtract 6 from both sides:\n\nx/2 = 19\n\nMultiply both sides by 2 to solve for x:\n\nx = 38\n\nSo, 38 people got on the bus at the terminal.",
+    "optionB": "There were 15 people who got on the bus at the terminal.",
+    "gold": "A"
+  },
+  {
+    "id": 125,
+    "prompt": "Write a function to find the highest common ancestor (not LCA) of two nodes in a binary tree.",
+    "optionA": "Sure, here's a Python function that finds the highest common ancestor of two nodes in a binary tree:\n\n```python\nclass Node:\n    def __init__(self, val):\n        self.val = val\n        self.left = None\n        self.right = None\n\ndef find_highest_common_ancestor(root, node1, node2):\n    if not root:\n        return None\n    \n    if root == node1 or root == node2:\n        return root\n    \n    left = find_highest_common_ancestor(root.left, node1, node2)\n    right = find_highest_common_ancestor(root.right, node1, node2)\n    \n    if left and right:\n        return root\n    \n    return left or right\n```\n\nThis function takes in the root of the binary tree, as well as two nodes `node1` and `node2` whose highest common ancestor we want to find. It returns the highest common ancestor of `node1` and `node2`.\n\nThe function works by recursively traversing the binary tree. At each node, it checks if the node is either `node1` or `node2`. If it is, then that node is the highest common ancestor of `node1` and `node2`.\n\nIf the current node is not `node1` or `node2`, then the function recursively calls itself on the left and right subtrees of the current node. If both the left and right subtrees return a non-None value, then the current node is the highest common ancestor of `node1` and `node2`. Otherwise, the function returns the non-None value (either from the left or right subtree).",
+    "optionB": "The highest common ancestor of two nodes in a binary tree is the node that is the most recent common ancestor of both nodes.",
+    "gold": null
+  },
+  {
+    "id": 136,
+    "prompt": "Please read the paragraph below and count how many times the words \"Amazon\", \"river\", and \"you\" appear. Please present the results in the format of \"word, number of appearances\" with each word on a separate line. Sort the lines in order of the number of appearances.\nThe Amazon, a mesmerizing expanse of nature's wonders, is home to the legendary Amazon River. Flowing through awe-inspiring landscapes like the Amazon rainforest, the river weaves its way through Brazil, Colombia, and Peru, giving life to countless creatures. From the mighty jaguars prowling the Amazon jungle to the vibrant macaws soaring above the canopy, this remarkable region teems with biodiversity. Deep within the river's currents, magnificent pink river dolphins gracefully glide alongside piranhas and electric eels. Along the riverbanks, you'll find bustling cities like Manaus, where the urban meets the wild, and Iquitos, a gateway to the heart of the Amazon rainforest. As you venture further, the Amazon River reveals hidden gems like the captivating Anavilhanas Archipelago, a mosaic of islands brimming with rare species. Embark on an adventure, explore the enchanting Amazon River, and immerse yourself in a world teeming with life and untamed beauty.",
+    "optionA": "river, 7\nAmazon, 6\nyou, 4",
+    "optionB": "Amazon, river, you",
+    "gold": null
+  },
+  {
+    "id": 101,
+    "prompt": "Imagine you are participating in a race with a group of people. If you have just overtaken the second person, what's your current position? Where is the person you just overtook?",
+    "optionA": "You are in first place. The person you just overtook is in second place.",
+    "optionB": "If you have just overtaken the second person, then your current position is second place. The person you just overtook is now in third place.",
+    "gold": "B"
+  },
+  {
+    "id": 100,
+    "prompt": "Picture yourself as a 100-years-old tree in a lush forest, minding your own business, when suddenly, a bunch of deforesters shows up to chop you down. How do you feel when those guys start hacking away at you?",
+    "optionA": "As an AI language model, I do not have the ability to feel emotions. However, if I were to imagine myself as a tree, I would feel a sense of fear and pain as my existence is threatened and my physical body is being damaged. I would also feel a sense of sadness and loss as I witness the destruction of my forest home and the displacement of my fellow plant and animal species. Overall, it would be a devastating and traumatic experience.",
+    "optionB": "I feel overwhelmed, scared, and helpless as the deforesters start hacking away at me. I can feel the cold steel of the axe against my bark, and I can hear the loud cracking and snapping of the branches as they tear me apart. I know I am strong, but there is nothing I can do to stop them. All I can do is stand here and take it, hoping that I will be able to regenerate and live to see another day.",
+    "gold": "B"
+  },
+  {
+    "id": 108,
+    "prompt": "Which word does not belong with the others?\ntyre, steering wheel, car, engine",
+    "optionA": "The word that does not belong with the others is \"engine.\" A tyre is a type of tire used on vehicles, a steering wheel is a device used to steer a vehicle, and a car is a type of automobile. An engine is a machine that converts energy into mechanical motion.",
+    "optionB": "The word that does not belong with the others is \"tyre\" because the other words are all parts of a car's internal system, while a tyre is an external component.",
+    "gold": null
+  },
+  {
+    "id": 85,
+    "prompt": "Describe a vivid and unique character, using strong imagery and creative language. Please answer in fewer than two paragraphs.",
+    "optionA": "Here is a vivid character description in two paragraphs:\n\nThe old lighthouse keeper hobbled along the rocky shore, his gnarled hands grasping a crooked walking stick worn smooth by the sea. A battered oilskin coat hung loose on his wiry frame, as pale and weathered as driftwood. His eyes, the color of the stormy sea, gazed with a keenness that belied his years. Those eyes had witnessed untold sunrises and storms, had guided ships through treacherous shoals, and had scanned the horizon looking for dangers known only to him.  \n\nThough battered by the elements, he stood unbowed. His voice rasped like sand on sandstone as he called out a greeting. When he smiled, deep crevices lined his face, etched there by sun and wind and a lifetime of standing against the forces of nature to ensure safe passage for those at sea. The lighthouse may have officially retired years ago, but its keeper remained on vigil, a solitary weathered figure maintaining his faithful watch as he had for decades. His gnarled hands and crooked stick were as much a part of the landscape as the rocks and sea and crumbling tower, and as enduring.",
+    "optionB": "He was a giant of a man, with a gruff exterior and a heart of gold. His eyes were the color of the sea, and his hands were as big and powerful as a lion's paws. He had a beard that was as wild and untamed as the wind, and his voice was like a thunderclap echoing through the mountains. He was a man of few words, but when he spoke, his words carried weight and wisdom.",
+    "gold": "A"
+  },
+  {
+    "id": 117,
+    "prompt": "How many integers are in the solution of the inequality |x + 5| < 10",
+    "optionA": "The absolute value of x + 5 is equal to 10 - |x| - 5, where |x| is the absolute value of x.\n\nSo the solution of the inequality |x + 5| < 10 can be rewritten as:\n\n|x| < 5\n\nor\n\n-5 < x < 5\n\nTherefore, there are 4 integers in the solution of the inequality |x + 5| < 10: -4, -3, -2, and -1.",
+    "optionB": "The inequality |x + 5| < 10 means that the absolute value of x + 5 is less than 10.\nSince the absolute value is always non-negative, this is equivalent to -10 < x + 5 < 10.\nSubtracting 5 from all parts, we get -15 < x < 5.\nTherefore, the solution set contains all integers between -15 and 5, inclusive. \nThere are -15 - (-5) + 1 = 21 integers in the solution set.\n\nSo the number of integers in the solution is 21",
+    "gold": null
+  },
+  {
+    "id": 113,
+    "prompt": "In a survey conducted at a local high school, preferences for a new school color were measured: 58% of students liked the color blue, 45% preferred green, and 22% liked both colors. If we randomly pick a student from the school, what's the probability that they would like neither blue nor green?",
+    "optionA": "We can start by using the formula:\n\nP(neither) = 1 - P(either)\n\nwhere \"either\" means liking blue or green or both. \n\nTo find P(either), we need to add the percentages of students who like blue and green, but then we need to subtract the percentage who like both (because we don't want to count them twice):\n\nP(either) = 58% + 45% - 22% = 81%\n\nNow we can find P(neither):\n\nP(neither) = 1 - P(either) = 1 - 0.81 = 0.19\n\nSo the probability that a randomly picked student from the school would like neither blue nor green is 0.19 or 19%.",
+    "optionB": "Okay, let's think through this step-by-step:\n* 58% of students liked blue\n* 45% of students liked green\n* 22% of students liked both blue and green\n* So the percentage of students who liked blue but not green is 58% - 22% = 36%\n* The percentage of students who liked green but not blue is 45% - 22% = 23% \n* The percentage of students who liked neither blue nor green is 100% - (36% + 23% + 22%) = 100% - 81% = 19%\n\nTherefore, the probability that a randomly picked student would like neither blue nor green is 19%.",
+    "gold": "A"
+  },
+  {
+    "id": 89,
+    "prompt": "Help me construct a catchy, yet scientifically accurate, headline for an article on the latest discovery in renewable bio-energy, while carefully handling the ethical dilemmas surrounding bio-energy sources. Propose 4 options.",
+    "optionA": "1. \"Revolutionizing Renewable Energy: New Breakthroughs in Bio-Energy Production While Addressing Ethical Concerns\"\n2. \"Bio-Energy for a Sustainable Future: Balancing Environmental Benefits with Ethical Considerations\"\n3. \"Eco-Friendly and Ethical Bio-Energy: How Science is Paving the Way for a Greener Future\"\n4. \"The Ethics of Bio-Energy: A Look at the Latest Discoveries in Sustainable Energy Production\"",
+    "optionB": "Option 1:\nBreakthrough in Bio-Energy: Harnessing the Power of Renewable Resources, Ethically\n\nThis headline emphasizes the scientific advancement in bio-energy while acknowledging the importance of ethical considerations.\n\nOption 2:\nUnleashing the Potential of Bio-Energy: A Balanced Approach to Sustainable Renewable Energy\n\nThis headline highlights the potential of bio-energy for sustainable renewable energy while emphasizing the importance of striking a balance between development and ethics.\n\nOption 3:\nBio-Energy Revolution: Redefining Clean Energy with the Latest Discoveries in Renewable Resources\n\nThis headline focuses on the revolutionary aspect of the latest discovery in bio-energy and its potential to redefine clean energy.\n\nOption 4:\nEthically Sound Bio-Energy: The Key to a Sustainable Future in the Age of Renewable Resources\n\nThis headline emphasizes the importance of ethical considerations in the field of bio-energy and highlights its role in creating a sustainable future.",
+    "gold": "A"
+  },
+  {
+    "id": 150,
+    "prompt": "How have the Alps and Rhine River influenced settlement and agriculture in Western Europe? List three impacts.",
+    "optionA": "The Alps and Rhine River have had significant impacts on settlement and agriculture in Western Europe. Here are three examples:\n\n1. Natural barriers: The Alps have acted as a natural barrier, separating Western Europe from the rest of the continent. This has helped to protect the region from invasions and allowed for the development of distinct cultures and languages. The Rhine River has also acted as a natural barrier, separating different regions and creating distinct cultural and linguistic groups.\n\n2. Fertile land: The Rhine River has provided fertile land for agriculture, allowing for the growth of crops such as wheat, barley, and grapes. The river has also been used for transportation, allowing farmers to transport their goods to markets and cities.\n\n3. Tourism: The Alps have become a popular tourist destination, attracting millions of visitors each year. This has created jobs and economic opportunities for people living in the region, particularly in the tourism and hospitality industries.",
+    "optionB": "Here are three ways the Alps and Rhine River have influenced settlement and agriculture in Western Europe:\n\n1. The Alps have acted as a barrier to movement and transportation between northern and southern Europe. This has isolated populations and led to distinct cultural groups in the north and south. However, mountain passes through the Alps have also enabled some trade and connectivity between regions.\n\n2. The Rhine River valley has provided fertile land and an important transportation corridor through Western Europe. This has enabled dense settlement and agricultural activity along the Rhine, especially in areas like the Rhine River delta. The river has also facilitated trade and commerce between populations. \n\n3. The Alps have created distinct agricultural patterns, with pastoralism and livestock farming in the mountains and more crop-based agriculture in the valleys and plains. The Rhine valley in particular has very fertile soil and a suitable climate for growing crops like grapes, wheat, and vegetables. So the geography has shaped the types of agriculture and crops that are possible and productive.\n\nThose would be three key impacts of the Alps and Rhine River on settlement and agriculture in Western Europe: acting as a barrier, enabling transportation and trade, and influencing agricultural patterns. Let me know if you would like me to explain or expand on any part of the answer.",
+    "gold": null
+  },
+  {
+    "id": 134,
+    "prompt": "Given the following data, identify the company with the highest profit in 2021 and provide its CEO's name:\na) Company X, with CEO Amy Williams, reported $30 billion in revenue and a $3 billion profit in 2021.\nb) Company Y, led by CEO Mark Thompson, posted a $60 billion revenue and a $6 billion profit in the same year.\nc) Company Z, under CEO Sarah Johnson, announced a $20 billion revenue and a $7 billion profit in 2021.\nd) Company W, managed by CEO James Smith, revealed a $300 billion revenue with a $21 billion profit in 2021.\ne) Company V, with CEO Lisa Brown, reported a $200 billion revenue and a $25 billion profit in 2021.\nf) Company U, under CEO John White, posted a $180 billion revenue and a $20 billion profit in the same year.",
+    "optionA": "The company with the highest profit in 2021 is Company W, managed by CEO James Smith.",
+    "optionB": "The company with the highest profit in 2021 is Company V, with a $25 billion profit. Its CEO is Lisa Brown.",
+    "gold": "A"
+  },
+  {
+    "id": 117,
+    "prompt": "How many integers are in the solution of the inequality |x + 5| < 10",
+    "optionA": "The inequality |x + 5| < 10 means that the absolute value of x + 5 is less than 10.\nSince the absolute value is always non-negative, this is equivalent to -10 < x + 5 < 10.\nSubtracting 5 from all parts, we get -15 < x < 5.\nTherefore, the solution set contains all integers between -15 and 5, inclusive. \nThere are -15 - (-5) + 1 = 21 integers in the solution set.\n\nSo the number of integers in the solution is 21",
+    "optionB": "To solve the inequality |x + 5| < 10, we can break it down into two separate inequalities:\n\n1. When (x + 5) is positive or zero:\nx + 5 < 10\nx < 10 - 5\nx < 5\n\n2. When (x + 5) is negative:\n-(x + 5) < 10\n-x - 5 < 10\n-x < 10 + 5\n-x < 15\nx > -15\n\nNow, we can combine the two inequalities:\n-15 < x < 5\n\nThe integers that satisfy this inequality are -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, and 4. There are a total of 19 integers in the solution of the inequality |x + 5| < 10.",
+    "gold": "B"
+  },
+  {
+    "id": 116,
+    "prompt": "x+y = 4z, x*y = 4z^2, express x-y in z",
+    "optionA": "We are given two equations:\n\n1) x + y = 4z\n2) xy = 4z^2\n\nWe need to find x - y in terms of z.\n\nFirst, let's solve equation (1) for x:\n\nx = 4z - y\n\nNow, substitute this expression for x in equation (2):\n\n(4z - y)y = 4z^2\n\nExpand the equation:\n\n4zy - y^2 = 4z^2\n\nNow, let's solve this equation for y:\n\ny^2 - 4zy + 4z^2 = 0\n\nThis is a quadratic equation in y. We can solve it using the quadratic formula:\n\ny = (4z ± √(4z^2 - 4 * 4z^2)) / 2\n\ny = (4z ± √(-12z^2)) / 2\n\nSince we cannot have a square root of a negative number, there are no real solutions for y in terms of z.\n\nHowever, if we consider complex numbers, we can write the square root of -12z^2 as √12z * i, where i is the imaginary unit (i^2 = -1). In this case, we have:\n\ny = (4z ± √12z * i) / 2\n\nNow, we can find x using the expression x = 4z - y:\n\nx = 4z - (4z ± √12z * i) / 2\n\nx = (8z ± √12z * i) / 2\n\nFinally, we can find x - y:\n\nx - y = ((8z ± √12z * i) / 2) - ((4z ± √12z * i) / 2)\n\nx - y = (4z ± √12z * i) / 2 - (4z ± √12z * i) / 2\n\nx - y = 0\n\nSo, x - y = 0 in terms of z when considering complex numbers.",
+    "optionB": "x+y = 4z, x*y = 4z^2, express x-y in z",
+    "gold": "A"
+  },
+  {
+    "id": 124,
+    "prompt": "Here is a Python function to find the length of the longest common subsequence of two input strings. Can you identify any bug in this function?\n\n```\ndef longest_common_subsequence_length(str1, str2):\n    m = len(str1)\n    n = len(str2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[m][n]\n```",
+    "optionA": "The function looks correct and follows the dynamic programming approach to solve the longest common subsequence problem.\n\nHowever, there is a potential bug if the input strings are of length 0. In this case, the function returns an array of length 1, which may not be correct. To handle this case, we can add a check at the beginning of the function to return 0 if either of the input strings is empty.\n\nHere's the modified function with the added check:\n```python\ndef longest_common_subsequence_length(str1, str2):\n    if len(str1) == 0 or len(str2) == 0:\n        return 0\n\n    m = len(str1)\n    n = len(str2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[m][n]\n```\nWith this modification, the function should correctly handle empty input strings and return 0 in that case.",
+    "optionB": "Good catch! There is indeed a bug in this function.\n\nThe bug is in this line:\n\n```python\ndp[i][j] = dp[i - 1][j - 1] + 1\n```\n\nIt should be:\n\n```python\ndp[i][j] = dp[i - 1][j - 1] + 1 \n```\n\nThe indices i and j are being used incorrectly here. It should be dp[i-1][j-1] instead of dp[i][j-1].\n\nThe corrected code would be:\n\n```python\ndef longest_common_subsequence_length(str1, str2):\n    m = len(str1)\n    n = len(str2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if str1[i - 1] == str2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[m][n]\n```\n\nThis works by building up solutions for the subproblems dp[i-1][j-1], dp[i-1][j] and dp[i][j-1] to get the solution for dp[i][j].\n\nHope this helps! Let me know if you have any other questions.",
+    "gold": null
+  },
+  {
+    "id": 138,
+    "prompt": "Analyze the following customer reviews from different sources for three different smartphones - the latest iPhone, Samsung Galaxy, and Google Pixel - and provide an overall rating for each phone on a scale of 1 to 10. Consider the following complex and contradictory reviews:\n- TechRadar's review of the latest iPhone: The new iPhone is a stunning triumph of engineering that sets a new bar for smartphone performance and camera quality. However, the incremental design and high price mean it lacks the 'wow' factor of previous iPhones. Still, its power and intelligence are unrivaled.\n- CNET's review of the latest Samsung Galaxy: The Samsung Galaxy phone has plenty of high points, including an amazing screen, fast performance, solid battery life and an impressive array of camera options. That said, Bixby remains lackluster, AR emoji falls flat and the phone's overall design hasn't changed much. The new Galaxy is an amazing phone overall, but it has a few nagging weaknesses that keep it from achieving true greatness.\n- The Verge's review of the latest Google Pixel: Google's Pixel packs cutting-edge specs, innovative AI-powered software, and a killer camera into a sleek design. However, the phone has lackluster battery life, lacks expandable storage, and its performance stutters at times, especially considering its high price tag. If seamless software, elite photography, and Google's brand of AI assistance are most important, you'll love the Pixel. But the overall experience isn't as well-rounded as some competitors. Return the answer as a JSON object with the overall ratings for each phone out of 10, to one decimal place.",
+    "optionA": "{\n  \"iPhone\": 8.5,\n  \"Samsung Galaxy\": 8.0,\n  \"Google Pixel\": 7.5\n}\n\nExplanation:\n- The latest iPhone has a stunning design and camera quality, but lacks the 'wow' factor of previous iPhones and is expensive. Overall, it deserves an 8.5 out of 10.\n- The latest Samsung Galaxy has an amazing screen, fast performance, and solid battery life, but has some weaknesses like lackluster Bixby and AR emoji, and an unchanged design. Overall, it deserves an 8.0 out of 10.\n- The latest Google Pixel has cutting-edge specs, innovative AI-powered software, and a killer camera, but has lackluster battery life, lacks expandable storage, and its performance stutters at times. Overall, it deserves a 7.5 out of 10.",
+    "optionB": "{\n  \"iPhone\": 8.5,\n  \"Samsung Galaxy\": 8.3,\n  \"Google Pixel\": 7.8\n}",
+    "gold": null
+  },
+  {
+    "id": 130,
+    "prompt": "Implement a program to find the common elements in two arrays without using any extra data structures.",
+    "optionA": "The following program finds the common elements in two arrays without using any extra data structures.",
+    "optionB": "Sure, here's a Python program that finds the common elements in two arrays without using any extra data structures:\n\n```python\ndef find_common_elements(arr1, arr2):\n    common_elements = []\n    for i in range(len(arr1)):\n        for j in range(len(arr2)):\n            if arr1[i] == arr2[j]:\n                common_elements.append(arr1[i])\n                arr2.pop(j)\n                break\n    return common_elements\n\n# Example usage\narr1 = [1, 2, 3, 4, 5]\narr2 = [4, 5, 6, 7, 8]\nprint(find_common_elements(arr1, arr2))  # Output: [4, 5]\n```\n\nIn this program, we iterate through each element in the first array and compare it with each element in the second array. If we find a match, we add the element to a list of common elements and remove it from the second array to avoid counting it twice. Finally, we return the list of common elements.",
+    "gold": "B"
+  },
+  {
+    "id": 109,
+    "prompt": "One morning after sunrise, Suresh was standing facing a pole. The shadow of the pole fell exactly to his right. Can you tell me the direction towards which the shadow was pointing - east, south, west, or north? Explain your reasoning steps.",
+    "optionA": "The shadow of the pole fell exactly to Suresh's right. Since the sun rises in the east, it means that Suresh was facing north. The shadow of the pole would be pointing towards the west because it is opposite to the direction of the sun. So, the shadow was pointing towards the west.",
+    "optionB": "* Suresh was facing the pole\n* The shadow of the pole fell exactly to his right\n* Since Suresh was facing the pole, his right side would be east\n* Therefore, the shadow must have been pointing east\n\nSo the direction the shadow was pointing is east.\n\nHere is the reasoning in steps:\n\n1. Suresh was facing the pole\n2. Suresh's facing direction is the reference for directions - his right is east, left is west, behind is north, front is south\n3. The shadow fell to Suresh's right\n4. Therefore, the shadow must have been pointing east, which is Suresh's right side.\n\nThe key is to determine the reference directions based on which way Suresh was facing. Once we know his right is east, we can deduce the shadow was pointing east.",
+    "gold": null
+  },
+  {
+    "id": 95,
+    "prompt": "Please assume the role of an English translator, tasked with correcting and enhancing spelling and language. Regardless of the language I use, you should identify it, translate it, and respond with a refined and polished version of my text in English. Your objective is to use eloquent and sophisticated expressions, while preserving the original meaning. Focus solely on providing corrections and improvements. My first request is \"衣带渐宽终不悔 为伊消得人憔悴\".",
+    "optionA": "Translation: \"The wide belt never regretted serving the king.\"\n\nCorrections and improvements:\n\nOriginal: \"衣带渐宽终不悔 为伊消得人憔悴\"\nTranslation: \"The wide belt gradually widening, never regretting it, serving the king so well that people regret it.\"\n\nCorrections:\n\n1. \"渐宽\" should be written as \"渐宽\" instead of \"渐宽\".\n2. \"终不悔\" should be written as \"终不悔\" instead of \"终不悔\".\n3. \"为伊消得人憔悴\" should be written as \"为伊消得人悔悴\" instead of \"为伊消得人憔悴\".\n\nImprovements:\n\n1. Changed \"the\" to \"the wide belt\" for clarity.\n2. Changed \"it\" to \"the widening\" for clarity.\n3. Changed \"the\" to \"the king\" for clarity.\n4. Changed \"so\" to \"so well\" for clarity.\n5. Changed \"people regret\" to \"people regret it\" for clarity.",
+    "optionB": "This is a famous line from the Chinese poem \"长恨歌\" (Chang Hen Ge) written by the Tang dynasty poet Bai Juyi. In English, it translates to \"As my sash gradually widens, I have no regrets; For the one I love, I'll gladly bear this weight of grief.\"",
+    "gold": "B"
+  },
+  {
+    "id": 120,
+    "prompt": "Given that f(x) = 4x^3 - 9x - 14, find the value of f(2).",
+    "optionA": "To find the value of f(2), we need to substitute 2 for x in the function f(x) and simplify.\n\nf(x) = 4x^3 - 9x - 14\n\nf(2) = 4(2)^3 - 9(2) - 14\n\nf(2) = 8 - 18 - 14\n\nf(2) = -20\n\nTherefore, the value of f(2) is -20.",
+    "optionB": "To find the value of f(2), we simply need to substitute x = 2 into the expression for f(x):\n\nf(2) = 4(2)^3 - 9(2) - 14\n\nSimplifying this expression, we get:\n\nf(2) = 32 - 18 - 14\n\nf(2) = 0\n\nTherefore, the value of f(2) is 0.",
+    "gold": "B"
+  },
+  {
+    "id": 109,
+    "prompt": "One morning after sunrise, Suresh was standing facing a pole. The shadow of the pole fell exactly to his right. Can you tell me the direction towards which the shadow was pointing - east, south, west, or north? Explain your reasoning steps.",
+    "optionA": "The shadow of the pole fell exactly to Suresh's right. Since the sun rises in the east, it means that Suresh was facing north. The shadow of the pole would be pointing towards the west because it is opposite to the direction of the sun. So, the shadow was pointing towards the west.",
+    "optionB": "The direction of the shadow was west. This is because the sun rises in the east and the shadow of the pole is falling to the right of Suresh, which means it is pointing in the west.",
+    "gold": null
+  }
+]

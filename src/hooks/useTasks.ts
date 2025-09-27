@@ -3,68 +3,95 @@
  * Handles fetching, filtering, and managing task state
  */
 
-import { useCallback, useEffect } from 'react';
-import { useTasks, useAuth, useUI } from '@/stores';
-import { Task, TaskFilters, TaskSortOptions, TasksResponse } from '@/types';
-import { parseErrorMessage } from '@/lib/utils';
+'use client';
 
-export const useTasksApi = () => {
+import { useState, useEffect, useCallback } from 'react';
+import { Task, TaskCategory, TasksResponse } from '@/types';
+
+interface TaskFilters {
+  category?: string;
+  difficulty?: number;
+  task_type?: string;
+  search?: string;
+  sort?: string;
+  status?: string;
+}
+
+interface UseTasksOptions {
+  initialFilters?: TaskFilters;
+  limit?: number;
+  autoFetch?: boolean;
+}
+
+interface UseTasksReturn {
+  tasks: Task[];
+  categories: TaskCategory[];
+  loading: boolean;
+  error: string | null;
+  pagination: {
+    limit: number;
+    offset: number;
+    count: number;
+    total: number;
+    has_more: boolean;
+  };
+  filters: TaskFilters;
+  setFilters: (filters: TaskFilters) => void;
+  refreshTasks: () => Promise<void>;
+  loadMore: () => Promise<void>;
+  categoriesLoading: boolean;
+  categoriesError: string | null;
+  refreshCategories: () => Promise<void>;
+}
+
+export function useTasks(options: UseTasksOptions = {}): UseTasksReturn {
   const {
-    tasks,
-    filters,
-    sortOptions,
-    pagination,
-    loading,
-    errors,
-    setTasks,
-    addTasks,
-    setTaskLoading,
-    setTaskError,
-    setPagination,
-    setFilters,
-    setSortOptions,
-    resetTasks,
-  } = useTasks();
+    initialFilters = {},
+    limit = 20,
+    autoFetch = true
+  } = options;
 
-  const { user } = useAuth();
-  const { addNotification } = useUI();
+  // State management
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [categories, setCategories] = useState<TaskCategory[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [categoriesError, setCategoriesError] = useState<string | null>(null);
+  const [filters, setFiltersState] = useState<TaskFilters>(initialFilters);
+  const [pagination, setPagination] = useState({
+    limit,
+    offset: 0,
+    count: 0,
+    total: 0,
+    has_more: false
+  });
 
-  // Fetch tasks from API
-  const fetchTasks = useCallback(async (
-    loadMore = false,
-    customFilters?: Partial<TaskFilters>,
-    customSort?: TaskSortOptions
-  ) => {
-    const key = 'fetchTasks';
-    setTaskLoading(key, true);
-    setTaskError(key, null);
-
+  /**
+   * Fetch tasks from the API
+   */
+  const fetchTasks = useCallback(async (reset = false) => {
     try {
-      const searchParams = new URLSearchParams();
+      setLoading(true);
+      setError(null);
 
-      // Pagination
-      const currentOffset = loadMore ? pagination.offset + pagination.limit : 0;
-      searchParams.set('limit', pagination.limit.toString());
-      searchParams.set('offset', currentOffset.toString());
-
-      // Apply filters
-      const activeFilters = { ...filters, ...customFilters };
-      if (activeFilters.category) searchParams.set('category', activeFilters.category);
-      if (activeFilters.task_type) searchParams.set('task_type', activeFilters.task_type);
-      if (activeFilters.difficulty_level) searchParams.set('difficulty_level', activeFilters.difficulty_level.toString());
-      if (activeFilters.reward_min) searchParams.set('reward_min', activeFilters.reward_min.toString());
-      if (activeFilters.reward_max) searchParams.set('reward_max', activeFilters.reward_max.toString());
-      if (activeFilters.status) searchParams.set('status', activeFilters.status);
-      if (activeFilters.expires_within_hours) searchParams.set('expires_within_hours', activeFilters.expires_within_hours.toString());
-
-      // Apply sorting
-      const currentSort = customSort || sortOptions;
-      searchParams.set('sort', `${currentSort.field}:${currentSort.direction}`);
+      const offset = reset ? 0 : pagination.offset;
+      const searchParams = new URLSearchParams({
+        limit: limit.toString(),
+        offset: offset.toString(),
+        ...(filters.category && { category: filters.category }),
+        ...(filters.difficulty && { difficulty: filters.difficulty.toString() }),
+        ...(filters.task_type && { task_type: filters.task_type }),
+        ...(filters.search && { search: filters.search }),
+        ...(filters.sort && { sort: filters.sort }),
+        ...(filters.status && { status: filters.status })
+      });
 
       const response = await fetch(`/api/tasks?${searchParams.toString()}`);
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
 
       const data: TasksResponse = await response.json();
@@ -73,189 +100,42 @@ export const useTasksApi = () => {
         throw new Error(data.error || 'Failed to fetch tasks');
       }
 
-      // Update tasks
-      if (loadMore) {
-        addTasks(data.tasks);
-      } else {
+      if (reset) {
         setTasks(data.tasks);
+        setPagination({
+          ...data.pagination,
+          offset: data.pagination.count
+        });
+      } else {
+        // Append new tasks for load more functionality
+        setTasks(prev => [...prev, ...data.tasks]);
+        setPagination(prev => ({
+          ...data.pagination,
+          offset: prev.offset + data.pagination.count
+        }));
       }
 
-      // Update pagination
-      setPagination({
-        offset: currentOffset,
-        hasMore: data.pagination.has_more,
-        total: data.pagination.count,
-      });
-
-      return data.tasks;
-
-    } catch (error) {
-      const errorMsg = parseErrorMessage(error);
-      setTaskError(key, errorMsg);
-
-      addNotification({
-        type: 'error',
-        title: 'Failed to Load Tasks',
-        message: errorMsg,
-      });
-
-      throw error;
+    } catch (err) {
+      console.error('Failed to fetch tasks:', err);
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
-      setTaskLoading(key, false);
+      setLoading(false);
     }
-  }, [
-    pagination,
-    filters,
-    sortOptions,
-    setTasks,
-    addTasks,
-    setTaskLoading,
-    setTaskError,
-    setPagination,
-    addNotification,
-  ]);
+  }, [filters, limit, pagination.offset]);
 
-  // Fetch a single task
-  const fetchTask = useCallback(async (taskId: string): Promise<Task> => {
-    const key = `fetchTask_${taskId}`;
-    setTaskLoading(key, true);
-    setTaskError(key, null);
-
-    try {
-      const response = await fetch(`/api/tasks/${taskId}`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to fetch task');
-      }
-
-      return data.task;
-
-    } catch (error) {
-      const errorMsg = parseErrorMessage(error);
-      setTaskError(key, errorMsg);
-      throw error;
-    } finally {
-      setTaskLoading(key, false);
-    }
-  }, [setTaskLoading, setTaskError]);
-
-  // Submit task solution
-  const submitTask = useCallback(async (taskId: string, submissionData: any): Promise<void> => {
-    const key = `submitTask_${taskId}`;
-    setTaskLoading(key, true);
-    setTaskError(key, null);
-
-    try {
-      const response = await fetch(`/api/tasks/${taskId}/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to submit task');
-      }
-
-      addNotification({
-        type: 'success',
-        title: 'Task Submitted',
-        message: 'Your submission has been sent for review',
-      });
-
-      // Refresh tasks to update submission status
-      await fetchTasks();
-
-    } catch (error) {
-      const errorMsg = parseErrorMessage(error);
-      setTaskError(key, errorMsg);
-
-      addNotification({
-        type: 'error',
-        title: 'Submission Failed',
-        message: errorMsg,
-      });
-
-      throw error;
-    } finally {
-      setTaskLoading(key, false);
-    }
-  }, [setTaskLoading, setTaskError, addNotification, fetchTasks]);
-
-  // Update filters and refresh tasks
-  const updateFilters = useCallback(async (newFilters: Partial<TaskFilters>) => {
-    setFilters(newFilters);
-    resetTasks();
-    await fetchTasks(false, newFilters);
-  }, [setFilters, resetTasks, fetchTasks]);
-
-  // Update sorting and refresh tasks
-  const updateSort = useCallback(async (newSort: TaskSortOptions) => {
-    setSortOptions(newSort);
-    resetTasks();
-    await fetchTasks(false, undefined, newSort);
-  }, [setSortOptions, resetTasks, fetchTasks]);
-
-  // Load more tasks (pagination)
-  const loadMoreTasks = useCallback(async () => {
-    if (!pagination.hasMore || loading.fetchTasks) return;
-    await fetchTasks(true);
-  }, [pagination.hasMore, loading.fetchTasks, fetchTasks]);
-
-  // Refresh tasks (reset and fetch)
-  const refreshTasks = useCallback(async () => {
-    resetTasks();
-    await fetchTasks();
-  }, [resetTasks, fetchTasks]);
-
-  return {
-    // State
-    tasks,
-    filters,
-    sortOptions,
-    pagination,
-    loading,
-    errors,
-
-    // Actions
-    fetchTasks,
-    fetchTask,
-    submitTask,
-    updateFilters,
-    updateSort,
-    loadMoreTasks,
-    refreshTasks,
-    resetTasks,
-  };
-};
-
-// Hook for task categories
-export const useTaskCategories = () => {
-  const { taskCategories, setTaskCategories, setDashboardLoading, setDashboardError } = useAuth();
-
+  /**
+   * Fetch categories from the API
+   */
   const fetchCategories = useCallback(async () => {
-    const key = 'categories';
-    setDashboardLoading(key, true);
-    setDashboardError(key, null);
-
     try {
-      const response = await fetch('/api/categories');
+      setCategoriesLoading(true);
+      setCategoriesError(null);
+
+      const response = await fetch('/api/tasks/categories');
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -264,27 +144,128 @@ export const useTaskCategories = () => {
         throw new Error(data.error || 'Failed to fetch categories');
       }
 
-      setTaskCategories(data.categories);
-      return data.categories;
+      setCategories(data.categories);
 
-    } catch (error) {
-      const errorMsg = parseErrorMessage(error);
-      setDashboardError(key, errorMsg);
-      throw error;
+    } catch (err) {
+      console.error('Failed to fetch categories:', err);
+      setCategoriesError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
-      setDashboardLoading(key, false);
+      setCategoriesLoading(false);
     }
-  }, [setTaskCategories, setDashboardLoading, setDashboardError]);
+  }, []);
 
-  // Load categories on mount if not already loaded
-  useEffect(() => {
-    if (taskCategories.length === 0) {
-      fetchCategories().catch(console.error);
+  /**
+   * Set filters and reset pagination
+   */
+  const setFilters = useCallback((newFilters: TaskFilters) => {
+    setFiltersState(newFilters);
+    setPagination(prev => ({ ...prev, offset: 0 }));
+  }, []);
+
+  /**
+   * Refresh tasks (reset and fetch from beginning)
+   */
+  const refreshTasks = useCallback(async () => {
+    setPagination(prev => ({ ...prev, offset: 0 }));
+    await fetchTasks(true);
+  }, [fetchTasks]);
+
+  /**
+   * Load more tasks (pagination)
+   */
+  const loadMore = useCallback(async () => {
+    if (!loading && pagination.has_more) {
+      await fetchTasks(false);
     }
-  }, [taskCategories.length, fetchCategories]);
+  }, [fetchTasks, loading, pagination.has_more]);
+
+  /**
+   * Refresh categories
+   */
+  const refreshCategories = useCallback(async () => {
+    await fetchCategories();
+  }, [fetchCategories]);
+
+  // Auto-fetch on mount and when filters change
+  useEffect(() => {
+    if (autoFetch) {
+      refreshTasks();
+    }
+  }, [refreshTasks, autoFetch, filters]);
+
+  // Auto-fetch categories on mount
+  useEffect(() => {
+    if (autoFetch) {
+      fetchCategories();
+    }
+  }, [fetchCategories, autoFetch]);
 
   return {
-    categories: taskCategories,
-    fetchCategories,
+    tasks,
+    categories,
+    loading,
+    error,
+    pagination,
+    filters,
+    setFilters,
+    refreshTasks,
+    loadMore,
+    categoriesLoading,
+    categoriesError,
+    refreshCategories
   };
-};
+}
+
+/**
+ * Hook for fetching a single task by ID
+ */
+export function useTask(taskId: string | null) {
+  const [task, setTask] = useState<Task | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchTask = useCallback(async () => {
+    if (!taskId) {
+      setTask(null);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(`/api/tasks/${taskId}`);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to fetch task');
+      }
+
+      setTask(data.task);
+
+    } catch (err) {
+      console.error('Failed to fetch task:', err);
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+      setTask(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [taskId]);
+
+  useEffect(() => {
+    fetchTask();
+  }, [fetchTask]);
+
+  return {
+    task,
+    loading,
+    error,
+    refetch: fetchTask
+  };
+}

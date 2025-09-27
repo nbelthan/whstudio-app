@@ -232,7 +232,7 @@ export async function isNullifierUsedForAction(
 
     // For now, we'll use a simple in-memory approach
     // In production, use your database or Redis
-    const { db } = await import('@/lib/db/client');
+    const { db } = await import('../db/client');
 
     const query = `
       SELECT COUNT(*) as count

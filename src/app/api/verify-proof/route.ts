@@ -4,9 +4,9 @@ import {
   verifyCloudProof,
 } from '@worldcoin/minikit-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyWorldIDProof, isValidProofFormat, checkVerificationRateLimit, actions } from '@/lib/world/verify';
-import { queries } from '@/lib/db/client';
-import { createSession, isNullifierUsed } from '@/lib/auth/session';
+import { verifyWorldIDProof, isValidProofFormat, checkVerificationRateLimit, actions } from '@/lib/world-verify';
+import { queries } from '@/lib/db';
+import { createSession, isNullifierUsed } from '@/lib/session';
 
 interface IRequestPayload {
   payload: ISuccessResult;

@@ -7,7 +7,7 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { queries } from '@/lib/db/client';
+import { queries } from '../db/client';
 
 // Environment variables validation
 const JWT_SECRET = process.env.JWT_SECRET;

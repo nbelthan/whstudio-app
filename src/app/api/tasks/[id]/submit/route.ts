@@ -4,9 +4,9 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/auth/session';
-import { queries } from '@/lib/db/client';
-import { verifyWorldIDProof, actions } from '@/lib/world/verify';
+import { withAuth } from '@/lib/session';
+import { queries } from '@/lib/db';
+import { verifyWorldIDProof, actions } from '@/lib/world-verify';
 
 /**
  * Submit work for a task
@@ -125,7 +125,7 @@ export async function POST(
         }
       }
 
-      // Validate submission data structure
+      // Validate submission data structure based on task type
       if (typeof submissionData.submission_data !== 'object') {
         return NextResponse.json(
           { error: 'Submission data must be an object' },
@@ -133,7 +133,36 @@ export async function POST(
         );
       }
 
-      // Validate time spent
+      // Special validation for pairwise A/B preference tasks (MT-Bench)
+      if (task.task_type === 'pairwise_ab' || (task.instructions && typeof task.instructions === 'object' && task.instructions.type === 'pairwise_ab')) {
+        const { chosen_response, confidence, time_spent_seconds } = submissionData.submission_data;
+
+        // Validate chosen_response is either "A" or "B"
+        if (!chosen_response || (chosen_response !== 'A' && chosen_response !== 'B')) {
+          return NextResponse.json(
+            { error: 'For A/B tasks, chosen_response must be either "A" or "B"' },
+            { status: 400 }
+          );
+        }
+
+        // Validate confidence score (0-1)
+        if (confidence !== undefined && (typeof confidence !== 'number' || confidence < 0 || confidence > 1)) {
+          return NextResponse.json(
+            { error: 'Confidence must be a number between 0 and 1' },
+            { status: 400 }
+          );
+        }
+
+        // Validate time spent in seconds
+        if (time_spent_seconds !== undefined && (typeof time_spent_seconds !== 'number' || time_spent_seconds <= 0)) {
+          return NextResponse.json(
+            { error: 'Time spent must be a positive number in seconds' },
+            { status: 400 }
+          );
+        }
+      }
+
+      // Validate time spent (for backwards compatibility)
       let timeSpent = submissionData.time_spent_minutes;
       if (timeSpent && (!Number.isInteger(timeSpent) || timeSpent <= 0)) {
         return NextResponse.json(

@@ -1,250 +1,312 @@
 /**
- * Submission review API endpoint
- * Handles submission approval, rejection, and scoring by task creators
+ * Enhanced Submission Review API
+ * PUT: Review submission (approve/reject) with notes and quality score
+ * GET: Fetch submission details for review
+ * Handles payment flow trigger and reviewer assignment
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/auth/session';
-import { queries } from '@/lib/db/client';
+import { queries, withTransaction } from '@/lib/db';
+import { auth } from '@/auth';
+import { getCurrentUser } from '@/lib/session';
+import { ReviewSubmissionRequest } from '@/lib/types/submissions';
 
-/**
- * Review a submission (task creator only)
- */
-export async function POST(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  return withAuth(async (user) => {
-    try {
-      const { id: submissionId } = await params;
-      const reviewData = await req.json();
+export const dynamic = 'force-dynamic';
 
-      if (!submissionId || typeof submissionId !== 'string') {
-        return NextResponse.json(
-          { error: 'Invalid submission ID' },
-          { status: 400 }
-        );
-      }
+interface RouteParams {
+  params: {
+    id: string;
+  };
+}
 
-      // Validate review data
-      const { status, quality_score, review_notes } = reviewData;
+export async function PUT(request: NextRequest, { params }: RouteParams) {
+  try {
+    // Get authenticated session
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
 
-      if (!status || !['approved', 'rejected', 'under_review'].includes(status)) {
-        return NextResponse.json(
-          { error: 'Invalid status. Must be approved, rejected, or under_review' },
-          { status: 400 }
-        );
-      }
+    const submissionId = params.id;
+    const body: ReviewSubmissionRequest = await request.json();
+    const { status, review_notes, quality_score } = body;
 
-      if (quality_score !== undefined) {
-        if (typeof quality_score !== 'number' || quality_score < 0 || quality_score > 5) {
-          return NextResponse.json(
-            { error: 'Quality score must be between 0 and 5' },
-            { status: 400 }
-          );
-        }
-      }
+    // Validate input
+    if (!status || !['approved', 'rejected'].includes(status)) {
+      return NextResponse.json(
+        { success: false, error: 'Status must be either "approved" or "rejected"' },
+        { status: 400 }
+      );
+    }
 
-      // Get submission details first to verify it exists and get task info
-      const { db } = await import('@/lib/db/client');
+    if (quality_score && (quality_score < 0 || quality_score > 5)) {
+      return NextResponse.json(
+        { success: false, error: 'Quality score must be between 0 and 5' },
+        { status: 400 }
+      );
+    }
 
-      const submissionQuery = `
-        SELECT s.*, t.creator_id, t.title as task_title, t.reward_amount, t.reward_currency,
-               u.username as submitter_username
-        FROM submissions s
-        JOIN tasks t ON s.task_id = t.id
-        JOIN users u ON s.user_id = u.id
-        WHERE s.id = $1
-      `;
+    // Fetch submission to check permissions and current status
+    const submissionResult = await queries.submissions.findById(submissionId);
+    if (!submissionResult || submissionResult.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Submission not found' },
+        { status: 404 }
+      );
+    }
 
-      const submissions = await db(submissionQuery, [submissionId]);
+    const submission = submissionResult[0];
 
-      if (submissions.length === 0) {
-        return NextResponse.json(
-          { error: 'Submission not found' },
-          { status: 404 }
-        );
-      }
+    // Check permissions - only task creator or assigned reviewer can review
+    const isTaskCreator = submission.task_creator_id === session.user.id;
+    const isReviewer = submission.reviewer_id === session.user.id;
+    const isAdmin = session.user.role === 'admin';
 
-      const submission = submissions[0];
+    if (!isTaskCreator && !isReviewer && !isAdmin) {
+      return NextResponse.json(
+        { success: false, error: 'Insufficient permissions to review this submission' },
+        { status: 403 }
+      );
+    }
 
-      // Verify user is the task creator
-      if (submission.creator_id !== user.id) {
-        return NextResponse.json(
-          { error: 'Only task creator can review submissions' },
-          { status: 403 }
-        );
-      }
+    // Check if submission can be reviewed
+    if (!['pending', 'under_review'].includes(submission.status)) {
+      return NextResponse.json(
+        { success: false, error: `Submission cannot be reviewed. Current status: ${submission.status}` },
+        { status: 400 }
+      );
+    }
 
-      // Check if submission is in a reviewable state
-      if (submission.status === 'approved' || submission.status === 'rejected') {
-        return NextResponse.json(
-          { error: 'This submission has already been reviewed' },
-          { status: 409 }
-        );
-      }
-
-      // Update submission with review
-      const updatedSubmissions = await queries.submissions.updateStatus(
+    // Perform review and payment in transaction
+    const result = await withTransaction(async (txDb) => {
+      // Update submission status
+      const updateResult = await queries.submissions.updateStatus(
         submissionId,
         status,
         review_notes,
-        user.id
+        session.user.id,
+        quality_score
       );
 
-      if (updatedSubmissions.length === 0) {
-        throw new Error('Failed to update submission');
-      }
+      const updatedSubmission = updateResult[0];
 
-      const updatedSubmission = updatedSubmissions[0];
+      let payment = null;
 
-      // If approved and has quality score, update it separately
-      if (status === 'approved' && quality_score !== undefined) {
-        // TODO: Add quality score update to the query builder
-        const qualityUpdateQuery = `
-          UPDATE submissions
-          SET quality_score = $1, updated_at = CURRENT_TIMESTAMP
-          WHERE id = $2
-          RETURNING *
-        `;
-        await db(qualityUpdateQuery, [quality_score, submissionId]);
-      }
-
-      // If approved, initiate payment process
+      // If approved, create payment
       if (status === 'approved') {
-        try {
-          // Create payment record
-          const paymentData = {
-            task_id: submission.task_id,
-            submission_id: submissionId,
-            payer_id: submission.creator_id,
-            recipient_id: submission.user_id,
-            amount: submission.reward_amount,
-            currency: submission.reward_currency || 'WLD',
-            payment_type: 'task_reward',
-            blockchain_network: 'optimism',
-            expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
-          };
+        const paymentData = {
+          task_id: submission.task_id,
+          submission_id: submissionId,
+          payer_id: submission.task_creator_id,
+          recipient_id: submission.user_id,
+          amount: submission.reward_amount,
+          currency: submission.reward_currency,
+          payment_type: 'task_reward',
+          blockchain_network: 'optimism', // Default network
+          expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days expiry
+        };
 
-          const createdPayments = await queries.payments.create(paymentData);
+        const paymentResult = await queries.payments.create(paymentData);
+        payment = paymentResult[0];
 
-          if (createdPayments.length > 0) {
-            // TODO: Trigger actual payment processing
-            // For now, just mark as processing
-            await queries.payments.updateStatus(createdPayments[0].id, 'processing');
-          }
-        } catch (paymentError) {
-          console.error('Payment creation error:', paymentError);
-          // Don't fail the review if payment creation fails
+        // TODO: Integrate with actual payment processor
+        // For now, mark as processing
+        if (payment) {
+          await queries.payments.updateStatus(payment.id, 'processing');
         }
       }
 
-      // TODO: Send notification to submitter
-      // TODO: Update user reputation score based on quality score
+      return { updatedSubmission, payment };
+    });
 
-      const responseData = {
-        id: updatedSubmission.id,
-        status: updatedSubmission.status,
-        quality_score: quality_score,
-        review_notes: updatedSubmission.review_notes,
-        reviewer_id: updatedSubmission.reviewer_id,
-        reviewed_at: updatedSubmission.reviewed_at,
-        updated_at: updatedSubmission.updated_at
-      };
+    // Fetch updated submission with all details
+    const finalResult = await queries.submissions.findById(submissionId);
+    const finalSubmission = finalResult[0];
 
-      return NextResponse.json({
-        success: true,
-        submission: responseData,
-        message: `Submission ${status} successfully`,
-        payment_initiated: status === 'approved'
-      });
+    const response = {
+      submission: {
+        id: finalSubmission.id,
+        task_id: finalSubmission.task_id,
+        user_id: finalSubmission.user_id,
+        submitter_nullifier: finalSubmission.submitter_nullifier,
+        submission_data: finalSubmission.submission_data,
+        attachments_urls: finalSubmission.attachments_urls,
+        time_spent_minutes: finalSubmission.time_spent_minutes,
+        quality_score: finalSubmission.quality_score,
+        status: finalSubmission.status,
+        reviewer_id: finalSubmission.reviewer_id,
+        review_notes: finalSubmission.review_notes,
+        reviewed_at: finalSubmission.reviewed_at,
+        is_paid: finalSubmission.is_paid,
+        created_at: finalSubmission.created_at,
+        updated_at: finalSubmission.updated_at,
+        task: {
+          id: finalSubmission.task_id,
+          title: finalSubmission.task_title,
+          description: finalSubmission.task_description,
+          instructions: finalSubmission.task_instructions,
+          task_type: finalSubmission.task_type,
+          difficulty_level: finalSubmission.difficulty_level,
+          estimated_time_minutes: finalSubmission.estimated_time_minutes,
+          reward_amount: parseFloat(finalSubmission.reward_amount || '0'),
+          reward_currency: finalSubmission.reward_currency,
+          creator_id: finalSubmission.task_creator_id,
+          creator_username: finalSubmission.creator_username,
+          category_name: finalSubmission.category_name,
+          status: finalSubmission.task_status,
+          expires_at: finalSubmission.task_expires_at,
+          created_at: finalSubmission.task_created_at
+        },
+        submitter: {
+          id: finalSubmission.user_id,
+          username: finalSubmission.submitter_username,
+          reputation_score: finalSubmission.submitter_reputation
+        },
+        reviewer: finalSubmission.reviewer_username ? {
+          id: finalSubmission.reviewer_id,
+          username: finalSubmission.reviewer_username
+        } : null,
+        payment: finalSubmission.payment_id ? {
+          id: finalSubmission.payment_id,
+          amount: parseFloat(finalSubmission.payment_amount || '0'),
+          currency: finalSubmission.payment_currency,
+          status: finalSubmission.payment_status,
+          transaction_hash: finalSubmission.transaction_hash,
+          processed_at: finalSubmission.payment_processed_at
+        } : null
+      },
+      payment: result.payment ? {
+        id: result.payment.id,
+        status: 'processing',
+        transaction_hash: result.payment.transaction_hash
+      } : null
+    };
 
-    } catch (error) {
-      console.error('Review submission error:', error);
-      return NextResponse.json(
-        { error: 'Failed to review submission' },
-        { status: 500 }
-      );
-    }
-  });
+    return NextResponse.json({
+      success: true,
+      data: response,
+      message: `Submission ${status} successfully`
+    });
+
+  } catch (error) {
+    console.error('Review submission error:', error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Failed to review submission',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    );
+  }
 }
 
-/**
- * Get review details for a submission
- */
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  return withAuth(async (user) => {
-    try {
-      const { id: submissionId } = await params;
-
-      if (!submissionId || typeof submissionId !== 'string') {
-        return NextResponse.json(
-          { error: 'Invalid submission ID' },
-          { status: 400 }
-        );
-      }
-
-      // Get submission with review details
-      const { db } = await import('@/lib/db/client');
-
-      const query = `
-        SELECT s.*, t.creator_id, t.title as task_title,
-               reviewer.username as reviewer_username
-        FROM submissions s
-        JOIN tasks t ON s.task_id = t.id
-        LEFT JOIN users reviewer ON s.reviewer_id = reviewer.id
-        WHERE s.id = $1
-      `;
-
-      const submissions = await db(query, [submissionId]);
-
-      if (submissions.length === 0) {
-        return NextResponse.json(
-          { error: 'Submission not found' },
-          { status: 404 }
-        );
-      }
-
-      const submission = submissions[0];
-
-      // Check permissions (submitter or task creator)
-      if (submission.user_id !== user.id && submission.creator_id !== user.id) {
-        return NextResponse.json(
-          { error: 'Access denied' },
-          { status: 403 }
-        );
-      }
-
-      const reviewData = {
-        id: submission.id,
-        task_id: submission.task_id,
-        task_title: submission.task_title,
-        status: submission.status,
-        quality_score: submission.quality_score,
-        review_notes: submission.review_notes,
-        reviewer_username: submission.reviewer_username,
-        reviewed_at: submission.reviewed_at,
-        is_paid: submission.is_paid,
-        created_at: submission.created_at,
-        updated_at: submission.updated_at,
-        is_reviewer: submission.creator_id === user.id,
-        is_submitter: submission.user_id === user.id
-      };
-
-      return NextResponse.json({
-        success: true,
-        review: reviewData
-      });
-
-    } catch (error) {
-      console.error('Get review error:', error);
+export async function GET(request: NextRequest, { params }: RouteParams) {
+  try {
+    // Get authenticated session
+    const session = await auth();
+    if (!session?.user?.id) {
       return NextResponse.json(
-        { error: 'Failed to fetch review' },
-        { status: 500 }
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
       );
     }
-  });
+
+    const submissionId = params.id;
+
+    // Fetch submission with all related data
+    const result = await queries.submissions.findById(submissionId);
+    if (!result || result.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Submission not found' },
+        { status: 404 }
+      );
+    }
+
+    const row = result[0];
+
+    // Check permissions - only task creator, reviewer, or admin can access
+    const isTaskCreator = row.task_creator_id === session.user.id;
+    const isReviewer = row.reviewer_id === session.user.id;
+    const isAdmin = session.user.role === 'admin'; // Assuming role is stored in session
+
+    if (!isTaskCreator && !isReviewer && !isAdmin) {
+      return NextResponse.json(
+        { success: false, error: 'Insufficient permissions' },
+        { status: 403 }
+      );
+    }
+
+    // Format detailed submission response
+    const submission = {
+      id: row.id,
+      task_id: row.task_id,
+      user_id: row.user_id,
+      submitter_nullifier: row.submitter_nullifier,
+      submission_data: row.submission_data,
+      attachments_urls: row.attachments_urls,
+      time_spent_minutes: row.time_spent_minutes,
+      quality_score: row.quality_score,
+      status: row.status,
+      reviewer_id: row.reviewer_id,
+      review_notes: row.review_notes,
+      reviewed_at: row.reviewed_at,
+      is_paid: row.is_paid,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+      task: {
+        id: row.task_id,
+        title: row.task_title,
+        description: row.task_description,
+        instructions: row.task_instructions,
+        task_type: row.task_type,
+        difficulty_level: row.difficulty_level,
+        estimated_time_minutes: row.estimated_time_minutes,
+        reward_amount: parseFloat(row.reward_amount || '0'),
+        reward_currency: row.reward_currency,
+        creator_id: row.task_creator_id,
+        creator_username: row.creator_username,
+        category_name: row.category_name,
+        status: row.task_status,
+        expires_at: row.task_expires_at,
+        created_at: row.task_created_at
+      },
+      submitter: {
+        id: row.user_id,
+        username: row.submitter_username,
+        reputation_score: row.submitter_reputation
+      },
+      reviewer: row.reviewer_username ? {
+        id: row.reviewer_id,
+        username: row.reviewer_username
+      } : null,
+      payment: row.payment_id ? {
+        id: row.payment_id,
+        amount: parseFloat(row.payment_amount || '0'),
+        currency: row.payment_currency,
+        status: row.payment_status,
+        transaction_hash: row.transaction_hash,
+        processed_at: row.payment_processed_at
+      } : null
+    };
+
+    return NextResponse.json({
+      success: true,
+      data: submission
+    });
+
+  } catch (error) {
+    console.error('Get submission review error:', error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Failed to fetch submission',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    );
+  }
 }

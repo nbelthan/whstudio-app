@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { queries } from '@/lib/db/client';
+import { queries } from '@/lib/db';
 
 /**
  * Handle payment webhooks from WorldCoin or other payment providers
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Find payment by external ID
-    const { db } = await import('@/lib/db/client');
+    const { db } = await import('@/lib/db');
 
     const findPaymentQuery = `
       SELECT * FROM payments WHERE external_payment_id = $1

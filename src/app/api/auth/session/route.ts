@@ -4,7 +4,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { getCurrentUser, refreshSession } from '@/lib/auth/session';
+import { getCurrentUser, refreshSession } from '@/lib/session';
 
 /**
  * Get current session info

@@ -1,301 +1,280 @@
 /**
- * Payment Button Component
- * Integrates with MiniKit payment system for World App
+ * PaymentButton Component
+ * Reusable button component for triggering MiniKit payments
  */
 
 'use client';
 
-import React, { useState, useCallback } from 'react';
-import { MiniKit, PaymentPayload } from '@worldcoin/minikit-js';
-import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
-import { DollarSign, CreditCard, Wallet, CheckCircle, AlertCircle, Clock } from 'lucide-react';
-
-import { Button, Card, Badge, LoadingSpinner, Modal } from '@/components/ui';
-import { usePayments, useUI, useAuth } from '@/stores';
-import { Payment, PaymentStatus, RewardCurrency } from '@/types';
-import { formatCurrency, cn } from '@/lib/utils';
+import React, { useState } from 'react';
+import {
+  Button,
+  Typography,
+  Chip
+} from '@worldcoin/mini-apps-ui-kit-react';
+import {
+  DollarSign,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Loader2
+} from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
+import { PaymentType, RewardCurrency } from '@/types';
+import PaymentProcessor from './PaymentProcessor';
 
 interface PaymentButtonProps {
+  // Payment details
+  paymentType: PaymentType;
   amount: number;
   currency?: RewardCurrency;
   description?: string;
-  recipient?: string;
-  onSuccess?: (payment: Payment) => void;
-  onError?: (error: string) => void;
+
+  // Task/submission context
+  taskId?: string;
+  submissionId?: string;
+  recipientId?: string;
+  recipientAddress?: string;
+
+  // Button customization
+  label?: string;
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+  size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'primary' | 'secondary' | 'outline';
   className?: string;
+
+  // Event handlers
+  onSuccess?: (paymentId: string) => void;
+  onError?: (error: string) => void;
+  onCancel?: () => void;
+
+  // UI options
+  showAmount?: boolean;
+  showIcon?: boolean;
+  compact?: boolean;
 }
 
-export const PaymentButton: React.FC<PaymentButtonProps> = ({
+export default function PaymentButton({
+  paymentType,
   amount,
   currency = 'WLD',
-  description = 'Payment',
-  recipient,
+  description,
+  taskId,
+  submissionId,
+  recipientId,
+  recipientAddress,
+  label,
+  variant = 'primary',
+  size = 'medium',
+  disabled = false,
+  className,
   onSuccess,
   onError,
-  disabled = false,
-  size = 'md',
-  variant = 'primary',
-  className,
-}) => {
-  const { isInstalled } = useMiniKit();
-  const { user } = useAuth();
-  const { addPayment, setPaymentLoading } = usePayments();
-  const { addNotification } = useUI();
-
+  onCancel,
+  showAmount = true,
+  showIcon = true,
+  compact = false
+}: PaymentButtonProps) {
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus | null>(null);
-  const [showDetails, setShowDetails] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<'success' | 'error' | null>(null);
 
-  const handlePayment = useCallback(async () => {
-    if (!isInstalled || !user) {
-      const errorMsg = 'World App is required to process payments';
-      onError?.(errorMsg);
-      addNotification({
-        type: 'error',
-        title: 'Payment Failed',
-        message: errorMsg,
-      });
-      return;
+  // Generate button label based on payment type
+  const getButtonLabel = () => {
+    if (label) return label;
+
+    const amountStr = showAmount ? ` ${formatCurrency(amount, currency)}` : '';
+
+    switch (paymentType) {
+      case 'task_reward':
+        return `Pay Reward${amountStr}`;
+      case 'escrow_deposit':
+        return `Deposit Escrow${amountStr}`;
+      case 'escrow_release':
+        return `Release Payment${amountStr}`;
+      case 'refund':
+        return `Process Refund${amountStr}`;
+      default:
+        return `Pay${amountStr}`;
     }
-
-    setIsProcessing(true);
-    setPaymentStatus('processing');
-    setPaymentLoading('initiate', true);
-
-    try {
-      // First, initiate payment on our backend
-      const initiateResponse = await fetch('/api/initiate-payment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount,
-          currency,
-          description,
-          recipient,
-        }),
-      });
-
-      if (!initiateResponse.ok) {
-        throw new Error('Failed to initiate payment');
-      }
-
-      const { payment_id, reference } = await initiateResponse.json();
-
-      // Prepare payment payload for MiniKit
-      const paymentPayload: PaymentPayload = {
-        reference,
-        to: recipient || user.wallet_address || '',
-        tokens: [
-          {
-            symbol: currency,
-            token_amount: amount.toString(),
-          },
-        ],
-        description,
-      };
-
-      // Request payment via MiniKit
-      const result = await MiniKit.commandsAsync.pay(paymentPayload);
-
-      if (result.status === 'success') {
-        // Confirm payment on backend
-        const confirmResponse = await fetch(`/api/payments/${payment_id}/confirm`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            transaction_hash: result.finalPayload?.transaction_hash,
-            status: 'completed',
-          }),
-        });
-
-        if (!confirmResponse.ok) {
-          throw new Error('Failed to confirm payment');
-        }
-
-        const confirmedPayment = await confirmResponse.json();
-
-        // Update local state
-        addPayment(confirmedPayment.payment);
-        setPaymentStatus('completed');
-
-        addNotification({
-          type: 'success',
-          title: 'Payment Successful',
-          message: `Payment of ${formatCurrency(amount, currency)} completed successfully`,
-        });
-
-        onSuccess?.(confirmedPayment.payment);
-
-      } else {
-        throw new Error(result.errorMessage || 'Payment was cancelled or failed');
-      }
-
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Payment failed';
-
-      setPaymentStatus('failed');
-      onError?.(errorMsg);
-
-      addNotification({
-        type: 'error',
-        title: 'Payment Failed',
-        message: errorMsg,
-      });
-
-    } finally {
-      setIsProcessing(false);
-      setPaymentLoading('initiate', false);
-
-      // Reset status after 3 seconds
-      setTimeout(() => setPaymentStatus(null), 3000);
-    }
-  }, [
-    isInstalled,
-    user,
-    amount,
-    currency,
-    description,
-    recipient,
-    onSuccess,
-    onError,
-    addPayment,
-    setPaymentLoading,
-    addNotification,
-  ]);
-
-  const getButtonContent = () => {
-    if (isProcessing) {
-      return (
-        <>
-          <LoadingSpinner size="sm" color="white" />
-          <span>Processing...</span>
-        </>
-      );
-    }
-
-    if (paymentStatus === 'completed') {
-      return (
-        <>
-          <CheckCircle className="w-4 h-4" />
-          <span>Payment Sent</span>
-        </>
-      );
-    }
-
-    if (paymentStatus === 'failed') {
-      return (
-        <>
-          <AlertCircle className="w-4 h-4" />
-          <span>Payment Failed</span>
-        </>
-      );
-    }
-
-    return (
-      <>
-        <Wallet className="w-4 h-4" />
-        <span>Pay {formatCurrency(amount, currency)}</span>
-      </>
-    );
   };
 
+  // Get button icon based on payment type and status
+  const getButtonIcon = () => {
+    if (!showIcon) return null;
+
+    if (isProcessing) {
+      return <Loader2 className="w-4 h-4 animate-spin" />;
+    }
+
+    if (paymentStatus === 'success') {
+      return <CheckCircle className="w-4 h-4" />;
+    }
+
+    if (paymentStatus === 'error') {
+      return <XCircle className="w-4 h-4" />;
+    }
+
+    switch (paymentType) {
+      case 'task_reward':
+        return <DollarSign className="w-4 h-4" />;
+      case 'escrow_deposit':
+        return <Clock className="w-4 h-4" />;
+      case 'escrow_release':
+        return <CheckCircle className="w-4 h-4" />;
+      case 'refund':
+        return <XCircle className="w-4 h-4" />;
+      default:
+        return <DollarSign className="w-4 h-4" />;
+    }
+  };
+
+  // Get button variant based on status
   const getButtonVariant = () => {
-    if (paymentStatus === 'completed') return 'success';
-    if (paymentStatus === 'failed') return 'destructive';
+    if (paymentStatus === 'success') return 'success';
+    if (paymentStatus === 'error') return 'error';
     return variant;
   };
 
-  const isButtonDisabled = disabled || isProcessing || !isInstalled || !user;
+  const handleClick = () => {
+    if (disabled || isProcessing) return;
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSuccess = (paymentId: string) => {
+    setPaymentStatus('success');
+    setIsProcessing(false);
+    setShowPaymentModal(false);
+    onSuccess?.(paymentId);
+
+    // Reset status after 3 seconds
+    setTimeout(() => {
+      setPaymentStatus(null);
+    }, 3000);
+  };
+
+  const handlePaymentError = (error: string) => {
+    setPaymentStatus('error');
+    setIsProcessing(false);
+    setShowPaymentModal(false);
+    onError?.(error);
+
+    // Reset status after 5 seconds
+    setTimeout(() => {
+      setPaymentStatus(null);
+    }, 5000);
+  };
+
+  const handleCancel = () => {
+    setShowPaymentModal(false);
+    setIsProcessing(false);
+    onCancel?.();
+  };
+
+  if (compact) {
+    return (
+      <>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant={getButtonVariant() as any}
+            size="small"
+            onClick={handleClick}
+            disabled={disabled || isProcessing}
+            className={className}
+          >
+            {getButtonIcon()}
+          </Button>
+
+          {showAmount && (
+            <Typography variant="caption" className="text-white/60">
+              {formatCurrency(amount, currency)}
+            </Typography>
+          )}
+
+          {paymentStatus && (
+            <Chip
+              variant={paymentStatus === 'success' ? 'success' : 'error'}
+              size="small"
+            >
+              {paymentStatus === 'success' ? 'Paid' : 'Failed'}
+            </Chip>
+          )}
+        </div>
+
+        <PaymentProcessor
+          isOpen={showPaymentModal}
+          onClose={handleCancel}
+          paymentType={paymentType}
+          amount={amount}
+          currency={currency}
+          taskId={taskId}
+          submissionId={submissionId}
+          recipientId={recipientId}
+          recipientAddress={recipientAddress}
+          description={description}
+          onSuccess={handlePaymentSuccess}
+          onError={handlePaymentError}
+        />
+      </>
+    );
+  }
 
   return (
     <>
       <Button
+        variant={getButtonVariant() as any}
         size={size}
-        variant={getButtonVariant()}
-        disabled={isButtonDisabled}
-        onClick={paymentStatus === null ? handlePayment : () => setShowDetails(true)}
+        onClick={handleClick}
+        disabled={disabled || isProcessing}
         className={className}
       >
-        {getButtonContent()}
+        <div className="flex items-center space-x-2">
+          {getButtonIcon()}
+          <span>{getButtonLabel()}</span>
+        </div>
       </Button>
 
-      {/* Payment Details Modal */}
-      <Modal
-        isOpen={showDetails}
-        onClose={() => setShowDetails(false)}
-        title="Payment Details"
-        size="sm"
-      >
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
-            <span className="text-white/80">Amount</span>
-            <span className="text-white font-semibold">
-              {formatCurrency(amount, currency)}
-            </span>
-          </div>
+      {/* Payment Status Display */}
+      {paymentStatus && (
+        <div className="mt-2">
+          <Chip
+            variant={paymentStatus === 'success' ? 'success' : 'error'}
+            size="small"
+          >
+            {paymentStatus === 'success' ? 'Payment Successful' : 'Payment Failed'}
+          </Chip>
+        </div>
+      )}
 
-          <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
-            <span className="text-white/80">Description</span>
-            <span className="text-white">{description}</span>
-          </div>
-
-          {recipient && (
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
-              <span className="text-white/80">Recipient</span>
-              <span className="text-white font-mono text-sm">
-                {recipient.slice(0, 6)}...{recipient.slice(-4)}
-              </span>
-            </div>
-          )}
-
-          <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
-            <span className="text-white/80">Status</span>
-            <Badge
-              variant={
-                paymentStatus === 'completed' ? 'success' :
-                paymentStatus === 'processing' ? 'info' :
-                paymentStatus === 'failed' ? 'error' : 'default'
-              }
-            >
-              {paymentStatus || 'ready'}
-            </Badge>
-          </div>
-
-          {!isInstalled && (
-            <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-yellow-400 mt-0.5" />
-                <div>
-                  <p className="text-yellow-400 font-medium">World App Required</p>
-                  <p className="text-white/70 text-sm mt-1">
-                    Please open this in World App to process payments.
-                  </p>
-                </div>
-              </div>
-            </div>
+      {/* Payment Details */}
+      {!compact && (
+        <div className="mt-2 space-y-1">
+          <Typography variant="caption" className="text-white/60 block">
+            Payment Type: {paymentType.replace('_', ' ')}
+          </Typography>
+          {description && (
+            <Typography variant="caption" className="text-white/60 block">
+              {description}
+            </Typography>
           )}
         </div>
+      )}
 
-        <Modal.Footer>
-          <Button variant="ghost" onClick={() => setShowDetails(false)}>
-            Close
-          </Button>
-          {paymentStatus === null && (
-            <Button onClick={handlePayment} disabled={isButtonDisabled}>
-              Proceed to Pay
-            </Button>
-          )}
-        </Modal.Footer>
-      </Modal>
+      <PaymentProcessor
+        isOpen={showPaymentModal}
+        onClose={handleCancel}
+        paymentType={paymentType}
+        amount={amount}
+        currency={currency}
+        taskId={taskId}
+        submissionId={submissionId}
+        recipientId={recipientId}
+        recipientAddress={recipientAddress}
+        description={description}
+        onSuccess={handlePaymentSuccess}
+        onError={handlePaymentError}
+      />
     </>
   );
-};
+}
 
 export default PaymentButton;

@@ -4,8 +4,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentUser, withAuth } from '@/lib/auth/session';
-import { queries } from '@/lib/db/client';
+import { getCurrentUser, withAuth } from '@/lib/session';
+import { queries } from '@/lib/db';
 
 /**
  * Get current user profile

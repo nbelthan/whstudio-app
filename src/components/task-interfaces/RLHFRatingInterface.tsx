@@ -8,7 +8,13 @@
 import React, { useState, useEffect } from 'react';
 import { ThumbsUp, ThumbsDown, Star, AlertTriangle, CheckCircle, MessageSquare } from 'lucide-react';
 
-import { Card, Button, Badge, Input, Modal } from '@/components/ui';
+import {
+  SafeAreaView,
+  Typography,
+  Button,
+  Chip,
+  useSafeAreaInsets
+} from '@worldcoin/mini-apps-ui-kit-react';
 import { RLHFRatingData, Task } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -17,6 +23,14 @@ interface RLHFRatingInterfaceProps {
   onSubmit: (data: RLHFRatingData) => Promise<void>;
   isSubmitting?: boolean;
   className?: string;
+}
+
+interface MTBenchInstructions {
+  type: 'pairwise_ab';
+  prompt: string;
+  optionA: string;
+  optionB: string;
+  gold?: 'A' | 'B';
 }
 
 interface ResponseData {
@@ -69,20 +83,71 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  // Load response data (mock data for now - would come from task.verification_criteria in real app)
+  // Load response data from task instructions (MT-Bench format)
   useEffect(() => {
-    // In a real app, this would be loaded from the task data
-    const mockData: ResponseData = {
-      id: 'sample_comparison',
-      prompt: task.instructions || 'Compare these two AI responses and choose the better one.',
-      response_a: `Response A: This is a sample AI-generated response that demonstrates one approach to answering the user's question. It provides detailed information and tries to be comprehensive in its coverage of the topic.`,
-      response_b: `Response B: This is an alternative AI-generated response that takes a different approach. It might be more concise, use different examples, or emphasize different aspects of the same topic.`,
-      model_a: 'Model A',
-      model_b: 'Model B',
-      criteria: ['helpfulness', 'accuracy', 'clarity'],
-    };
+    try {
+      // Try to parse MT-Bench format from task instructions
+      let mtBenchData: MTBenchInstructions | null = null;
 
-    setResponseData(mockData);
+      if (task.verification_criteria && typeof task.verification_criteria === 'object') {
+        // Check if verification_criteria contains MT-Bench data
+        if ('type' in task.verification_criteria && task.verification_criteria.type === 'pairwise_ab') {
+          mtBenchData = task.verification_criteria as MTBenchInstructions;
+        }
+      }
+
+      // If no MT-Bench data in verification_criteria, try parsing instructions as JSON
+      if (!mtBenchData) {
+        try {
+          const parsed = JSON.parse(task.instructions);
+          if (parsed.type === 'pairwise_ab') {
+            mtBenchData = parsed as MTBenchInstructions;
+          }
+        } catch {
+          // Not JSON, continue with fallback
+        }
+      }
+
+      let responseData: ResponseData;
+
+      if (mtBenchData) {
+        // Use MT-Bench format
+        responseData = {
+          id: `mt_bench_${task.id}`,
+          prompt: mtBenchData.prompt,
+          response_a: mtBenchData.optionA,
+          response_b: mtBenchData.optionB,
+          model_a: 'Option A',
+          model_b: 'Option B',
+          criteria: ['helpfulness', 'accuracy', 'clarity', 'relevance'],
+        };
+      } else {
+        // Fallback to mock data
+        responseData = {
+          id: 'sample_comparison',
+          prompt: task.instructions || 'Compare these two AI responses and choose the better one.',
+          response_a: `Response A: This is a sample AI-generated response that demonstrates one approach to answering the user's question. It provides detailed information and tries to be comprehensive in its coverage of the topic.`,
+          response_b: `Response B: This is an alternative AI-generated response that takes a different approach. It might be more concise, use different examples, or emphasize different aspects of the same topic.`,
+          model_a: 'Model A',
+          model_b: 'Model B',
+          criteria: ['helpfulness', 'accuracy', 'clarity'],
+        };
+      }
+
+      setResponseData(responseData);
+    } catch (error) {
+      console.error('Error parsing task data:', error);
+      // Fallback to basic data
+      setResponseData({
+        id: 'fallback',
+        prompt: task.instructions || 'Compare these options and choose the better one.',
+        response_a: 'Option A content not available',
+        response_b: 'Option B content not available',
+        model_a: 'Option A',
+        model_b: 'Option B',
+        criteria: ['helpfulness'],
+      });
+    }
   }, [task]);
 
   const handleReasonToggle = (reason: string) => {
@@ -117,18 +182,14 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
 
   if (!responseData) {
     return (
-      <div className={cn('animate-pulse', className)}>
-        <Card>
-          <Card.Content>
-            <div className="space-y-4">
-              <div className="h-4 bg-white/10 rounded w-3/4" />
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="h-32 bg-white/10 rounded" />
-                <div className="h-32 bg-white/10 rounded" />
-              </div>
-            </div>
-          </Card.Content>
-        </Card>
+      <div className={cn('animate-pulse bg-white/5 border border-white/10 rounded-2xl p-6', className)}>
+        <div className="space-y-4">
+          <div className="h-4 bg-white/10 rounded w-3/4" />
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="h-32 bg-white/10 rounded" />
+            <div className="h-32 bg-white/10 rounded" />
+          </div>
+        </div>
       </div>
     );
   }

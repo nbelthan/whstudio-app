@@ -1,14 +1,26 @@
 /**
  * Payment confirmation API endpoint
- * Handles payment status updates from WorldCoin or manual confirmation
+ * Handles payment status updates from MiniKit transactions
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/auth/session';
-import { queries } from '@/lib/db/client';
+import { withAuth } from '@/lib/session';
+import { queries } from '@/lib/db';
+
+interface PaymentConfirmationData {
+  transaction_hash?: string;
+  status: 'completed' | 'failed' | 'cancelled';
+  gas_fee?: number;
+  platform_fee?: number;
+  failure_reason?: string;
+  // MiniKit specific fields
+  minikit_transaction_id?: string;
+  block_number?: number;
+  confirmations?: number;
+}
 
 /**
- * Confirm payment completion (usually called by webhook or frontend after successful payment)
+ * Confirm payment completion from MiniKit transaction
  */
 export async function POST(
   req: NextRequest,
@@ -17,7 +29,7 @@ export async function POST(
   return withAuth(async (user) => {
     try {
       const { id: paymentId } = await params;
-      const confirmationData = await req.json();
+      const confirmationData: PaymentConfirmationData = await req.json();
 
       if (!paymentId || typeof paymentId !== 'string') {
         return NextResponse.json(
@@ -26,7 +38,16 @@ export async function POST(
         );
       }
 
-      const { transaction_hash, status, gas_fee, platform_fee, failure_reason } = confirmationData;
+      const {
+        transaction_hash,
+        status,
+        gas_fee,
+        platform_fee,
+        failure_reason,
+        minikit_transaction_id,
+        block_number,
+        confirmations
+      } = confirmationData;
 
       // Validate status
       if (!status || !['completed', 'failed', 'cancelled'].includes(status)) {
@@ -37,7 +58,7 @@ export async function POST(
       }
 
       // Get payment details
-      const { db } = await import('@/lib/db/client');
+      const { db } = await import('@/lib/db');
 
       const paymentQuery = `
         SELECT p.*, t.title as task_title
@@ -73,13 +94,24 @@ export async function POST(
         );
       }
 
-      // Calculate net amount if completed
-      let netAmount = payment.amount;
-      if (status === 'completed' && (gas_fee || platform_fee)) {
-        netAmount = payment.amount - (gas_fee || 0) - (platform_fee || 0);
+      // For completed payments, require transaction hash
+      if (status === 'completed' && !transaction_hash) {
+        return NextResponse.json(
+          { error: 'Transaction hash required for completed payments' },
+          { status: 400 }
+        );
       }
 
-      // Update payment status
+      // Calculate net amount if completed (World Chain gas sponsorship means minimal gas fees)
+      let netAmount = payment.amount;
+      if (status === 'completed') {
+        // On World Chain, gas fees are sponsored, so mainly platform fees apply
+        const actualPlatformFee = platform_fee || 0;
+        const actualGasFee = gas_fee || 0; // Should be 0 or minimal on World Chain
+        netAmount = payment.amount - actualPlatformFee - actualGasFee;
+      }
+
+      // Update payment status with additional MiniKit fields
       const updateQuery = `
         UPDATE payments
         SET
@@ -98,8 +130,8 @@ export async function POST(
       const updatedPayments = await db(updateQuery, [
         status,
         transaction_hash,
-        gas_fee,
-        platform_fee,
+        gas_fee || 0,
+        platform_fee || 0,
         netAmount,
         failure_reason,
         paymentId
@@ -191,7 +223,7 @@ export async function GET(
       }
 
       // Get payment status
-      const { db } = await import('@/lib/db/client');
+      const { db } = await import('@/lib/db');
 
       const query = `
         SELECT p.*, t.title as task_title, u.username as recipient_username

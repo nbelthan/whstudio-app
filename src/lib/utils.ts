@@ -260,3 +260,29 @@ export function parseErrorMessage(error: any): string {
   if (error?.error) return error.error;
   return 'An unexpected error occurred';
 }
+
+/**
+ * Format date to human readable format
+ */
+export function formatDate(date: Date | string): string {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+  if (isNaN(dateObj.getTime())) {
+    return 'Invalid date';
+  }
+
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(dateObj);
+}
+
+/**
+ * Format relative time (alias for formatTimeAgo for consistency)
+ */
+export function formatRelativeTime(date: string | Date): string {
+  return formatTimeAgo(date);
+}

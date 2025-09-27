@@ -197,8 +197,17 @@ export interface TasksResponse extends ApiResponse {
     limit: number;
     offset: number;
     count: number;
+    total: number;
     has_more: boolean;
   };
+}
+
+export interface CategoriesResponse extends ApiResponse {
+  categories: TaskCategory[];
+}
+
+export interface TaskResponse extends ApiResponse {
+  task: Task;
 }
 
 // Form data types for creating/updating entities
