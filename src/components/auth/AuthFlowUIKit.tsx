@@ -8,7 +8,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
+// Temporarily disabled MiniKit import
+// import { useMiniKit } from '@worldcoin/minikit-js/minikit-provider';
 import { walletAuth } from '@/auth/wallet';
 
 import {
@@ -40,7 +41,8 @@ type AuthStep = 'wallet' | 'verification' | 'complete';
 export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
   const router = useRouter();
   const { data: session, status: sessionStatus } = useSession();
-  const { isInstalled } = useMiniKit();
+  // Temporarily mock MiniKit status
+  const isInstalled = false; // useMiniKit disabled
   const { user, isAuthenticated, isLoading, login, setLoading, setError } = useAuth();
   const { toast } = useToast();
 
@@ -272,7 +274,7 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
               <Button
                 variant="primary"
                 size="large"
-                onClick={() => router.push('/dashboard')}
+                onClick={() => router.push('/tasks')}
                 className="w-full"
               >
                 Go to Dashboard
