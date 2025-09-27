@@ -32,6 +32,19 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          # Mock environment variables for build-time static analysis
+          DATABASE_URL: "postgresql://mock:mock@localhost:5432/mock"
+          POSTGRES_URL: "postgresql://mock:mock@localhost:5432/mock"
+          POSTGRES_PRISMA_URL: "postgresql://mock:mock@localhost:5432/mock"
+          KV_REST_API_URL: "https://mock.upstash.io"
+          KV_REST_API_TOKEN: "mock"
+          BLOB_READ_WRITE_TOKEN: "mock"
+          AUTH_SECRET: "mock-secret-for-build-only"
+          JWT_SECRET: "mock-jwt-secret-for-build-only"
+          WORLD_APP_ID: "mock-app-id"
+          NEXT_PUBLIC_APP_ID: "mock-app-id"
+          NEXT_PUBLIC_API_URL: "https://mock.example.com"
+          AUTH_URL: "https://mock.example.com"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
