@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import { useTasks } from '@/hooks/useTasks';
 import { Task, TaskCategory } from '@/types';
+import { BUTTON_INTENTS } from '@/lib/utils';
 
 export default function TasksPageUIKit() {
   const router = useRouter();
@@ -160,74 +161,7 @@ export default function TasksPageUIKit() {
           </Typography>
         </div>
 
-        {/* Search and Filters */}
-        <div className="space-y-4 mb-6">
-          <SearchField
-            value={searchQuery}
-            onChange={setSearchQuery}
-            placeholder="Search tasks..."
-            className="w-full"
-          />
-
-          <div className="flex gap-2">
-            <Select
-              value={selectedDifficulty}
-              onChange={(e) => setSelectedDifficulty(e.target.value)}
-              className="flex-1"
-            >
-              <option value="all">All Difficulties</option>
-              <option value="1">Very Easy</option>
-              <option value="2">Easy</option>
-              <option value="3">Medium</option>
-              <option value="4">Hard</option>
-              <option value="5">Very Hard</option>
-            </Select>
-
-            <Button variant="secondary" size="small">
-              <Filter className="w-4 h-4 mr-2" />
-              Filters
-            </Button>
-          </div>
-        </div>
-
-        {/* Category Tabs */}
-        {categoriesLoading ? (
-          <div className="mb-6">
-            <Skeleton className="w-full h-12" />
-          </div>
-        ) : (
-          <Tabs className="mb-6">
-            {categories.map((category) => (
-              <TabItem
-                key={category.id}
-                isActive={selectedCategory === category.id}
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                {category.name}
-                {typeof category.task_count === 'number' && category.task_count > 0 && (
-                  <Chip variant="secondary" size="small" className="ml-2">
-                    {category.task_count}
-                  </Chip>
-                )}
-              </TabItem>
-            ))}
-          </Tabs>
-        )}
-
-        {/* Sort Options */}
-        <div className="mb-4">
-          <Select
-            value={selectedSort}
-            onChange={(e) => setSelectedSort(e.target.value)}
-            className="w-48"
-          >
-            <option value="priority">Sort by Priority</option>
-            <option value="reward">Sort by Reward</option>
-            <option value="difficulty">Sort by Difficulty</option>
-            <option value="time">Sort by Time</option>
-            <option value="created">Sort by Newest</option>
-          </Select>
-        </div>
+        {/* Removed search and filters - just showing task list */}
 
         {/* Error State */}
         {error && (
@@ -238,7 +172,12 @@ export default function TasksPageUIKit() {
             <Typography variant="body2" className="text-[var(--color-text-secondary)] mb-4">
               {error}
             </Typography>
-            <Button variant="secondary" size="small" onClick={handleRefresh}>
+            <Button
+              variant="secondary"
+              size="small"
+              className={`${BUTTON_INTENTS.secondary} !rounded-full !h-11 !px-5 !text-xs !tracking-[0.28em]`}
+              onClick={handleRefresh}
+            >
               <RefreshCw className="w-4 h-4 mr-2" />
               Try Again
             </Button>
@@ -331,7 +270,7 @@ export default function TasksPageUIKit() {
                 <Button
                   variant={task.user_has_submitted ? 'secondary' : 'primary'}
                   size="medium"
-                  className="w-full"
+                  className={`w-full ${task.user_has_submitted ? BUTTON_INTENTS.secondary : BUTTON_INTENTS.primary} !h-12 !rounded-2xl`}
                   disabled={task.user_has_submitted && task.user_submission_status !== 'rejected'}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -353,6 +292,7 @@ export default function TasksPageUIKit() {
                 <Button
                   variant="secondary"
                   size="medium"
+                  className={`${BUTTON_INTENTS.secondary} !rounded-2xl !h-12 !px-6`}
                   onClick={handleLoadMore}
                   disabled={loading}
                 >
@@ -372,7 +312,12 @@ export default function TasksPageUIKit() {
                     ? 'Try adjusting your filters or search terms'
                     : 'No tasks are currently available. Check back later!'}
                 </Typography>
-                <Button variant="secondary" size="small" onClick={handleRefresh}>
+                <Button
+                  variant="secondary"
+                  size="small"
+                  className={`${BUTTON_INTENTS.secondary} !rounded-full !h-11 !px-5 !text-xs !tracking-[0.28em]`}
+                  onClick={handleRefresh}
+                >
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Refresh
                 </Button>

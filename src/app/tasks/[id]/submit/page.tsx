@@ -21,7 +21,8 @@ import {
   Clock,
   DollarSign,
   AlertTriangle,
-  RefreshCw
+  RefreshCw,
+  TrendingUp
 } from 'lucide-react';
 import { useTask } from '@/hooks/useTasks';
 import { useTaskSubmission } from '@/hooks/useTaskSubmission';
@@ -331,19 +332,32 @@ export default function TaskSubmissionPage() {
   return (
     <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
       <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={handleGoBack}
-            className="!p-2"
-            disabled={isSubmitting}
-          >
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-          <div className="flex-1">
-            {/* Removed Submit Task header for cleaner UI */}
+        {/* Header with visible back button and user stats */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <Button
+              variant="primary"
+              size="medium"
+              onClick={handleGoBack}
+              className="flex items-center gap-2"
+              disabled={isSubmitting}
+            >
+              <ArrowLeft className="w-5 h-5" />
+              Back to Tasks
+            </Button>
+
+            {/* Quick Stats */}
+            <div className="flex items-center gap-4">
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={() => router.push('/dashboard')}
+                className="flex items-center gap-2"
+              >
+                <TrendingUp className="w-4 h-4 text-[var(--color-success)]" />
+                Dashboard
+              </Button>
+            </div>
           </div>
         </div>
 

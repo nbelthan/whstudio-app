@@ -6,6 +6,15 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { TaskType, TaskDifficulty, RewardCurrency } from '@/types';
 
+export const BUTTON_INTENTS = {
+  primary:
+    '!bg-[var(--color-accent-blue)] !text-black !font-semibold !shadow-[0_12px_30px_rgba(75,122,242,0.35)] !hover:bg-[color-mix(in srgb,var(--color-accent-blue) 94%,white 6%)] !hover:shadow-[0_18px_40px_rgba(75,122,242,0.45)] !active:bg-[color-mix(in srgb,var(--color-accent-blue) 82%,black 18%)] !active:shadow-[0_8px_20px_rgba(75,122,242,0.25)] !transition-all !duration-200 disabled:!bg-[color-mix(in srgb,var(--color-accent-blue) 30%,var(--color-bg-surface) 70%)] disabled:!text-[color-mix(in srgb,black 35%,var(--color-text-secondary) 65%)] disabled:!shadow-none disabled:!opacity-90',
+  secondary:
+    '!border !border-[color-mix(in srgb,var(--color-divider-low) 60%,transparent)] !bg-[color-mix(in srgb,var(--color-bg-surface) 92%,transparent)] !text-[var(--color-text-primary)] !font-semibold !transition-all !duration-200 !hover:border-[color-mix(in srgb,var(--color-accent-blue) 45%,transparent)] !hover:bg-[color-mix(in srgb,var(--color-bg-surface) 82%,var(--color-accent-blue) 12%)] !hover:text-[var(--color-text-primary)] !shadow-none disabled:!border-[color-mix(in srgb,var(--color-divider-low) 50%,transparent)] disabled:!bg-[color-mix(in srgb,var(--color-bg-surface) 94%,transparent)] disabled:!text-[color-mix(in srgb,var(--color-text-secondary) 75%,transparent)] disabled:!opacity-90',
+  ghost:
+    '!text-[var(--color-text-secondary)] !hover:text-[var(--color-text-primary)] !bg-transparent !hover:bg-[color-mix(in srgb,var(--color-bg-surface) 78%,transparent)] !transition-colors !duration-150',
+} as const;
+
 /**
  * Merge Tailwind CSS classes with clsx
  */

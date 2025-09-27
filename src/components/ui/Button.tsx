@@ -33,14 +33,19 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   type = 'button',
   ...props
 }, ref) => {
-  const baseClasses = 'inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none';
+  const baseClasses = 'inline-flex items-center justify-center rounded-2xl font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in srgb,var(--color-accent-blue) 55%,transparent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-base)] disabled:opacity-75 disabled:cursor-not-allowed disabled:pointer-events-none';
 
   const variantClasses = {
-    primary: 'bg-[rgb(25,137,251)] hover:bg-[rgb(20,110,201)] text-white focus:ring-[rgb(25,137,251)]/20 active:bg-[rgb(15,88,160)]',
-    secondary: 'bg-white/10 hover:bg-white/20 text-white focus:ring-white/20 active:bg-white/30 backdrop-blur-sm',
-    ghost: 'hover:bg-white/10 text-white/80 hover:text-white focus:ring-white/20 active:bg-white/20',
-    destructive: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-600/20 active:bg-red-800',
-    outline: 'border border-white/20 hover:border-white/40 hover:bg-white/5 text-white/80 hover:text-white focus:ring-white/20',
+    primary:
+      'bg-[var(--color-accent-blue)] text-black shadow-[0_12px_30px_rgba(75,122,242,0.35)] hover:bg-[color-mix(in srgb,var(--color-accent-blue) 94%,white 6%)] hover:shadow-[0_18px_40px_rgba(75,122,242,0.45)] active:bg-[color-mix(in srgb,var(--color-accent-blue) 82%,black 18%)] active:shadow-[0_8px_20px_rgba(75,122,242,0.25)] disabled:bg-[color-mix(in srgb,var(--color-accent-blue) 28%,var(--color-bg-surface) 72%)] disabled:text-[color-mix(in srgb,black 35%,var(--color-text-secondary) 65%)] disabled:shadow-none',
+    secondary:
+      'border border-[color-mix(in srgb,var(--color-divider-low) 60%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 92%,transparent)] text-[var(--color-text-primary)] hover:border-[color-mix(in srgb,var(--color-accent-blue) 45%,transparent)] hover:bg-[color-mix(in srgb,var(--color-bg-surface) 82%,var(--color-accent-blue) 12%)] active:bg-[color-mix(in srgb,var(--color-bg-surface) 76%,var(--color-accent-blue) 16%)] disabled:border-[color-mix(in srgb,var(--color-divider-low) 50%,transparent)] disabled:bg-[color-mix(in srgb,var(--color-bg-surface) 94%,transparent)] disabled:text-[color-mix(in srgb,var(--color-text-secondary) 75%,transparent)]',
+    ghost:
+      'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[color-mix(in srgb,var(--color-bg-surface) 78%,transparent)]',
+    destructive:
+      'bg-[var(--color-error)] text-[var(--color-text-primary)] hover:bg-[color-mix(in srgb,var(--color-error) 92%,black 8%)] focus-visible:ring-[color-mix(in srgb,var(--color-error) 55%,transparent)] active:bg-[color-mix(in srgb,var(--color-error) 80%,black 20%)] disabled:bg-[color-mix(in srgb,var(--color-error) 30%,var(--color-bg-surface) 70%)]',
+    outline:
+      'border border-[color-mix(in srgb,var(--color-divider-low) 55%,transparent)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[color-mix(in srgb,var(--color-accent-blue) 45%,transparent)] hover:bg-[color-mix(in srgb,var(--color-bg-surface) 80%,var(--color-accent-blue) 10%)] disabled:text-[color-mix(in srgb,var(--color-text-secondary) 75%,transparent)]',
   };
 
   const sizeClasses = {

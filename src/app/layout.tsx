@@ -4,6 +4,7 @@ import '@worldcoin/mini-apps-ui-kit-react/styles.css';
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import AppHeader from '@/components/layout/AppHeader';
 
 const inter = Inter({
   weight: ['400', '500', '600', '700'],
@@ -41,7 +42,10 @@ export default async function RootLayout({
         className={`${inter.variable} ${jetbrainsMono.variable} min-h-screen bg-[var(--color-bg-base)] text-[var(--color-text-primary)] antialiased`}
         suppressHydrationWarning
       >
-        <ClientProviders session={session}>{children}</ClientProviders>
+        <ClientProviders session={session}>
+          <AppHeader />
+          <div className="pt-16">{children}</div>
+        </ClientProviders>
       </body>
     </html>
   );
