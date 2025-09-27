@@ -48,6 +48,8 @@ export default function TaskSubmissionPage() {
   } = useTaskSubmission();
 
   const [startTime] = useState<Date>(new Date());
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [rewardAmount, setRewardAmount] = useState<number>(0);
 
   useEffect(() => {
     // Clear any previous submission errors when component mounts
@@ -58,9 +60,19 @@ export default function TaskSubmissionPage() {
     router.back();
   };
 
-  const handleSubmissionSuccess = () => {
-    // Navigate back to task detail page to show submission status
-    router.push(`/tasks/${taskId}`);
+  const handleSubmissionSuccess = (reward?: { amount: number; currency: string }) => {
+    if (reward) {
+      setRewardAmount(reward.amount);
+      setShowSuccessMessage(true);
+
+      // Show success message for 3 seconds then navigate
+      setTimeout(() => {
+        router.push(`/dashboard`);
+      }, 3000);
+    } else {
+      // If no reward info, just navigate
+      router.push(`/tasks/${taskId}`);
+    }
   };
 
   const handleSubmit = async (submissionData: Record<string, any>) => {
@@ -79,7 +91,7 @@ export default function TaskSubmissionPage() {
 
     const result = await submitTask(taskId, submissionPayload);
     if (result.success) {
-      handleSubmissionSuccess();
+      handleSubmissionSuccess(result.reward);
     }
   };
 
@@ -360,6 +372,25 @@ export default function TaskSubmissionPage() {
             </div>
           </div>
         </div>
+
+        {/* Success Message */}
+        {showSuccessMessage && (
+          <div className="bg-green-500/20 border border-green-500/40 rounded-2xl p-6 mb-6 animate-pulse">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-3 bg-green-500/20 rounded-full">
+                <DollarSign className="w-8 h-8 text-green-400" />
+              </div>
+              <div>
+                <Typography variant="h2" className="text-green-400 mb-1">
+                  Success! You earned ${rewardAmount.toFixed(2)} USDC
+                </Typography>
+                <Typography variant="body2" className="text-green-300">
+                  Your reward has been credited. Redirecting to dashboard...
+                </Typography>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Task Summary */}
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
