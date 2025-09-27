@@ -66,7 +66,7 @@ export const AuthFlowUIKit: React.FC<AuthFlowProps> = ({ onComplete }) => {
           if (onComplete) {
             onComplete(user);
           } else {
-            router.push('/dashboard');
+            router.push('/home');
           }
         }, 1000);
       }

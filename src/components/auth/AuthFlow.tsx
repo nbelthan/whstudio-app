@@ -55,7 +55,7 @@ export const AuthFlow: React.FC<AuthFlowProps> = ({
       if (onComplete) {
         onComplete(user);
       } else {
-        router.push('/dashboard');
+        router.push('/home');
       }
     }
   }, [session, sessionStatus, user, isAuthenticated, onComplete, router]);

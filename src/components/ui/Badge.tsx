@@ -29,29 +29,29 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(({
   rightIcon,
   ...props
 }, ref) => {
-  const baseClasses = 'inline-flex items-center justify-center font-medium transition-colors duration-200';
+  const baseClasses = 'inline-flex items-center justify-center font-medium transition-colors duration-200 rounded-full';
 
   const variantClasses = {
-    default: 'bg-white/10 text-white/80 border border-white/20',
-    primary: 'bg-[rgb(25,137,251)]/20 text-[rgb(25,137,251)] border border-[rgb(25,137,251)]/30',
-    success: 'bg-green-500/20 text-green-400 border border-green-500/30',
-    warning: 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30',
-    error: 'bg-red-500/20 text-red-400 border border-red-500/30',
-    info: 'bg-blue-500/20 text-blue-400 border border-blue-500/30',
-    ghost: 'bg-transparent text-white/60 hover:text-white/80',
+    default: 'bg-[color-mix(in srgb,var(--color-bg-surface) 80%,white 5%)] text-[var(--color-text-primary)] border border-[color-mix(in srgb,var(--color-divider-low) 80%,transparent)]',
+    primary: 'bg-[color-mix(in srgb,var(--color-accent-blue) 20%,transparent)] text-[var(--color-accent-blue)] border border-[color-mix(in srgb,var(--color-accent-blue) 35%,transparent)]',
+    success: 'bg-[color-mix(in srgb,var(--color-success) 18%,transparent)] text-[var(--color-success)] border border-[color-mix(in srgb,var(--color-success) 32%,transparent)]',
+    warning: 'bg-[color-mix(in srgb,var(--color-warning) 18%,transparent)] text-[var(--color-warning)] border border-[color-mix(in srgb,var(--color-warning) 32%,transparent)]',
+    error: 'bg-[color-mix(in srgb,var(--color-error) 18%,transparent)] text-[var(--color-error)] border border-[color-mix(in srgb,var(--color-error) 32%,transparent)]',
+    info: 'bg-[color-mix(in srgb,var(--color-accent-teal) 18%,transparent)] text-[var(--color-accent-teal)] border border-[color-mix(in srgb,var(--color-accent-teal) 32%,transparent)]',
+    ghost: 'bg-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
   };
 
   const sizeClasses = {
-    sm: 'h-5 px-2 text-xs gap-1',
-    md: 'h-6 px-2.5 text-xs gap-1.5',
-    lg: 'h-7 px-3 text-sm gap-2',
+    sm: 'h-6 px-2.5 text-xs gap-1.5',
+    md: 'h-7 px-3 text-xs gap-2',
+    lg: 'h-8 px-3.5 text-sm gap-2',
   };
 
   const badgeClasses = cn(
     baseClasses,
     variantClasses[variant],
     sizeClasses[size],
-    rounded ? 'rounded-full' : 'rounded-md',
+    rounded ? 'rounded-full' : 'rounded-full',
     className
   );
 

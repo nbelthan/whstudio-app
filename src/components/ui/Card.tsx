@@ -25,13 +25,13 @@ const Card = forwardRef<HTMLDivElement, CardProps>(({
   onClick,
   ...props
 }, ref) => {
-  const baseClasses = 'rounded-xl transition-all duration-200';
+  const baseClasses = 'rounded-2xl transition-all duration-200 border';
 
   const variantClasses = {
-    default: 'bg-white/5 border border-white/10',
-    elevated: 'bg-white/10 shadow-lg shadow-black/20 border border-white/5',
-    outlined: 'border border-white/20 bg-transparent',
-    glass: 'bg-white/5 backdrop-blur-md border border-white/10',
+    default: 'bg-[var(--color-bg-surface)] border-[var(--color-divider-low)]',
+    elevated: 'bg-[var(--color-bg-raised)] border-[var(--color-divider-low)]',
+    outlined: 'bg-transparent border-[color-mix(in srgb,var(--color-divider-low) 60%,transparent)]',
+    glass: 'bg-white/5 backdrop-blur-md border-[var(--color-divider-low)]',
   };
 
   const paddingClasses = {
@@ -45,7 +45,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(({
     baseClasses,
     variantClasses[variant],
     paddingClasses[padding],
-    hover && 'hover:bg-white/10 hover:border-white/20 hover:shadow-lg hover:shadow-black/10',
+    hover && 'hover:border-[color-mix(in srgb,var(--color-accent-blue) 35%,transparent)] hover:bg-[color-mix(in srgb,var(--color-bg-surface) 80%,var(--color-accent-blue) 10%)]',
     clickable && 'cursor-pointer select-none active:scale-[0.98]',
     className
   );
@@ -86,12 +86,12 @@ const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(({
   >
     <div className="flex-1 min-w-0">
       {title && (
-        <h3 className="text-lg font-semibold text-white truncate">
+        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] truncate">
           {title}
         </h3>
       )}
       {subtitle && (
-        <p className="text-sm text-white/60 mt-1">
+        <p className="text-sm text-[var(--color-text-secondary)] mt-1">
           {subtitle}
         </p>
       )}
@@ -116,7 +116,7 @@ const CardContent = forwardRef<HTMLDivElement, CardContentProps>(({
 }, ref) => (
   <div
     ref={ref}
-    className={cn('text-white/80', className)}
+    className={cn('text-[var(--color-text-secondary)]', className)}
     {...props}
   >
     {children}
@@ -146,7 +146,7 @@ const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(({
     <div
       ref={ref}
       className={cn(
-        'flex items-center gap-3 mt-4 pt-4 border-t border-white/10',
+        'flex items-center gap-3 mt-4 pt-4 border-t border-[var(--color-divider-low)]',
         justifyClasses[justify],
         className
       )}
