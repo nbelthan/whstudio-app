@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   },
   allowedDevOrigins: ['*'], // Add your dev origin here
   reactStrictMode: false,
+  serverExternalPackages: ['@worldcoin/minikit-js'],
   eslint: {
     // WARNING: This allows production builds to successfully complete even if
     // your project has ESLint errors.

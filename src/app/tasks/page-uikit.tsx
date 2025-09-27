@@ -64,16 +64,33 @@ export default function TasksPageUIKit() {
     autoFetch: true
   });
 
-  // Update filters when search or category changes
+  // Debug logging
+  console.log('🚀 TasksPage: Render state:', {
+    tasksLength: tasks.length,
+    loading,
+    error,
+    categoriesLength: categories.length,
+    categoriesLoading,
+    categoriesError,
+    filters,
+    pagination
+  });
+
+  // Update filters when search or category changes (debounced to avoid loops)
   useEffect(() => {
-    const newFilters = {
-      category: selectedCategory === 'all' ? undefined : selectedCategory,
-      search: searchQuery || undefined,
-      difficulty: selectedDifficulty === 'all' ? undefined : parseInt(selectedDifficulty),
-      sort: selectedSort
-    };
-    setFilters(newFilters);
-  }, [selectedCategory, searchQuery, selectedDifficulty, selectedSort, setFilters]);
+    const timer = setTimeout(() => {
+      const newFilters = {
+        category: selectedCategory === 'all' ? undefined : selectedCategory,
+        search: searchQuery || undefined,
+        difficulty: selectedDifficulty === 'all' ? undefined : parseInt(selectedDifficulty),
+        sort: selectedSort
+      };
+      console.log('🚀 TasksPage: Setting new filters:', newFilters);
+      setFilters(newFilters);
+    }, 100); // Small debounce to prevent infinite loops
+
+    return () => clearTimeout(timer);
+  }, [selectedCategory, searchQuery, selectedDifficulty, selectedSort]);
 
   const getDifficultyColor = (difficulty: number) => {
     switch(difficulty) {

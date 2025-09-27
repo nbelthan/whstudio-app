@@ -1,12 +1,104 @@
 /**
- * Minimal Tasks API for RLHF Demo
+ * Minimal Tasks API for RLHF Demo with Mock MT-Bench Data
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { sql } from '@vercel/postgres';
+
+// Mock MT-Bench tasks data for demo
+const mockTasks = [
+  {
+    id: "mt-bench-001",
+    title: "A/B Preference – MTBench #150",
+    description: "Compare two AI-generated creative stories and choose which one is better",
+    task_type: "pairwise_ab",
+    instructions: "Compare the two AI responses and select which one is higher quality based on creativity, coherence, and engagement.",
+    reward_amount: 0.02,
+    reward_currency: "USDC",
+    max_submissions: 100,
+    difficulty_level: 3,
+    estimated_time_minutes: 5,
+    category_name: "RLHF Rating",
+    created_at: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+    expires_at: new Date(Date.now() + 86400000 * 7).toISOString(), // 7 days from now
+    user_has_submitted: false,
+    status: "active",
+    priority: 1
+  },
+  {
+    id: "mt-bench-002",
+    title: "A/B Preference – MTBench #151",
+    description: "Compare two AI-generated explanations of a complex topic and choose the clearer one",
+    task_type: "pairwise_ab",
+    instructions: "Evaluate which explanation is more clear, accurate, and helpful for understanding the topic.",
+    reward_amount: 0.02,
+    reward_currency: "USDC",
+    max_submissions: 100,
+    difficulty_level: 2,
+    estimated_time_minutes: 4,
+    category_name: "RLHF Rating",
+    created_at: new Date(Date.now() - 43200000).toISOString(), // 12 hours ago
+    expires_at: new Date(Date.now() + 86400000 * 7).toISOString(),
+    user_has_submitted: false,
+    status: "active",
+    priority: 2
+  },
+  {
+    id: "mt-bench-003",
+    title: "A/B Preference – MTBench #152",
+    description: "Compare two AI-generated code solutions and choose the better implementation",
+    task_type: "pairwise_ab",
+    instructions: "Evaluate code quality, efficiency, readability, and correctness to determine the superior solution.",
+    reward_amount: 0.02,
+    reward_currency: "USDC",
+    max_submissions: 100,
+    difficulty_level: 4,
+    estimated_time_minutes: 8,
+    category_name: "RLHF Rating",
+    created_at: new Date(Date.now() - 21600000).toISOString(), // 6 hours ago
+    expires_at: new Date(Date.now() + 86400000 * 7).toISOString(),
+    user_has_submitted: false,
+    status: "active",
+    priority: 3
+  }
+];
+
+// Generate more tasks to reach 60 total
+const generateMoreTasks = () => {
+  const tasks = [...mockTasks];
+  const topics = [
+    "Creative Writing", "Technical Explanation", "Code Review", "Problem Solving",
+    "Data Analysis", "Research Summary", "Translation", "Content Moderation",
+    "Mathematical Reasoning", "Logical Reasoning"
+  ];
+
+  for (let i = 4; i <= 60; i++) {
+    const topic = topics[i % topics.length];
+    tasks.push({
+      id: `mt-bench-${i.toString().padStart(3, '0')}`,
+      title: `A/B Preference – MTBench #${149 + i}`,
+      description: `Compare two AI responses for ${topic.toLowerCase()} and choose the better one`,
+      task_type: "pairwise_ab",
+      instructions: `Evaluate the quality, accuracy, and helpfulness of both responses for this ${topic.toLowerCase()} task.`,
+      reward_amount: 0.02,
+      reward_currency: "USDC",
+      max_submissions: 100,
+      difficulty_level: Math.floor(Math.random() * 5) + 1,
+      estimated_time_minutes: Math.floor(Math.random() * 8) + 3,
+      category_name: "RLHF Rating",
+      created_at: new Date(Date.now() - Math.random() * 86400000 * 3).toISOString(),
+      expires_at: new Date(Date.now() + 86400000 * 7).toISOString(),
+      user_has_submitted: false,
+      status: "active",
+      priority: i
+    });
+  }
+  return tasks;
+};
+
+const allMockTasks = generateMoreTasks();
 
 /**
- * Get tasks list - simplified for demo
+ * Get tasks list - using mock data for demo
  */
 export async function GET(req: NextRequest) {
   try {
@@ -14,6 +106,8 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
     const offset = parseInt(searchParams.get('offset') || '0');
     const status = searchParams.get('status') || 'active';
+
+    console.log('🔍 Tasks API: Request params:', { limit, offset, status });
 
     // Validate parameters
     if (limit > 100 || limit < 1 || offset < 0) {
@@ -23,54 +117,23 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Get tasks from database
-    const result = await sql`
-      SELECT
-        t.id,
-        t.title,
-        t.description,
-        t.task_type,
-        t.instructions,
-        t.reward_amount,
-        t.reward_currency,
-        t.max_submissions,
-        t.difficulty_level,
-        t.estimated_time_minutes,
-        t.created_at,
-        t.expires_at,
-        tc.name as category_name
-      FROM tasks t
-      LEFT JOIN task_categories tc ON t.category_id = tc.id
-      WHERE t.status = ${status}
-      ORDER BY t.created_at DESC
-      LIMIT ${limit}
-      OFFSET ${offset}
-    `;
+    // Filter tasks by status
+    const filteredTasks = allMockTasks.filter(task => task.status === status);
 
-    const tasks = result.rows.map((task: any) => ({
-      id: task.id,
-      title: task.title,
-      description: task.description,
-      task_type: task.task_type,
-      instructions: task.instructions,
-      reward_amount: parseFloat(task.reward_amount),
-      reward_currency: task.reward_currency,
-      max_submissions: task.max_submissions,
-      difficulty_level: task.difficulty_level,
-      estimated_time_minutes: task.estimated_time_minutes,
-      category_name: task.category_name,
-      created_at: task.created_at,
-      expires_at: task.expires_at,
-      user_has_submitted: false // Simplified for demo
-    }));
+    // Apply pagination
+    const paginatedTasks = filteredTasks.slice(offset, offset + limit);
+
+    console.log('🔍 Tasks API: Returning', paginatedTasks.length, 'of', filteredTasks.length, 'total tasks');
 
     return NextResponse.json({
       success: true,
-      tasks,
+      tasks: paginatedTasks,
       pagination: {
         limit,
         offset,
-        total: tasks.length
+        count: paginatedTasks.length,
+        total: filteredTasks.length,
+        has_more: offset + limit < filteredTasks.length
       }
     });
 

@@ -1,34 +1,62 @@
 /**
  * Task Categories API endpoint
- * Returns available task categories with task counts
+ * Returns available task categories with task counts (using mock data for demo)
  */
 
 import { NextResponse } from 'next/server';
-import { queries } from '@/lib/db';
 
 /**
  * Get all task categories with task counts
  */
 export async function GET() {
   try {
-    const categories = await queries.tasks.getCategories();
+    console.log('🔍 Categories API: Fetching categories');
 
-    // Add an "All Tasks" category at the beginning
-    const allTasksCategory = {
-      id: 'all',
-      name: 'All Tasks',
-      description: 'All available tasks',
-      icon: '📋',
-      is_active: true,
-      task_count: categories.reduce((sum: number, cat: any) => sum + parseInt(cat.task_count), 0),
-      created_at: new Date().toISOString()
-    };
+    // Mock categories for demo
+    const categories = [
+      {
+        id: 'all',
+        name: 'All Tasks',
+        description: 'All available tasks',
+        icon: '📋',
+        is_active: true,
+        task_count: 60,
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 'rlhf-rating',
+        name: 'RLHF Rating',
+        description: 'Human preference rating tasks for AI alignment',
+        icon: '⭐',
+        is_active: true,
+        task_count: 60,
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 'data-annotation',
+        name: 'Data Annotation',
+        description: 'Image and text annotation tasks',
+        icon: '🏷️',
+        is_active: true,
+        task_count: 0,
+        created_at: new Date().toISOString()
+      },
+      {
+        id: 'voice-recording',
+        name: 'Voice Recording',
+        description: 'Audio recording and transcription tasks',
+        icon: '🎤',
+        is_active: true,
+        task_count: 0,
+        created_at: new Date().toISOString()
+      }
+    ];
 
-    const categoriesWithAll = [allTasksCategory, ...categories];
+    console.log('🔍 Categories API: Returning', categories.length, 'categories');
 
     return NextResponse.json({
       success: true,
-      categories: categoriesWithAll
+      categories
     });
 
   } catch (error) {

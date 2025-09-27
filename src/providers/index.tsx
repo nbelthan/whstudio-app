@@ -1,14 +1,10 @@
 'use client';
-import { MiniKitProvider } from '@worldcoin/minikit-js/minikit-provider';
 import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
-import dynamic from 'next/dynamic';
 import type { ReactNode } from 'react';
-
-const ErudaProvider = dynamic(
-  () => import('@/providers/Eruda').then((c) => c.ErudaProvider),
-  { ssr: false },
-);
+import { ErudaProvider } from '@/providers/Eruda';
+// Temporarily disabled MiniKit for demo
+// import ClientOnlyMiniKitProvider from '@/providers/MiniKitProvider';
 
 // Define props for ClientProviders
 interface ClientProvidersProps {
@@ -32,11 +28,15 @@ export default function ClientProviders({
   children,
   session,
 }: ClientProvidersProps) {
+  const appId = process.env.NEXT_PUBLIC_APP_ID || process.env.NEXT_PUBLIC_WLD_APP_ID;
+
+  if (!appId) {
+    console.warn('Missing NEXT_PUBLIC_APP_ID or NEXT_PUBLIC_WLD_APP_ID environment variable');
+  }
+
   return (
     <ErudaProvider>
-      <MiniKitProvider appId={process.env.NEXT_PUBLIC_APP_ID!}>
-        <SessionProvider session={session}>{children}</SessionProvider>
-      </MiniKitProvider>
+      <SessionProvider session={session}>{children}</SessionProvider>
     </ErudaProvider>
   );
 }

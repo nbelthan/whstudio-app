@@ -25,7 +25,8 @@ export async function GET(
     }
 
     // Get task details
-    const tasks = await queries.tasks.findById(id);
+    const tasksResult = await queries.tasks.findById(id);
+    const tasks = tasksResult.rows || [];
 
     if (tasks.length === 0) {
       return NextResponse.json(
@@ -50,7 +51,8 @@ export async function GET(
     let submissions = [];
 
     if (user) {
-      const allSubmissions = await queries.submissions.findByTask(id);
+      const allSubmissionsResult = await queries.submissions.findByTask(id);
+      const allSubmissions = allSubmissionsResult.rows || [];
       userSubmission = allSubmissions.find((sub: any) => sub.user_id === user.id);
 
       // If user is the creator, show all submissions

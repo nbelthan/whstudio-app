@@ -176,7 +176,7 @@ export async function getSessionFromRequest(request: NextRequest): Promise<Sessi
  * @returns Promise with session data or null
  */
 export async function getSessionFromCookies(): Promise<SessionData | null> {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get('session')?.value;
   if (!token) {
     return null;
