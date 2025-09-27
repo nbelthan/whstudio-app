@@ -20,7 +20,7 @@ import {
   Star
 } from 'lucide-react';
 import { RLHFRatingData, Task } from '@/types';
-import { cn } from '@/lib/utils';
+import { BUTTON_INTENTS, cn } from '@/lib/utils';
 
 interface RLHFRatingInterfaceProps {
   task: Task;
@@ -234,30 +234,30 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
         {/* Response A */}
         <div
           className={cn(
-            'bg-white/5 border border-white/10 rounded-2xl p-6 cursor-pointer transition-all duration-200',
-            chosenResponse === 'a' && 'ring-2 ring-blue-400/30 border-blue-400/50 bg-blue-400/10'
+            'rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 60%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 90%,transparent)] p-6 cursor-pointer transition-all duration-200 hover:border-[color-mix(in srgb,var(--color-accent-blue) 35%,transparent)] hover:bg-[color-mix(in srgb,var(--color-bg-surface) 80%,var(--color-accent-blue) 12%)]',
+            chosenResponse === 'a' && 'border-[color-mix(in srgb,var(--color-accent-blue) 45%,transparent)] bg-[color-mix(in srgb,var(--color-accent-blue) 18%,transparent)] shadow-[0_0_0_1px_color-mix(in srgb,var(--color-accent-blue) 40%,transparent)]'
           )}
           onClick={() => setChosenResponse('a')}
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <Typography variant="h3" className="text-white mb-1">
+              <Typography variant="h3" className="text-[var(--color-text-primary)] mb-1">
                 Response A
               </Typography>
-              <Typography variant="caption" className="text-white/60">
+              <Typography variant="caption" className="text-[var(--color-text-secondary)]">
                 {responseData.model_a}
               </Typography>
             </div>
             <div className="flex items-center gap-2">
               {chosenResponse === 'a' && (
-                <CheckCircle className="w-5 h-5 text-green-400" />
+                <CheckCircle className="w-5 h-5 text-[var(--color-success)]" />
               )}
               <Chip variant={chosenResponse === 'a' ? 'primary' : 'secondary'} size="small">
                 {chosenResponse === 'a' ? 'Selected' : 'Option A'}
               </Chip>
             </div>
           </div>
-          <Typography variant="body2" className="text-white/80 leading-relaxed">
+          <Typography variant="body2" className="text-[var(--color-text-primary)] leading-relaxed">
             {responseData.response_a}
           </Typography>
         </div>
@@ -265,30 +265,30 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
         {/* Response B */}
         <div
           className={cn(
-            'bg-white/5 border border-white/10 rounded-2xl p-6 cursor-pointer transition-all duration-200',
-            chosenResponse === 'b' && 'ring-2 ring-blue-400/30 border-blue-400/50 bg-blue-400/10'
+            'rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 60%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 90%,transparent)] p-6 cursor-pointer transition-all duration-200 hover:border-[color-mix(in srgb,var(--color-accent-blue) 35%,transparent)] hover:bg-[color-mix(in srgb,var(--color-bg-surface) 80%,var(--color-accent-blue) 12%)]',
+            chosenResponse === 'b' && 'border-[color-mix(in srgb,var(--color-accent-blue) 45%,transparent)] bg-[color-mix(in srgb,var(--color-accent-blue) 18%,transparent)] shadow-[0_0_0_1px_color-mix(in srgb,var(--color-accent-blue) 40%,transparent)]'
           )}
           onClick={() => setChosenResponse('b')}
         >
           <div className="flex items-center justify-between mb-4">
             <div>
-              <Typography variant="h3" className="text-white mb-1">
+              <Typography variant="h3" className="text-[var(--color-text-primary)] mb-1">
                 Response B
               </Typography>
-              <Typography variant="caption" className="text-white/60">
+              <Typography variant="caption" className="text-[var(--color-text-secondary)]">
                 {responseData.model_b}
               </Typography>
             </div>
             <div className="flex items-center gap-2">
               {chosenResponse === 'b' && (
-                <CheckCircle className="w-5 h-5 text-green-400" />
+                <CheckCircle className="w-5 h-5 text-[var(--color-success)]" />
               )}
               <Chip variant={chosenResponse === 'b' ? 'primary' : 'secondary'} size="small">
                 {chosenResponse === 'b' ? 'Selected' : 'Option B'}
               </Chip>
             </div>
           </div>
-          <Typography variant="body2" className="text-white/80 leading-relaxed">
+          <Typography variant="body2" className="text-[var(--color-text-primary)] leading-relaxed">
             {responseData.response_b}
           </Typography>
         </div>
@@ -310,20 +310,20 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
                 key={criterion.id}
                 onClick={() => handleReasonToggle(criterion.id)}
                 className={cn(
-                  'flex items-start gap-3 p-3 text-left rounded-xl border transition-colors',
+                  'flex items-start gap-3 p-3 text-left rounded-xl border transition-all duration-200 bg-[color-mix(in srgb,var(--color-bg-surface) 92%,transparent)] border-[color-mix(in srgb,var(--color-divider-low) 55%,transparent)] text-[var(--color-text-secondary)] hover:bg-[color-mix(in srgb,var(--color-bg-surface) 82%,var(--color-accent-blue) 12%)] hover:text-[var(--color-text-primary)]',
                   ratingReasons.includes(criterion.id)
-                    ? 'bg-blue-400/20 border-blue-400/30 text-blue-400'
-                    : 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10'
+                    ? 'border-[color-mix(in srgb,var(--color-accent-blue) 45%,transparent)] bg-[color-mix(in srgb,var(--color-accent-blue) 18%,transparent)] text-[var(--color-accent-blue)] shadow-[0_0_0_1px_color-mix(in srgb,var(--color-accent-blue) 35%,transparent)]'
+                    : ''
                 )}
               >
                 <div className={cn(
-                  'w-4 h-4 rounded border-2 mt-0.5 flex-shrink-0',
+                  'w-4 h-4 rounded border-2 mt-0.5 flex-shrink-0 transition-colors duration-200',
                   ratingReasons.includes(criterion.id)
-                    ? 'bg-blue-400 border-blue-400'
-                    : 'border-white/30'
+                    ? 'bg-[var(--color-accent-blue)] border-[color-mix(in srgb,var(--color-accent-blue) 55%,transparent)]'
+                    : 'border-[color-mix(in srgb,var(--color-divider-low) 55%,transparent)]'
                 )}>
                   {ratingReasons.includes(criterion.id) && (
-                    <CheckCircle className="w-3 h-3 text-white" />
+                    <CheckCircle className="w-3 h-3 text-[var(--color-bg-base)]" />
                   )}
                 </div>
                 <div>
@@ -352,7 +352,7 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <Typography variant="body2" className="text-white/80">
+              <Typography variant="body2" className="text-[var(--color-text-primary)]">
                 Confidence:
               </Typography>
               <Typography variant="body2" className={cn('font-medium', confidenceLevel?.color)}>
@@ -367,9 +367,9 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
                 max={5}
                 value={confidenceScore}
                 onChange={(e) => setConfidenceScore(parseInt(e.target.value))}
-                className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+                className="w-full h-2 rounded-full appearance-none cursor-pointer slider bg-[color-mix(in srgb,var(--color-accent-blue) 20%,transparent)]"
               />
-              <div className="flex justify-between text-xs text-white/60 mt-2">
+              <div className="flex justify-between text-xs text-[var(--color-text-secondary)] mt-2">
                 <span>Not confident</span>
                 <span>Very confident</span>
               </div>
@@ -409,7 +409,7 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
           size="large"
           disabled={isSubmitDisabled}
           onClick={handleSubmit}
-          className="min-w-48"
+          className={`${BUTTON_INTENTS.primary} !min-w-48 !h-12 !rounded-2xl`}
         >
           {isSubmitting ? 'Submitting...' : 'Submit Rating'}
         </Button>
@@ -417,25 +417,38 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
 
       {/* Custom styles for range slider */}
       <style jsx>{`
+        .slider::-webkit-slider-runnable-track {
+          background: color-mix(in srgb, var(--color-accent-blue) 20%, transparent);
+          height: 8px;
+          border-radius: 999px;
+        }
+
+        .slider::-moz-range-track {
+          background: color-mix(in srgb, var(--color-accent-blue) 20%, transparent);
+          height: 8px;
+          border-radius: 999px;
+        }
+
         .slider::-webkit-slider-thumb {
           appearance: none;
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: rgb(59, 130, 246);
+          background: var(--color-accent-blue);
           cursor: pointer;
-          border: 2px solid white;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          border: 2px solid color-mix(in srgb, var(--color-bg-base) 80%, transparent);
+          box-shadow: 0 4px 12px rgba(75, 122, 242, 0.45);
+          margin-top: -6px;
         }
 
         .slider::-moz-range-thumb {
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: rgb(59, 130, 246);
+          background: var(--color-accent-blue);
           cursor: pointer;
-          border: 2px solid white;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          border: 2px solid color-mix(in srgb, var(--color-bg-base) 80%, transparent);
+          box-shadow: 0 4px 12px rgba(75, 122, 242, 0.45);
         }
       `}</style>
     </div>
