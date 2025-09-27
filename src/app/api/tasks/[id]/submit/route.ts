@@ -47,21 +47,37 @@ export async function POST(
       );
     }
 
-    // Create mock submission for demo
+    // For demo mode, simulate instant approval and reward crediting
+    // Get task details to know the reward amount
+    const taskReward = 0.25; // Default $0.25 per task in demo
+
+    // Create mock submission with approved status for demo
     const mockSubmission = {
       id: randomUUID(),
       task_id: taskId,
-      status: 'pending',
+      status: 'approved', // Instant approval in demo mode
       time_spent_minutes: time_spent_seconds ? Math.ceil(time_spent_seconds / 60) : 5,
-      created_at: new Date().toISOString()
+      created_at: new Date().toISOString(),
+      quality_score: 5, // Perfect score in demo
+      reward_amount: taskReward,
+      reward_currency: 'USDC'
     };
 
-    console.log('🔍 Submission API: Created mock submission:', mockSubmission);
+    console.log('🔍 Submission API: Created mock submission with instant approval:', mockSubmission);
+    console.log('🔍 Submission API: Reward credited:', `${taskReward} USDC`);
+
+    // Update user's total earned in demo (this would normally be in the database)
+    // The frontend will handle updating the user's total_earned display
 
     return NextResponse.json({
       success: true,
       submission: mockSubmission,
-      message: 'Submission created successfully. Thank you for contributing to RLHF!'
+      reward: {
+        amount: taskReward,
+        currency: 'USDC',
+        status: 'credited' // Instant crediting in demo
+      },
+      message: `Submission approved! You earned ${taskReward} USDC. Thank you for contributing to RLHF!`
     });
 
   } catch (error) {

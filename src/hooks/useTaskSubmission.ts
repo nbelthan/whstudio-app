@@ -20,6 +20,14 @@ interface SubmissionResponse {
     status: string;
     time_spent_minutes?: number;
     created_at: string;
+    quality_score?: number;
+    reward_amount?: number;
+    reward_currency?: string;
+  };
+  reward?: {
+    amount: number;
+    currency: string;
+    status: string;
   };
   message?: string;
   error?: string;
@@ -116,9 +124,23 @@ export function useTaskSubmission(): UseTaskSubmissionReturn {
         throw new Error(responseData.error || 'Submission failed');
       }
 
+      // If reward is credited in demo mode, update localStorage
+      if (responseData.reward && responseData.reward.status === 'credited') {
+        const currentEarnings = parseFloat(localStorage.getItem('demo_total_earned') || '0');
+        const newEarnings = currentEarnings + responseData.reward.amount;
+        localStorage.setItem('demo_total_earned', newEarnings.toString());
+
+        const currentCount = parseInt(localStorage.getItem('demo_submission_count') || '0');
+        localStorage.setItem('demo_submission_count', (currentCount + 1).toString());
+
+        console.log(`💰 Reward credited: ${responseData.reward.amount} ${responseData.reward.currency}`);
+        console.log(`💰 Total earnings: ${newEarnings}`);
+      }
+
       return {
         success: true,
         submission: responseData.submission,
+        reward: responseData.reward,
         message: responseData.message
       };
 

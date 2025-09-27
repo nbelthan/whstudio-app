@@ -30,6 +30,10 @@ export default function Dashboard() {
     // For demo mode, always use mock data to avoid auth loops
     const checkAuth = async () => {
       try {
+        // Get accumulated earnings from localStorage
+        const storedEarnings = parseFloat(localStorage.getItem('demo_total_earned') || '0');
+        const submissionCount = parseInt(localStorage.getItem('demo_submission_count') || '0');
+
         // Always use mock user data for demo
         const mockUser: User = {
           id: '123',
@@ -37,22 +41,25 @@ export default function Dashboard() {
           username: 'Human',
           verification_level: 'device',
           wallet_address: '0x1234567890abcdef',
-          reputation_score: 100,
-          total_earned: 250,
+          reputation_score: 100 + (submissionCount * 10), // Increase reputation with each submission
+          total_earned: storedEarnings, // Use accumulated earnings from localStorage
         };
         setUser(mockUser);
         setLoading(false);
       } catch (error) {
         console.error('Auth check failed:', error);
         // In demo mode, still show dashboard with mock data
+        const storedEarnings = parseFloat(localStorage.getItem('demo_total_earned') || '0');
+        const submissionCount = parseInt(localStorage.getItem('demo_submission_count') || '0');
+
         const mockUser: User = {
           id: '123',
           world_id: 'world_1234567890',
           username: 'Human',
           verification_level: 'device',
           wallet_address: '0x1234567890abcdef',
-          reputation_score: 100,
-          total_earned: 250,
+          reputation_score: 100 + (submissionCount * 10),
+          total_earned: storedEarnings,
         };
         setUser(mockUser);
         setLoading(false);
@@ -61,6 +68,25 @@ export default function Dashboard() {
 
     checkAuth();
   }, []);
+
+  // Refresh earnings when returning to dashboard
+  useEffect(() => {
+    const handleFocus = () => {
+      if (user) {
+        const storedEarnings = parseFloat(localStorage.getItem('demo_total_earned') || '0');
+        const submissionCount = parseInt(localStorage.getItem('demo_submission_count') || '0');
+
+        setUser(prev => prev ? {
+          ...prev,
+          total_earned: storedEarnings,
+          reputation_score: 100 + (submissionCount * 10)
+        } : null);
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [user]);
 
   if (loading) {
     return (
