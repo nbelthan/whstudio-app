@@ -4,8 +4,8 @@ import { SafeAreaView } from '@worldcoin/mini-apps-ui-kit-react';
 import { ShieldCheck, Sparkles, Info, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
-import Card from '@/components/ui/card';
-import Badge from '@/components/ui/badge';
+import Card from '@/components/ui/Card';
+import Badge from '@/components/ui/Badge';
 import BottomTabs from '@/components/navigation/BottomTabs';
 import { cn } from '@/lib/utils';
 

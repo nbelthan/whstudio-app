@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import { SafeAreaView } from '@worldcoin/mini-apps-ui-kit-react';
 import { ArrowDownLeft, ArrowUpRight, Clock, Download } from 'lucide-react';
 
-import Card from '@/components/ui/card';
-import Badge from '@/components/ui/badge';
+import Card from '@/components/ui/Card';
+import Badge from '@/components/ui/Badge';
 import BottomTabs from '@/components/navigation/BottomTabs';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { usePayments } from '@/hooks/usePayments';

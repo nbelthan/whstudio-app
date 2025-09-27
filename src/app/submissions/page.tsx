@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { SafeAreaView } from '@worldcoin/mini-apps-ui-kit-react';
 import { CheckCircle2, Clock, RefreshCw, ShieldCheck, XCircle } from 'lucide-react';
 
-import Card from '@/components/ui/card';
-import Badge from '@/components/ui/badge';
+import Card from '@/components/ui/Card';
+import Badge from '@/components/ui/Badge';
 import BottomTabs from '@/components/navigation/BottomTabs';
 import { cn, formatCurrency, formatTimeAgo } from '@/lib/utils';
 import { useSubmissions } from '@/hooks/useSubmissions';

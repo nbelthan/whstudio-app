@@ -120,38 +120,38 @@ export const EarningsChart: React.FC<EarningsChartProps> = ({
         <div className="space-y-6">
           {/* Summary Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white/5 rounded-lg p-4">
+            <div className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[var(--color-bg-surface)] p-4">
               <div className="flex items-center gap-2 mb-2">
-                <DollarSign className="w-4 h-4 text-green-400" />
-                <span className="text-sm text-white/80">Total</span>
+                <DollarSign className="w-4 h-4 text-[var(--color-success)]" />
+                <span className="text-xs uppercase tracking-[0.2em] text-[var(--color-text-secondary)]">Total</span>
               </div>
-              <p className="text-xl font-semibold text-white">
+              <p className="text-xl font-semibold text-[var(--color-text-primary)]">
                 {formatCurrency(total, 'WLD')}
               </p>
             </div>
 
-            <div className="bg-white/5 rounded-lg p-4">
+            <div className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[var(--color-bg-surface)] p-4">
               <div className="flex items-center gap-2 mb-2">
-                <BarChart3 className="w-4 h-4 text-blue-400" />
-                <span className="text-sm text-white/80">Average</span>
+                <BarChart3 className="w-4 h-4 text-[var(--color-accent-blue)]" />
+                <span className="text-xs uppercase tracking-[0.2em] text-[var(--color-text-secondary)]">Average</span>
               </div>
-              <p className="text-xl font-semibold text-white">
+              <p className="text-xl font-semibold text-[var(--color-text-primary)]">
                 {formatCurrency(average, 'WLD')}
               </p>
             </div>
 
-            <div className="bg-white/5 rounded-lg p-4">
+            <div className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[var(--color-bg-surface)] p-4">
               <div className="flex items-center gap-2 mb-2">
                 <TrendingUp className={cn(
                   'w-4 h-4',
-                  trend >= 0 ? 'text-green-400' : 'text-red-400'
+                  trend >= 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'
                 )} />
-                <span className="text-sm text-white/80">Trend</span>
+                <span className="text-xs uppercase tracking-[0.2em] text-[var(--color-text-secondary)]">Trend</span>
               </div>
               <div className="flex items-center gap-2">
                 <p className={cn(
                   'text-xl font-semibold',
-                  trend >= 0 ? 'text-green-400' : 'text-red-400'
+                  trend >= 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'
                 )}>
                   {trend >= 0 ? '+' : ''}{trend.toFixed(1)}%
                 </p>
@@ -168,19 +168,19 @@ export const EarningsChart: React.FC<EarningsChartProps> = ({
           {/* Chart */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="text-white font-medium">
+              <h4 className="text-sm font-semibold text-[var(--color-text-primary)]">
                 {selectedPeriod.charAt(0).toUpperCase() + selectedPeriod.slice(1)} Breakdown
               </h4>
-              <span className="text-sm text-white/60">
+              <span className="text-xs text-[var(--color-text-secondary)]">
                 {chartData.length} periods
               </span>
             </div>
 
             {chartData.length === 0 ? (
-              <div className="flex items-center justify-center h-48 bg-white/5 rounded-lg">
+              <div className="flex items-center justify-center h-48 rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 60%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 85%,transparent)]">
                 <div className="text-center">
-                  <BarChart3 className="w-12 h-12 text-white/30 mx-auto mb-3" />
-                  <p className="text-white/60">No earnings data available</p>
+                  <BarChart3 className="w-12 h-12 text-[color-mix(in srgb,var(--color-text-secondary) 40%,transparent)] mx-auto mb-3" />
+                  <p className="text-xs text-[var(--color-text-secondary)]">No earnings data available</p>
                 </div>
               </div>
             ) : (
@@ -190,28 +190,25 @@ export const EarningsChart: React.FC<EarningsChartProps> = ({
 
                   return (
                     <div key={index} className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-white/80">{item.label}</span>
-                        <span className="text-white font-medium">
+                      <div className="flex items-center justify-between text-xs text-[var(--color-text-secondary)]">
+                        <span>{item.label}</span>
+                        <span className="text-sm font-semibold text-[var(--color-text-primary)]">
                           {formatCurrency(item.value, 'WLD')}
                         </span>
                       </div>
                       <div className="relative">
-                        <div className="w-full bg-white/20 rounded-full h-3">
-                          <div
-                            className="bg-gradient-to-r from-[rgb(25,137,251)] to-green-400 h-3 rounded-full transition-all duration-300"
-                            style={{ width: `${percentage}%` }}
-                          />
+                        <div className="w-full bg-[color-mix(in srgb,var(--color-divider-low) 50%,transparent)] rounded-full h-3 overflow-hidden">
+                          <div className="h-full bg-[var(--color-accent-blue)]" style={{ width: `${percentage}%` }} />
                         </div>
-                        {item.value > 0 && (
+                        {item.value > 0 && percentage > 25 && (
                           <div
-                            className="absolute top-1/2 -translate-y-1/2 text-xs text-white/90 font-medium"
+                            className="absolute top-1/2 -translate-y-1/2 text-[10px] text-[var(--color-text-primary)] font-medium"
                             style={{
-                              left: `${Math.max(5, percentage - 15)}%`,
+                              left: `${Math.max(5, percentage - 20)}%`,
                               transform: 'translateY(-50%)',
                             }}
                           >
-                            {percentage > 15 && formatCurrency(item.value, 'WLD', true)}
+                            {formatCurrency(item.value, 'WLD')}
                           </div>
                         )}
                       </div>

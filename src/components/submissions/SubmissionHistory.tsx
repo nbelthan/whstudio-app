@@ -247,14 +247,14 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
   const getSubmissionStatusIcon = (status: SubmissionStatus) => {
     switch (status) {
       case 'approved':
-        return <CheckCircle className="w-4 h-4 text-green-400" />;
+        return <CheckCircle className="w-4 h-4 text-[var(--color-success)]" />;
       case 'rejected':
-        return <XCircle className="w-4 h-4 text-red-400" />;
+        return <XCircle className="w-4 h-4 text-[var(--color-error)]" />;
       case 'under_review':
-        return <AlertCircle className="w-4 h-4 text-yellow-400" />;
+        return <AlertCircle className="w-4 h-4 text-[var(--color-accent-teal)]" />;
       case 'pending':
       default:
-        return <Clock className="w-4 h-4 text-blue-400" />;
+        return <Clock className="w-4 h-4 text-[var(--color-accent-blue)]" />;
     }
   };
 
@@ -289,34 +289,34 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
         <Card.Content>
           {/* Statistics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white/5 rounded-2xl p-6">
+            <div className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[var(--color-bg-surface)] p-6">
               <div className="flex items-center gap-2 mb-1">
-                <CheckCircle className="w-4 h-4 text-green-400" />
-                <span className="text-sm text-white/80">Approved</span>
+                <CheckCircle className="w-4 h-4 text-[var(--color-success)]" />
+                <span className="text-xs uppercase tracking-[0.2em] text-[var(--color-text-secondary)]">Approved</span>
               </div>
-              <p className="text-lg font-semibold text-white">{stats.approved}</p>
-              <p className="text-xs text-white/60">{stats.approvalRate.toFixed(1)}% rate</p>
+              <p className="text-lg font-semibold text-[var(--color-text-primary)]">{stats.approved}</p>
+              <p className="text-[10px] text-[var(--color-text-secondary)]">{stats.approvalRate.toFixed(1)}% rate</p>
             </div>
 
-            <div className="bg-white/5 rounded-2xl p-6">
+            <div className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[var(--color-bg-surface)] p-6">
               <div className="flex items-center gap-2 mb-1">
-                <Clock className="w-4 h-4 text-blue-400" />
-                <span className="text-sm text-white/80">Pending</span>
+                <Clock className="w-4 h-4 text-[var(--color-accent-blue)]" />
+                <span className="text-xs uppercase tracking-[0.2em] text-[var(--color-text-secondary)]">Pending</span>
               </div>
-              <p className="text-lg font-semibold text-white">{stats.pending + stats.underReview}</p>
-              <p className="text-xs text-white/60">In review</p>
+              <p className="text-lg font-semibold text-[var(--color-text-primary)]">{stats.pending + stats.underReview}</p>
+              <p className="text-[10px] text-[var(--color-text-secondary)]">In review</p>
             </div>
 
-            <div className="bg-white/5 rounded-2xl p-6">
+            <div className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[var(--color-bg-surface)] p-6">
               <div className="flex items-center gap-2 mb-1">
-                <XCircle className="w-4 h-4 text-red-400" />
-                <span className="text-sm text-white/80">Rejected</span>
+                <XCircle className="w-4 h-4 text-[var(--color-error)]" />
+                <span className="text-xs uppercase tracking-[0.2em] text-[var(--color-text-secondary)]">Rejected</span>
               </div>
-              <p className="text-lg font-semibold text-white">{stats.rejected}</p>
-              <p className="text-xs text-white/60">Need revision</p>
+              <p className="text-lg font-semibold text-[var(--color-text-primary)]">{stats.rejected}</p>
+              <p className="text-[10px] text-[var(--color-text-secondary)]">Need revision</p>
             </div>
 
-            <div className="bg-white/5 rounded-2xl p-6">
+            <div className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[var(--color-bg-surface)] p-6">
               <div className="flex items-center gap-2 mb-1">
                 <Eye className="w-4 h-4 text-purple-400" />
                 <span className="text-sm text-white/80">Quality</span>
