@@ -10,20 +10,10 @@ import { useRouter } from 'next/navigation';
 import {
   SafeAreaView,
   Typography,
-  ListItem,
-  Chip,
   Button,
-  Select,
-  SearchField,
-  Skeleton,
-  SkeletonTypography,
-  Tabs,
-  TabItem,
   useSafeAreaInsets
 } from '@worldcoin/mini-apps-ui-kit-react';
 import {
-  Search,
-  Filter,
   Clock,
   DollarSign,
   Award,
@@ -35,10 +25,6 @@ import { Task, TaskCategory } from '@/types';
 export default function TasksPageUIKit() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
-  const [selectedSort, setSelectedSort] = useState('priority');
 
   // Direct state management instead of using hook
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -116,15 +102,6 @@ export default function TasksPageUIKit() {
     pagination
   });
 
-  // Update filters when search or category changes (debounced to avoid loops)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log('🚀 TasksPage: Filters changed, re-fetching tasks');
-      fetchTasks();
-    }, 300); // Debounce to prevent too many API calls
-
-    return () => clearTimeout(timer);
-  }, [selectedCategory, searchQuery, selectedDifficulty, selectedSort]);
 
   const getDifficultyColor = (difficulty: number) => {
     switch(difficulty) {
@@ -197,73 +174,11 @@ export default function TasksPageUIKit() {
           </Typography>
         </div>
 
-        {/* Search and Filters */}
-        <div className="space-y-4 mb-6">
-          <SearchField
-            value={searchQuery}
-            onChange={setSearchQuery}
-            placeholder="Search tasks..."
-            className="w-full"
-          />
-
-          <div className="flex gap-2">
-            <Select
-              value={selectedDifficulty}
-              onChange={(e) => setSelectedDifficulty(e.target.value)}
-              className="flex-1"
-            >
-              <option value="all">All Difficulties</option>
-              <option value="1">Very Easy</option>
-              <option value="2">Easy</option>
-              <option value="3">Medium</option>
-              <option value="4">Hard</option>
-              <option value="5">Very Hard</option>
-            </Select>
-
-            <Button variant="secondary" size="small">
-              <Filter className="w-4 h-4 mr-2" />
-              Filters
-            </Button>
-          </div>
-        </div>
-
-        {/* Category Tabs */}
-        {categoriesLoading ? (
-          <div className="mb-6">
-            <Skeleton className="w-full h-12" />
-          </div>
-        ) : (
-          <Tabs className="mb-6">
-            {categories.map((category) => (
-              <TabItem
-                key={category.id}
-                isActive={selectedCategory === category.id}
-                onClick={() => setSelectedCategory(category.id)}
-              >
-                {category.name}
-                {typeof category.task_count === 'number' && category.task_count > 0 && (
-                  <Chip variant="secondary" size="small" className="ml-2">
-                    {category.task_count}
-                  </Chip>
-                )}
-              </TabItem>
-            ))}
-          </Tabs>
-        )}
-
-        {/* Sort Options */}
-        <div className="mb-4">
-          <Select
-            value={selectedSort}
-            onChange={(e) => setSelectedSort(e.target.value)}
-            className="w-48"
-          >
-            <option value="priority">Sort by Priority</option>
-            <option value="reward">Sort by Reward</option>
-            <option value="difficulty">Sort by Difficulty</option>
-            <option value="time">Sort by Time</option>
-            <option value="created">Sort by Newest</option>
-          </Select>
+        {/* Simplified header for demo */}
+        <div className="mb-6">
+          <Typography variant="body2" className="text-white/60">
+            Showing {tasks.length} available RLHF tasks
+          </Typography>
         </div>
 
         {/* Error State */}
@@ -402,9 +317,7 @@ export default function TasksPageUIKit() {
                   No tasks found
                 </Typography>
                 <Typography variant="body2" className="text-white/60 mb-4">
-                  {searchQuery || selectedCategory !== 'all' || selectedDifficulty !== 'all'
-                    ? 'Try adjusting your filters or search terms'
-                    : 'No tasks are currently available. Check back later!'}
+                  No tasks are currently available. Check back later!
                 </Typography>
                 <Button variant="secondary" size="small" onClick={handleRefresh}>
                   <RefreshCw className="w-4 h-4 mr-2" />
