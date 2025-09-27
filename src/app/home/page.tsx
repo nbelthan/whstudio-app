@@ -1,11 +1,11 @@
 'use client';
 
 import { SafeAreaView } from '@worldcoin/mini-apps-ui-kit-react';
-import { ShieldCheck, Sparkles, Info, ArrowRight, Wallet, ArrowUpRight } from 'lucide-react';
+import { ShieldCheck, Sparkles, Info, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
-import Card from '@/components/ui/card';
-import Badge from '@/components/ui/badge';
+import Card from '@/components/ui/Card';
+import Badge from '@/components/ui/Badge';
 import { cn } from '@/lib/utils';
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {
