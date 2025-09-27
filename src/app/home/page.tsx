@@ -12,8 +12,10 @@ export default function HomePage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="text-white">Redirecting to tasks...</div>
+    <div className="min-h-screen bg-[var(--color-bg-base)] flex items-center justify-center">
+      <div className="text-[color-mix(in srgb,var(--color-text-secondary) 85%,transparent)]">
+        Redirecting to tasks...
+      </div>
     </div>
   );
 }

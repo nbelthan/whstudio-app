@@ -352,7 +352,7 @@ export default function AdminSubmissionsPage() {
   );
 
   return (
-    <SafeAreaView className="min-h-screen bg-black">
+    <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
       <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
         {/* Header */}
         <div className="mb-8">

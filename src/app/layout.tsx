@@ -37,7 +37,10 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${jetbrainsMono.variable} min-h-screen bg-[var(--color-bg-base)] text-[var(--color-text-primary)] antialiased`}
+        suppressHydrationWarning
+      >
         <ClientProviders session={session}>{children}</ClientProviders>
       </body>
     </html>

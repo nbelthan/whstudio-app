@@ -444,28 +444,29 @@ export default function PaymentsPage() {
   );
 
   return (
-    <SafeAreaView className="min-h-screen bg-black">
-      <div className="w-full max-w-md mx-auto px-6 py-6">
-        {/* Header */}
-        <div className="mb-6">
-          <Typography variant="h2" className="text-white mb-2">
+    <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
+      <div className="w-full max-w-md mx-auto px-6 py-8 space-y-6">
+        <div className="bg-[var(--color-bg-surface)] border border-[var(--color-divider-low)] rounded-2xl p-6 space-y-3">
+          <Typography variant="caption" className="text-[var(--color-accent-blue)] tracking-[0.28em] uppercase">
+            Wallet
+          </Typography>
+          <Typography variant="h2" className="text-[var(--color-text-primary)]">
             Payments
           </Typography>
-          <Typography variant="body2" className="text-white/60">
-            Track your earnings and payment history
+          <Typography variant="body2" className="text-[color-mix(in srgb,var(--color-text-secondary) 90%,transparent)]">
+            Track your earnings, transfers, and pending releases in one place.
           </Typography>
+          <div className="pt-2">
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
+              <TabItem value="overview">Overview</TabItem>
+              <TabItem value="history">History</TabItem>
+            </Tabs>
+          </div>
         </div>
 
-        {/* Tabs */}
-        <div className="mb-6">
-          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
-            <TabItem value="overview">Overview</TabItem>
-            <TabItem value="history">History</TabItem>
-          </Tabs>
+        <div className="space-y-6">
+          {activeTab === 'overview' ? renderOverview() : renderHistory()}
         </div>
-
-        {/* Content */}
-        {activeTab === 'overview' ? renderOverview() : renderHistory()}
       </div>
     </SafeAreaView>
   );

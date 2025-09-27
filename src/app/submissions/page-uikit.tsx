@@ -156,16 +156,16 @@ export default function SubmissionsPageUIKit() {
   );
 
   return (
-    <SafeAreaView className="min-h-screen bg-black">
-      <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
+    <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)] text-[var(--color-text-primary)]">
+      <div className="px-6 py-8 space-y-6" style={{ paddingTop: insets.top + 32 }}>
         {/* Header */}
-        <div className="mb-8">
+        <div className="space-y-2">
           <div className="flex justify-between items-start mb-4">
             <div>
-              <Typography variant="h1" className="text-white mb-2">
+              <Typography variant="h1" className="text-[var(--color-text-primary)] mb-2">
                 Submissions
               </Typography>
-              <Typography variant="body2" className="text-white/70">
+              <Typography variant="body2" className="text-[var(--color-text-secondary)]">
                 Track your task submissions and earnings
               </Typography>
             </div>
@@ -184,27 +184,27 @@ export default function SubmissionsPageUIKit() {
 
         {/* Stats Overview */}
         {stats && (
-          <div className="grid grid-cols-2 gap-6 mb-8">
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            <div className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 85%,transparent)] p-6">
               <div className="flex items-center gap-3 mb-2">
-                <DollarSign className="w-5 h-5 text-green-400" />
-                <Typography variant="caption" className="text-white/60">
+                <DollarSign className="w-5 h-5 text-[var(--color-success)]" />
+                <Typography variant="caption" className="text-[var(--color-text-secondary)]">
                   Total Earnings
                 </Typography>
               </div>
-              <Typography variant="h3" className="text-white">
+              <Typography variant="h3" className="text-[var(--color-text-primary)]">
                 ${stats.total_earnings.toFixed(2)}
               </Typography>
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+            <div className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 85%,transparent)] p-6">
               <div className="flex items-center gap-3 mb-2">
-                <Award className="w-5 h-5 text-[rgb(25,137,251)]" />
-                <Typography variant="caption" className="text-white/60">
+                <Award className="w-5 h-5 text-[var(--color-accent-blue)]" />
+                <Typography variant="caption" className="text-[var(--color-text-secondary)]">
                   Quality Score
                 </Typography>
               </div>
-              <Typography variant="h3" className="text-white mb-2">
+              <Typography variant="h3" className="text-[var(--color-text-primary)] mb-2">
                 {stats.average_quality_score ? Math.round(stats.average_quality_score * 20) : 0}%
               </Typography>
               <Progress value={stats.average_quality_score ? stats.average_quality_score * 20 : 0} className="h-2" />
@@ -273,30 +273,33 @@ export default function SubmissionsPageUIKit() {
             {/* Submissions List */}
             <div className="space-y-4">
               {submissions.map((submission) => (
-                <div key={submission.id} className="bg-white/5 border border-white/10 rounded-xl">
+                <div
+                  key={submission.id}
+                  className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 88%,transparent)]"
+                >
                   <ListItem
                     icon={getStatusIcon(submission.status)}
                     title={submission.task.title}
                     subtitle={
                       <div className="space-y-1 mt-1">
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-3 h-3 text-white/40" />
-                          <Typography variant="caption" className="text-white/60">
+                          <Calendar className="w-3 h-3 text-[var(--color-text-secondary)]" />
+                          <Typography variant="caption" className="text-[var(--color-text-secondary)]">
                             Submitted: {formatDate(submission.created_at)}
                           </Typography>
                         </div>
                         {submission.reviewed_at && (
                           <div className="flex items-center gap-2">
-                            <CheckCircle className="w-3 h-3 text-white/40" />
-                            <Typography variant="caption" className="text-white/60">
+                            <CheckCircle className="w-3 h-3 text-[var(--color-success)]" />
+                            <Typography variant="caption" className="text-[var(--color-text-secondary)]">
                               Reviewed: {formatDate(submission.reviewed_at)}
                             </Typography>
                           </div>
                         )}
                         {submission.task.category_name && (
                           <div className="flex items-center gap-2">
-                            <Award className="w-3 h-3 text-white/40" />
-                            <Typography variant="caption" className="text-white/60">
+                            <Award className="w-3 h-3 text-[var(--color-accent-blue)]" />
+                            <Typography variant="caption" className="text-[var(--color-text-secondary)]">
                               {submission.task.category_name}
                             </Typography>
                           </div>
@@ -312,12 +315,12 @@ export default function SubmissionsPageUIKit() {
                           {submission.status.replace('_', ' ')}
                         </Chip>
                         {submission.status === 'approved' && (
-                          <Typography variant="body2" className="text-green-400 font-medium">
+                          <Typography variant="body2" className="text-[var(--color-success)] font-medium">
                             +${submission.task.reward_amount.toFixed(2)} {submission.task.reward_currency}
                           </Typography>
                         )}
                         {submission.quality_score && (
-                          <Typography variant="caption" className="text-white/60 block">
+                          <Typography variant="caption" className="text-[var(--color-text-secondary)] block">
                             Quality: {Math.round(submission.quality_score * 20)}%
                           </Typography>
                         )}

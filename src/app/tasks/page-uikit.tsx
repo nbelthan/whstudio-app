@@ -273,7 +273,10 @@ export default function TasksPageUIKit() {
                       {task.description}
                     </Typography>
                     {task.category_name && (
-                      <Typography variant="caption" className="text-[var(--color-text-secondary)]/80 mt-1">
+                      <Typography
+                        variant="caption"
+                        className="text-[color-mix(in srgb,var(--color-text-secondary) 80%,transparent)] mt-1"
+                      >
                         {task.category_name}
                       </Typography>
                     )}
@@ -326,7 +329,7 @@ export default function TasksPageUIKit() {
 
                 {/* Action Button */}
                 <Button
-                  variant={task.user_has_submitted ? "secondary" : "primary"}
+                  variant={task.user_has_submitted ? 'secondary' : 'primary'}
                   size="medium"
                   className="w-full"
                   disabled={task.user_has_submitted && task.user_submission_status !== 'rejected'}
@@ -360,11 +363,11 @@ export default function TasksPageUIKit() {
 
             {/* Empty State */}
             {!loading && tasks.length === 0 && !error && (
-              <div className="text-center py-12">
-                <Typography variant="h3" className="text-white mb-2">
+              <div className="text-center py-12 text-[var(--color-text-secondary)]">
+                <Typography variant="h3" className="text-[var(--color-text-primary)] mb-2">
                   No tasks found
                 </Typography>
-                <Typography variant="body2" className="text-white/60 mb-4">
+                <Typography variant="body2" className="text-[var(--color-text-secondary)] mb-4">
                   {searchQuery || selectedCategory !== 'all' || selectedDifficulty !== 'all'
                     ? 'Try adjusting your filters or search terms'
                     : 'No tasks are currently available. Check back later!'}

@@ -8,7 +8,14 @@ import { twMerge } from 'tailwind-merge';
  */
 export const Page = (props: { children: ReactNode; className?: string }) => {
   return (
-    <div className={twMerge(clsx('flex min-h-full flex-col', props.className))}>
+    <div
+      className={twMerge(
+        clsx(
+          'flex min-h-full flex-col bg-[var(--color-bg-base)] text-[var(--color-text-primary)]',
+          props.className,
+        ),
+      )}
+    >
       {props.children}
     </div>
   );
@@ -18,7 +25,7 @@ const Header = (props: { children: ReactNode; className?: string }) => {
   return (
     <header
       className={twMerge(
-        'bg-white flex flex-col justify-center px-6 pt-6 pb-6 z-10',
+        'flex flex-col justify-center gap-3 px-6 pt-6 pb-5 z-10 bg-[var(--color-bg-base)]',
         clsx(props.className),
       )}
     >
@@ -31,7 +38,10 @@ const Main = (props: { children: ReactNode; className?: string }) => {
   return (
     <main
       className={twMerge(
-        clsx('grow overflow-y-auto px-6 py-6', props.className),
+        clsx(
+          'grow overflow-y-auto px-6 py-6 bg-[var(--color-bg-base)] text-[var(--color-text-secondary)]',
+          props.className,
+        ),
       )}
     >
       {props.children}
@@ -41,7 +51,12 @@ const Main = (props: { children: ReactNode; className?: string }) => {
 
 const Footer = (props: { children: ReactNode; className?: string }) => {
   return (
-    <footer className={twMerge('px-6 pb-6', clsx(props.className))}>
+    <footer
+      className={twMerge(
+        'px-6 pb-6 pt-4 border-t border-[color-mix(in srgb,var(--color-divider-low) 45%,transparent)] bg-[var(--color-bg-base)]',
+        clsx(props.className),
+      )}
+    >
       {props.children}
     </footer>
   );

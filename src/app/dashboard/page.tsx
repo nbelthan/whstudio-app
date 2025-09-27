@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   Button,
   ListItem,
-  CircularState,
   Spinner,
 } from '@worldcoin/mini-apps-ui-kit-react';
 import { Briefcase, Award, Clock, TrendingUp } from 'lucide-react';
@@ -65,7 +64,7 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <SafeAreaView className="min-h-screen bg-black flex items-center justify-center">
+      <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)] flex items-center justify-center">
         <div className="text-center">
           <Spinner className="w-8 h-8 text-white mb-4 mx-auto" />
           <Typography variant="body2" className="text-white/60">
@@ -81,107 +80,87 @@ export default function Dashboard() {
   }
 
   return (
-    <SafeAreaView className="min-h-screen bg-black">
-      <div className="w-full max-w-md mx-auto px-6 py-6">
-        {/* Header */}
-        <div className="mb-4">
-          <Typography variant="h2" className="text-white mb-1">
-            Dashboard
-          </Typography>
-          <Typography variant="body2" className="text-white/60">
-            Welcome back, {user.username || 'Human'}
-          </Typography>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-            <div className="flex items-center mb-2">
-              <Award className="w-5 h-5 text-[rgb(25,137,251)] mr-2" />
-              <Typography variant="caption" className="text-white/60">
-                Reputation
+    <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
+      <div className="w-full max-w-md mx-auto px-6 py-8 space-y-6">
+        {/* Hero */}
+        <div className="bg-[var(--color-bg-surface)] border border-[var(--color-divider-low)] rounded-2xl p-6">
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <Typography variant="caption" className="text-[var(--color-accent-blue)] tracking-[0.28em] uppercase">
+                Overview
+              </Typography>
+              <Typography variant="h2" className="text-[var(--color-text-primary)] mt-2">
+                Welcome back, {user.username || 'Human'}
               </Typography>
             </div>
-            <Typography variant="h3" className="text-white">
-              {user.reputation_score || 0}
-            </Typography>
+            <ChipBadge value={user.verification_level} />
           </div>
 
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-            <div className="flex items-center mb-2">
-              <TrendingUp className="w-5 h-5 text-green-400 mr-2" />
-              <Typography variant="caption" className="text-white/60">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-[var(--color-bg-raised)] rounded-xl px-4 py-3 border border-[color-mix(in srgb,var(--color-divider-low) 75%,transparent)]">
+              <div className="flex items-center gap-2 text-[color-mix(in srgb,var(--color-text-secondary) 85%,transparent)] text-sm">
+                <TrendingUp className="h-4 w-4 text-[var(--color-success)]" />
                 Total Earned
+              </div>
+              <Typography variant="h1" className="text-[var(--color-text-primary)] text-3xl font-semibold mt-2">
+                ${user.total_earned || 0}
               </Typography>
             </div>
-            <Typography variant="h3" className="text-white">
-              ${user.total_earned || 0}
-            </Typography>
+
+            <div className="rounded-xl px-4 py-3 border border-[color-mix(in srgb,var(--color-divider-low) 75%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 75%,var(--color-accent-blue) 8%)]">
+              <div className="flex items-center gap-2 text-[color-mix(in srgb,var(--color-text-secondary) 85%,transparent)] text-sm">
+                <Award className="h-4 w-4 text-[var(--color-accent-blue)]" />
+                Reputation
+              </div>
+              <Typography variant="h1" className="text-[var(--color-text-primary)] text-3xl font-semibold mt-2">
+                {user.reputation_score || 0}
+              </Typography>
+            </div>
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
-          <Typography variant="h4" className="text-white mb-4">
+        <div className="bg-[var(--color-bg-surface)] border border-[var(--color-divider-low)] rounded-2xl p-6 space-y-4">
+          <Typography variant="h3" className="text-[var(--color-text-primary)]">
             Quick Actions
           </Typography>
-
-          <div className="space-y-3">
-            <ListItem
-              icon={<Briefcase className="w-5 h-5 text-[rgb(25,137,251)]" />}
-              title="Browse Tasks"
-              subtitle="Find new tasks to complete"
-              onClick={() => router.push('/tasks')}
-            />
-
-            <ListItem
-              icon={<Clock className="w-5 h-5 text-yellow-400" />}
-              title="My Submissions"
-              subtitle="Track your pending submissions"
-              onClick={() => router.push('/submissions')}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="rounded-xl border border-[color-mix(in srgb,var(--color-divider-low) 65%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 85%,transparent)]">
+              <ListItem
+                icon={<Briefcase className="w-5 h-5 text-[var(--color-accent-blue)]" />}
+                title="Browse Tasks"
+                subtitle="Find new tasks to complete"
+                onClick={() => router.push('/tasks')}
+              />
+            </div>
+            <div className="rounded-xl border border-[color-mix(in srgb,var(--color-divider-low) 65%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 85%,transparent)]">
+              <ListItem
+                icon={<Clock className="w-5 h-5 text-[var(--color-warning)]" />}
+                title="My Submissions"
+                subtitle="Track pending submissions"
+                onClick={() => router.push('/submissions')}
+              />
+            </div>
           </div>
         </div>
 
-        {/* User Info */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
-          <Typography variant="h4" className="text-white mb-4">
+        {/* Account Info */}
+        <div className="bg-[var(--color-bg-surface)] border border-[var(--color-divider-low)] rounded-2xl p-6 space-y-4">
+          <Typography variant="h3" className="text-[var(--color-text-primary)]">
             Account Info
           </Typography>
-
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <Typography variant="caption" className="text-white/60">
-                World ID
-              </Typography>
-              <Typography variant="caption" className="text-white">
-                {user.world_id}
-              </Typography>
-            </div>
-
-            <div className="flex justify-between">
-              <Typography variant="caption" className="text-white/60">
-                Verification
-              </Typography>
-              <Typography variant="caption" className="text-white capitalize">
-                {user.verification_level}
-              </Typography>
-            </div>
-
+          <div className="grid grid-cols-1 gap-3">
+            <InfoRow label="World ID" value={user.world_id} />
+            <InfoRow label="Verification" value={user.verification_level} isCapitalized />
             {user.wallet_address && (
-              <div className="flex justify-between">
-                <Typography variant="caption" className="text-white/60">
-                  Wallet
-                </Typography>
-                <Typography variant="caption" className="text-white">
-                  {user.wallet_address.slice(0, 6)}...{user.wallet_address.slice(-4)}
-                </Typography>
-              </div>
+              <InfoRow
+                label="Wallet"
+                value={`${user.wallet_address.slice(0, 6)}...${user.wallet_address.slice(-4)}`}
+              />
             )}
           </div>
         </div>
 
-        {/* Sign Out */}
         <Button
           variant="secondary"
           size="large"
@@ -193,11 +172,49 @@ export default function Dashboard() {
               console.error('Logout failed:', error);
             }
           }}
-          className="w-full"
+          className="w-full !rounded-2xl !border-[color-mix(in srgb,var(--color-divider-low) 60%,transparent)] !bg-[color-mix(in srgb,var(--color-bg-surface) 90%,transparent)] !text-[var(--color-text-primary)]"
         >
           Sign Out
         </Button>
       </div>
     </SafeAreaView>
+  );
+}
+
+function ChipBadge({ value }: { value?: string }) {
+  const label = value ? value.replace(/_/g, ' ') : 'verified';
+  const formattedLabel = label
+    .split(' ')
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join(' ');
+  const formatted = value ? `${formattedLabel} Verified` : formattedLabel;
+  return (
+    <span className="inline-flex h-8 items-center rounded-full border border-[color-mix(in srgb,var(--color-accent-blue) 35%,transparent)] bg-[color-mix(in srgb,var(--color-accent-blue) 18%,transparent)] px-3 text-xs font-medium uppercase tracking-[0.18em] text-[var(--color-accent-blue)]">
+      {formatted}
+    </span>
+  );
+}
+
+function InfoRow({
+  label,
+  value,
+  isCapitalized,
+}: {
+  label: string;
+  value: string | number | undefined;
+  isCapitalized?: boolean;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <Typography variant="caption" className="text-[var(--color-text-secondary)]">
+        {label}
+      </Typography>
+      <Typography
+        variant="body2"
+        className={`text-[var(--color-text-primary)] ${isCapitalized ? 'capitalize' : ''}`}
+      >
+        {value}
+      </Typography>
+    </div>
   );
 }

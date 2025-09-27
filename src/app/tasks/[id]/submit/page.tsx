@@ -182,7 +182,7 @@ export default function TaskSubmissionPage() {
 
   if (taskLoading) {
     return (
-      <SafeAreaView className="min-h-screen bg-black">
+      <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
         <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
           {/* Header Skeleton */}
           <div className="flex items-center gap-4 mb-8">
@@ -202,7 +202,7 @@ export default function TaskSubmissionPage() {
 
   if (taskError) {
     return (
-      <SafeAreaView className="min-h-screen bg-black">
+      <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
         <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
           <div className="flex items-center gap-4 mb-8">
             <Button
@@ -237,7 +237,7 @@ export default function TaskSubmissionPage() {
 
   if (!task) {
     return (
-      <SafeAreaView className="min-h-screen bg-black">
+      <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
         <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
           <div className="flex items-center gap-4 mb-8">
             <Button
@@ -290,7 +290,7 @@ export default function TaskSubmissionPage() {
     }
 
     return (
-      <SafeAreaView className="min-h-screen bg-black">
+      <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
         <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
           <div className="flex items-center gap-4 mb-8">
             <Button
@@ -329,7 +329,7 @@ export default function TaskSubmissionPage() {
   }
 
   return (
-    <SafeAreaView className="min-h-screen bg-black">
+    <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
       <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">

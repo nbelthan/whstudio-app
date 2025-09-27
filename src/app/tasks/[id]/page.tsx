@@ -184,7 +184,7 @@ export default function TaskDetailPage() {
 
   if (loading) {
     return (
-      <SafeAreaView className="min-h-screen bg-black">
+      <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
         <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
           {/* Header Skeleton */}
           <div className="flex items-center gap-4 mb-8">
@@ -205,7 +205,7 @@ export default function TaskDetailPage() {
 
   if (error) {
     return (
-      <SafeAreaView className="min-h-screen bg-black">
+      <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
         <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
           <div className="flex items-center gap-4 mb-8">
             <Button
@@ -240,7 +240,7 @@ export default function TaskDetailPage() {
 
   if (!task) {
     return (
-      <SafeAreaView className="min-h-screen bg-black">
+      <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
         <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
           <div className="flex items-center gap-4 mb-8">
             <Button
@@ -280,7 +280,7 @@ export default function TaskDetailPage() {
                       task.user_submission?.status === 'rejected';
 
   return (
-    <SafeAreaView className="min-h-screen bg-black">
+    <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
       <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">

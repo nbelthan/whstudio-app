@@ -116,3 +116,159 @@ body {
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+/* Legacy Tailwind palette overrides to match Morpho spec */
+.bg-black {
+  background-color: var(--color-bg-base) !important;
+}
+
+.bg-black\/20 {
+  background-color: color-mix(in srgb, var(--color-bg-base) 92%, transparent) !important;
+}
+
+.bg-black\/50 {
+  background-color: color-mix(in srgb, var(--color-bg-base) 85%, var(--color-bg-surface) 15%) !important;
+}
+
+.bg-black\/90 {
+  background-color: color-mix(in srgb, var(--color-bg-base) 98%, var(--color-bg-surface) 2%) !important;
+}
+
+.bg-white\/5 {
+  background-color: color-mix(in srgb, var(--color-bg-surface) 90%, transparent) !important;
+}
+
+.bg-white\/10 {
+  background-color: color-mix(in srgb, var(--color-bg-surface) 85%, transparent) !important;
+}
+
+.bg-white\/20 {
+  background-color: color-mix(in srgb, var(--color-bg-surface) 75%, transparent) !important;
+}
+
+.bg-white\/30 {
+  background-color: color-mix(in srgb, var(--color-bg-surface) 65%, transparent) !important;
+}
+
+.bg-white\/60 {
+  background-color: color-mix(in srgb, var(--color-bg-surface) 55%, transparent) !important;
+}
+
+.border-white\/10 {
+  border-color: color-mix(in srgb, var(--color-divider-low) 75%, transparent) !important;
+}
+
+.border-white\/20 {
+  border-color: color-mix(in srgb, var(--color-divider-low) 65%, transparent) !important;
+}
+
+.border-white\/30 {
+  border-color: color-mix(in srgb, var(--color-divider-low) 55%, transparent) !important;
+}
+
+.border-white\/40 {
+  border-color: color-mix(in srgb, var(--color-divider-low) 45%, transparent) !important;
+}
+
+.text-white {
+  color: var(--color-text-primary) !important;
+}
+
+.text-white\/90 {
+  color: color-mix(in srgb, var(--color-text-primary) 92%, transparent) !important;
+}
+
+.text-white\/80 {
+  color: color-mix(in srgb, var(--color-text-primary) 82%, transparent) !important;
+}
+
+.text-white\/70 {
+  color: color-mix(in srgb, var(--color-text-primary) 70%, var(--color-text-secondary) 30%) !important;
+}
+
+.text-white\/60 {
+  color: color-mix(in srgb, var(--color-text-secondary) 90%, transparent) !important;
+}
+
+.text-white\/50 {
+  color: color-mix(in srgb, var(--color-text-secondary) 75%, transparent) !important;
+}
+
+.text-white\/40 {
+  color: color-mix(in srgb, var(--color-text-secondary) 60%, transparent) !important;
+}
+
+.text-white\/30 {
+  color: color-mix(in srgb, var(--color-text-secondary) 45%, transparent) !important;
+}
+
+.text-white\/20 {
+  color: color-mix(in srgb, var(--color-text-secondary) 30%, transparent) !important;
+}
+
+.text-white\/10 {
+  color: color-mix(in srgb, var(--color-text-secondary) 15%, transparent) !important;
+}
+
+.text-green-400 {
+  color: var(--color-success) !important;
+}
+
+.text-red-400 {
+  color: var(--color-error) !important;
+}
+
+.text-blue-400 {
+  color: var(--color-accent-blue) !important;
+}
+
+.text-yellow-400 {
+  color: var(--color-warning) !important;
+}
+
+.bg-green-500\/10,
+.bg-green-500\/20 {
+  background-color: color-mix(in srgb, var(--color-success) 18%, transparent) !important;
+}
+
+.bg-blue-400\/10,
+.bg-blue-400\/20,
+.bg-blue-500\/10,
+.bg-blue-500\/20,
+.bg-blue-500\/30,
+.bg-blue-500\/50 {
+  background-color: color-mix(in srgb, var(--color-accent-blue) 18%, transparent) !important;
+}
+
+.bg-yellow-500\/10,
+.bg-yellow-500\/20,
+.bg-orange-500\/20 {
+  background-color: color-mix(in srgb, var(--color-warning) 20%, transparent) !important;
+}
+
+.bg-red-500\/10,
+.bg-red-500\/20,
+.bg-red-500\/30 {
+  background-color: color-mix(in srgb, var(--color-error) 20%, transparent) !important;
+}
+
+.bg-purple-500\/20 {
+  background-color: color-mix(in srgb, var(--color-accent-teal) 20%, transparent) !important;
+}
+
+.border-blue-500\/20,
+.border-blue-500\/30 {
+  border-color: color-mix(in srgb, var(--color-accent-blue) 35%, transparent) !important;
+}
+
+.border-green-500\/20 {
+  border-color: color-mix(in srgb, var(--color-success) 35%, transparent) !important;
+}
+
+.border-red-500\/20 {
+  border-color: color-mix(in srgb, var(--color-error) 35%, transparent) !important;
+}
+
+.border-yellow-500\/20 {
+  border-color: color-mix(in srgb, var(--color-warning) 35%, transparent) !important;
+}
