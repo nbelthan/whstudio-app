@@ -38,8 +38,9 @@ export async function POST(
     // For demo mode, validate basic RLHF submission structure
     const { chosen_response, confidence, time_spent_seconds } = submissionData.submission_data;
 
-    // Validate chosen_response is either "A" or "B"
-    if (!chosen_response || (chosen_response !== 'A' && chosen_response !== 'B')) {
+    // Validate chosen_response is either "A" or "B" (case-insensitive)
+    const normalizedResponse = chosen_response?.toUpperCase();
+    if (!normalizedResponse || (normalizedResponse !== 'A' && normalizedResponse !== 'B')) {
       return NextResponse.json(
         { error: 'For A/B tasks, chosen_response must be either "A" or "B"' },
         { status: 400 }
