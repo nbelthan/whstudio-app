@@ -3,11 +3,20 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { randomUUID } from 'crypto';
+
+// Function to generate consistent UUIDs from string seeds
+function generateUUID(seed: string): string {
+  // Create a deterministic UUID from seed for consistent results
+  const seedNum = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const hex = (seedNum * 123456789).toString(16).padStart(8, '0').slice(0, 8);
+  return `${hex.slice(0, 8)}-${hex.slice(0, 4)}-4${hex.slice(1, 4)}-8${hex.slice(0, 3)}-${hex.slice(0, 12)}`;
+}
 
 // Mock MT-Bench tasks data for demo
 const mockTasks = [
   {
-    id: "mt-bench-001",
+    id: generateUUID("mt-bench-001"),
     title: "A/B Preference – MTBench #150",
     description: "Compare two AI-generated creative stories and choose which one is better",
     task_type: "pairwise_ab",
@@ -25,7 +34,7 @@ const mockTasks = [
     priority: 1
   },
   {
-    id: "mt-bench-002",
+    id: generateUUID("mt-bench-002"),
     title: "A/B Preference – MTBench #151",
     description: "Compare two AI-generated explanations of a complex topic and choose the clearer one",
     task_type: "pairwise_ab",
@@ -43,7 +52,7 @@ const mockTasks = [
     priority: 2
   },
   {
-    id: "mt-bench-003",
+    id: generateUUID("mt-bench-003"),
     title: "A/B Preference – MTBench #152",
     description: "Compare two AI-generated code solutions and choose the better implementation",
     task_type: "pairwise_ab",
@@ -74,7 +83,7 @@ const generateMoreTasks = () => {
   for (let i = 4; i <= 60; i++) {
     const topic = topics[i % topics.length];
     tasks.push({
-      id: `mt-bench-${i.toString().padStart(3, '0')}`,
+      id: generateUUID(`mt-bench-${i.toString().padStart(3, '0')}`),
       title: `A/B Preference – MTBench #${149 + i}`,
       description: `Compare two AI responses for ${topic.toLowerCase()} and choose the better one`,
       task_type: "pairwise_ab",

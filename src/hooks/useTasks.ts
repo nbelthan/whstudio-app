@@ -76,62 +76,58 @@ export function useTasks(options: UseTasksOptions = {}): UseTasksReturn {
 
   console.log('🔍 useTasks: State initialized, tasks.length:', tasks.length);
 
+  // Fetch function
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      console.log('🔍 useTasks: Starting fetch');
+
+      // Use relative URL since we're client-side now
+      const url = '/api/tasks?limit=20&offset=0';
+      console.log('🔍 useTasks: Fetching from:', url);
+
+      const response = await fetch(url);
+      console.log('🔍 useTasks: fetch response:', response.status);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('🔍 useTasks: fetch data:', data);
+
+      if (data.success && data.tasks) {
+        console.log('🔍 useTasks: Setting', data.tasks.length, 'tasks');
+        setTasks(data.tasks);
+        setPagination(data.pagination);
+      } else {
+        console.error('🔍 useTasks: API returned success=false or no tasks');
+        setError('Failed to fetch tasks');
+      }
+
+    } catch (err) {
+      console.error('🔍 useTasks: fetch error:', err);
+      setError(err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Use useEffect that only runs on client side
   useEffect(() => {
     console.log('🔍 useTasks: useEffect ACTUALLY RUNS! autoFetch:', autoFetch);
 
-    if (!autoFetch) {
-      console.log('🔍 useTasks: autoFetch is false, skipping');
-      return;
+    // Always fetch if autoFetch is true
+    if (autoFetch) {
+      fetchTasks();
     }
-
-    console.log('🔍 useTasks: Starting client-side fetch');
-
-    const doFetch = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Since we're in useEffect, window should be available
-        console.log('🔍 useTasks: window available in useEffect?', typeof window !== 'undefined');
-
-        // Use relative URL since we're client-side now
-        const url = '/api/tasks?limit=20&offset=0';
-        console.log('🔍 useTasks: Fetching from:', url);
-
-        const response = await fetch(url);
-        console.log('🔍 useTasks: useEffect fetch response:', response.status);
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        console.log('🔍 useTasks: useEffect fetch data:', data);
-
-        if (data.success && data.tasks) {
-          console.log('🔍 useTasks: Setting', data.tasks.length, 'tasks from useEffect');
-          setTasks(data.tasks);
-          setPagination(data.pagination);
-        } else {
-          console.error('🔍 useTasks: useEffect - API returned success=false or no tasks');
-          setError('Failed to fetch tasks');
-        }
-
-      } catch (err) {
-        console.error('🔍 useTasks: useEffect fetch error:', err);
-        setError(err instanceof Error ? err.message : 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    doFetch();
 
     return () => {
       console.log('🔍 useTasks: useEffect cleanup');
     };
-  }, [autoFetch]); // Add autoFetch as dependency
+  }, []); // Empty dependency array - run once on mount
 
   console.log('🔍 useTasks: Returning state with', tasks.length, 'tasks');
 

@@ -30,7 +30,6 @@ import {
   ArrowRight,
   RefreshCw
 } from 'lucide-react';
-import { useTasks } from '@/hooks/useTasks';
 import { Task, TaskCategory } from '@/types';
 
 export default function TasksPageUIKit() {
@@ -41,28 +40,70 @@ export default function TasksPageUIKit() {
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
   const [selectedSort, setSelectedSort] = useState('priority');
 
-  // Initialize the tasks hook
-  const {
-    tasks,
-    categories,
-    loading,
-    error,
-    pagination,
-    filters,
-    setFilters,
-    refreshTasks,
-    loadMore,
-    categoriesLoading,
-    categoriesError
-  } = useTasks({
-    initialFilters: {
-      category: selectedCategory === 'all' ? undefined : selectedCategory,
-      search: searchQuery || undefined,
-      sort: selectedSort
-    },
+  // Direct state management instead of using hook
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [categories, setCategories] = useState<TaskCategory[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [pagination, setPagination] = useState({
     limit: 20,
-    autoFetch: true
+    offset: 0,
+    count: 0,
+    total: 0,
+    has_more: false
   });
+  const categoriesLoading = false;
+  const categoriesError = null;
+
+  // Fetch tasks function (client-side only)
+  const fetchTasks = async () => {
+    // Only run on client side
+    if (typeof window === 'undefined') {
+      console.log('🔍 TasksPage: Skipping fetch - running on server side');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      console.log('🔍 TasksPage: Starting client-side direct fetch');
+
+      const url = '/api/tasks?limit=20&offset=0';
+      console.log('🔍 TasksPage: Fetching from:', url);
+
+      const response = await fetch(url);
+      console.log('🔍 TasksPage: fetch response:', response.status);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('🔍 TasksPage: fetch data:', data);
+
+      if (data.success && data.tasks) {
+        console.log('🔍 TasksPage: Setting', data.tasks.length, 'tasks');
+        setTasks(data.tasks);
+        setPagination(data.pagination);
+      } else {
+        console.error('🔍 TasksPage: API returned success=false or no tasks');
+        setError('Failed to fetch tasks');
+      }
+
+    } catch (err) {
+      console.error('🔍 TasksPage: fetch error:', err);
+      setError(err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch tasks on component mount (client-side only)
+  useEffect(() => {
+    console.log('🔍 TasksPage: useEffect running, calling fetchTasks');
+    fetchTasks();
+  }, []);
 
   // Debug logging
   console.log('🚀 TasksPage: Render state:', {
@@ -72,22 +113,15 @@ export default function TasksPageUIKit() {
     categoriesLength: categories.length,
     categoriesLoading,
     categoriesError,
-    filters,
     pagination
   });
 
   // Update filters when search or category changes (debounced to avoid loops)
   useEffect(() => {
     const timer = setTimeout(() => {
-      const newFilters = {
-        category: selectedCategory === 'all' ? undefined : selectedCategory,
-        search: searchQuery || undefined,
-        difficulty: selectedDifficulty === 'all' ? undefined : parseInt(selectedDifficulty),
-        sort: selectedSort
-      };
-      console.log('🚀 TasksPage: Setting new filters:', newFilters);
-      setFilters(newFilters);
-    }, 100); // Small debounce to prevent infinite loops
+      console.log('🚀 TasksPage: Filters changed, re-fetching tasks');
+      fetchTasks();
+    }, 300); // Debounce to prevent too many API calls
 
     return () => clearTimeout(timer);
   }, [selectedCategory, searchQuery, selectedDifficulty, selectedSort]);
@@ -125,12 +159,15 @@ export default function TasksPageUIKit() {
 
   const handleLoadMore = () => {
     if (pagination.has_more && !loading) {
-      loadMore();
+      console.log('🔍 TasksPage: Load more requested');
+      // TODO: Implement pagination
+      fetchTasks();
     }
   };
 
   const handleRefresh = () => {
-    refreshTasks();
+    console.log('🔍 TasksPage: Refresh requested');
+    fetchTasks();
   };
 
   const handleTaskClick = (taskId: string) => {
