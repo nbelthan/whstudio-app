@@ -6,7 +6,7 @@ import { ArrowDownLeft, ArrowUpRight, Clock, Download } from 'lucide-react';
 
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
-import BottomTabs from '@/components/navigation/BottomTabs';
+import BottomTabs from '@/components/Navigation/BottomTabs';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { usePayments } from '@/hooks/usePayments';
 

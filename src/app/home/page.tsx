@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
-import BottomTabs from '@/components/navigation/BottomTabs';
+import BottomTabs from '@/components/Navigation/BottomTabs';
 import { cn } from '@/lib/utils';
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {

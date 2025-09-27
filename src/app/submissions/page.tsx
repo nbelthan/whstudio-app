@@ -6,7 +6,7 @@ import { CheckCircle2, Clock, RefreshCw, ShieldCheck, XCircle } from 'lucide-rea
 
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
-import BottomTabs from '@/components/navigation/BottomTabs';
+import BottomTabs from '@/components/Navigation/BottomTabs';
 import { cn, formatCurrency, formatTimeAgo } from '@/lib/utils';
 import { useSubmissions } from '@/hooks/useSubmissions';
 import { SubmissionStatus } from '@/lib/types/submissions';

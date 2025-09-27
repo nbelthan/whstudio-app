@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
-import BottomTabs from '@/components/navigation/BottomTabs';
+import BottomTabs from '@/components/Navigation/BottomTabs';
 import { cn, formatCurrency } from '@/lib/utils';
 import { useDashboard, useAuth } from '@/stores';
 

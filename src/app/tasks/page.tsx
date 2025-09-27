@@ -8,7 +8,7 @@ import { Clock, Sparkles, ArrowUpRight, Filter } from 'lucide-react';
 
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
-import BottomTabs from '@/components/navigation/BottomTabs';
+import BottomTabs from '@/components/Navigation/BottomTabs';
 import { cn, formatDuration, formatCurrency } from '@/lib/utils';
 import { Task } from '@/types';
 
