@@ -343,9 +343,7 @@ export default function TaskSubmissionPage() {
             <ArrowLeft className="w-4 h-4" />
           </Button>
           <div className="flex-1">
-            <Typography variant="h1" className="text-white">
-              {canResubmit ? 'Resubmit Task' : 'Submit Task'}
-            </Typography>
+            {/* Removed Submit Task header for cleaner UI */}
           </div>
         </div>
 
