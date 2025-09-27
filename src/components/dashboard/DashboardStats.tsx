@@ -157,21 +157,21 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({
         <Card variant="elevated">
           <Card.Content>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-white/80 text-sm font-medium">Total Earned</span>
-              <DollarSign className="w-5 h-5 text-green-400" />
+              <span className="text-[var(--color-text-secondary)] text-sm font-medium">Total Earned</span>
+              <DollarSign className="w-5 h-5 text-[var(--color-success)]" />
             </div>
             <div className="space-y-2">
-              <p className="text-2xl font-bold text-white">
+              <p className="text-2xl font-semibold text-[var(--color-text-primary)]">
                 {formatCurrency(userStats?.total_earned || 0, 'WLD')}
               </p>
               {trends.weeklyChange !== undefined && (
-                <div className="flex items-center gap-1 text-sm">
+                <div className="flex items-center gap-1 text-xs text-[var(--color-text-secondary)]">
                   {trends.isPositiveChange ? (
-                    <TrendingUp className="w-3 h-3 text-green-400" />
+                    <TrendingUp className="w-3 h-3 text-[var(--color-success)]" />
                   ) : (
-                    <TrendingDown className="w-3 h-3 text-red-400" />
+                    <TrendingDown className="w-3 h-3 text-[var(--color-error)]" />
                   )}
-                  <span className={trends.isPositiveChange ? 'text-green-400' : 'text-red-400'}>
+                  <span className={trends.isPositiveChange ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}>
                     {Math.abs(trends.weeklyChange).toFixed(1)}% this week
                   </span>
                 </div>
@@ -184,21 +184,21 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({
         <Card variant="elevated">
           <Card.Content>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-white/80 text-sm font-medium">Tasks Completed</span>
-              <CheckCircle className="w-5 h-5 text-blue-400" />
+              <span className="text-[var(--color-text-secondary)] text-sm font-medium">Tasks Completed</span>
+              <CheckCircle className="w-5 h-5 text-[var(--color-accent-blue)]" />
             </div>
             <div className="space-y-2">
-              <p className="text-2xl font-bold text-white">
+              <p className="text-2xl font-semibold text-[var(--color-text-primary)]">
                 {userStats?.tasks_completed || 0}
               </p>
               <div className="flex items-center gap-2">
-                <div className="flex-1 bg-white/20 rounded-full h-2">
+                <div className="flex-1 bg-[color-mix(in srgb,var(--color-divider-low) 50%,transparent)] rounded-full h-2">
                   <div
-                    className="bg-blue-400 h-2 rounded-full transition-all duration-300"
+                    className="bg-[var(--color-accent-blue)] h-2 rounded-full transition-all duration-300"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
-                <span className="text-xs text-white/60">Level {level}</span>
+                <span className="text-xs text-[var(--color-text-secondary)]">Level {level}</span>
               </div>
             </div>
           </Card.Content>
@@ -208,14 +208,14 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({
         <Card variant="elevated">
           <Card.Content>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-white/80 text-sm font-medium">Success Rate</span>
-              <Target className="w-5 h-5 text-purple-400" />
+              <span className="text-[var(--color-text-secondary)] text-sm font-medium">Success Rate</span>
+              <Target className="w-5 h-5 text-[var(--color-accent-teal)]" />
             </div>
             <div className="space-y-2">
-              <p className="text-2xl font-bold text-white">
+              <p className="text-2xl font-semibold text-[var(--color-text-primary)]">
                 {userStats?.success_rate?.toFixed(1) || 0}%
               </p>
-              <div className="text-sm text-white/60">
+              <div className="text-xs text-[var(--color-text-secondary)]">
                 {userStats?.success_rate && userStats.success_rate > 90 ? 'Excellent' :
                  userStats?.success_rate && userStats.success_rate > 80 ? 'Good' :
                  userStats?.success_rate && userStats.success_rate > 70 ? 'Fair' : 'Needs Improvement'}
@@ -228,14 +228,14 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({
         <Card variant="elevated">
           <Card.Content>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-white/80 text-sm font-medium">Current Streak</span>
-              <Zap className="w-5 h-5 text-yellow-400" />
+              <span className="text-[var(--color-text-secondary)] text-sm font-medium">Current Streak</span>
+              <Zap className="w-5 h-5 text-[var(--color-accent-blue)]" />
             </div>
             <div className="space-y-2">
-              <p className="text-2xl font-bold text-white">
+              <p className="text-2xl font-semibold text-[var(--color-text-primary)]">
                 {userStats?.current_streak || 0} days
               </p>
-              <div className="text-sm text-white/60">
+              <div className="text-xs text-[var(--color-text-secondary)]">
                 Keep it up!
               </div>
             </div>
@@ -284,10 +284,10 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({
               {/* Response Time */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-blue-400" />
-                  <span className="text-white/80">Avg Response Time</span>
+                  <Clock className="w-5 h-5 text-[var(--color-accent-blue)]" />
+                  <span className="text-[var(--color-text-secondary)]">Avg Response Time</span>
                 </div>
-                <span className="text-white font-semibold">2.4 min</span>
+                <span className="text-sm font-semibold text-[var(--color-text-primary)]">2.4 min</span>
               </div>
 
               {/* Quality Score */}

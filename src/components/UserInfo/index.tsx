@@ -14,15 +14,15 @@ export const UserInfo = () => {
   const session = useSession();
 
   return (
-    <div className="flex flex-row items-center justify-start gap-4 rounded-2xl w-full border border-white/15 bg-white/5 p-6">
+    <div className="flex flex-row items-center justify-start gap-4 rounded-2xl w-full border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 85%,transparent)] p-6">
       <Marble src={session?.data?.user?.profilePictureUrl} className="w-14" />
       <div className="flex flex-row items-center justify-center">
-        <span className="text-lg font-semibold capitalize">
+        <span className="text-lg font-semibold capitalize text-[var(--color-text-primary)]">
           {session?.data?.user?.username}
         </span>
         {session?.data?.user?.profilePictureUrl && (
           <CircularIcon size="sm" className="ml-0">
-            <CheckCircleSolid className="text-blue-600" />
+            <CheckCircleSolid className="text-[var(--color-brand-verify)]" />
           </CircularIcon>
         )}
       </div>

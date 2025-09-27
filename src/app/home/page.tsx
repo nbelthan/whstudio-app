@@ -4,8 +4,9 @@ import { SafeAreaView } from '@worldcoin/mini-apps-ui-kit-react';
 import { ShieldCheck, Sparkles, Info, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
-import Card from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
+import Card from '@/components/ui/card';
+import Badge from '@/components/ui/badge';
+import BottomTabs from '@/components/navigation/BottomTabs';
 import { cn } from '@/lib/utils';
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {
@@ -222,28 +223,7 @@ export default function HomePage() {
         <div className="h-16" />
       </div>
 
-      <nav
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[color-mix(in srgb,var(--color-bg-base) 95%,black 5%)]"
-      >
-        <div className="max-w-md mx-auto px-6 py-4 flex items-center justify-around gap-4" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 12px)' }}>
-          <button
-            type="button"
-            className="flex flex-1 flex-col items-center gap-2"
-          >
-            <span className="flex h-11 w-full items-center justify-center rounded-full bg-[var(--color-accent-blue)] text-black font-semibold text-sm tracking-[0.2em] uppercase">
-              Earn
-            </span>
-          </button>
-          <button
-            type="button"
-            className="flex flex-1 flex-col items-center gap-2"
-          >
-            <span className="flex h-11 w-full items-center justify-center rounded-full border border-[var(--color-divider-low)] text-[var(--color-text-secondary)] font-semibold text-sm tracking-[0.2em] uppercase">
-              Borrow
-            </span>
-          </button>
-        </div>
-      </nav>
+      <BottomTabs />
     </SafeAreaView>
   );
 }

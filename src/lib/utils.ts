@@ -104,11 +104,31 @@ export function getTaskDifficultyProps(level: TaskDifficulty): {
   bgColor: string;
 } {
   const difficultyProps: Record<TaskDifficulty, { label: string; color: string; bgColor: string }> = {
-    1: { label: 'Beginner', color: 'text-green-400', bgColor: 'bg-green-400/10' },
-    2: { label: 'Easy', color: 'text-blue-400', bgColor: 'bg-blue-400/10' },
-    3: { label: 'Medium', color: 'text-yellow-400', bgColor: 'bg-yellow-400/10' },
-    4: { label: 'Hard', color: 'text-orange-400', bgColor: 'bg-orange-400/10' },
-    5: { label: 'Expert', color: 'text-red-400', bgColor: 'bg-red-400/10' },
+    1: {
+      label: 'Beginner',
+      color: 'text-[var(--color-success)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-success) 18%,transparent)]',
+    },
+    2: {
+      label: 'Easy',
+      color: 'text-[var(--color-accent-blue)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-accent-blue) 18%,transparent)]',
+    },
+    3: {
+      label: 'Medium',
+      color: 'text-[var(--color-warning)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-warning) 18%,transparent)]',
+    },
+    4: {
+      label: 'Hard',
+      color: 'text-[var(--color-error)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-error) 18%,transparent)]',
+    },
+    5: {
+      label: 'Expert',
+      color: 'text-[var(--color-error)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-error) 26%,transparent)]',
+    },
   };
 
   return difficultyProps[level];
@@ -124,24 +144,74 @@ export function getStatusProps(status: string): {
 } {
   const statusProps: Record<string, { label: string; color: string; bgColor: string }> = {
     // Task statuses
-    draft: { label: 'Draft', color: 'text-gray-400', bgColor: 'bg-gray-400/10' },
-    active: { label: 'Active', color: 'text-green-400', bgColor: 'bg-green-400/10' },
-    paused: { label: 'Paused', color: 'text-yellow-400', bgColor: 'bg-yellow-400/10' },
-    completed: { label: 'Completed', color: 'text-blue-400', bgColor: 'bg-blue-400/10' },
-    cancelled: { label: 'Cancelled', color: 'text-red-400', bgColor: 'bg-red-400/10' },
+    draft: {
+      label: 'Draft',
+      color: 'text-[var(--color-text-secondary)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-divider-low) 25%,transparent)]',
+    },
+    active: {
+      label: 'Active',
+      color: 'text-[var(--color-success)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-success) 18%,transparent)]',
+    },
+    paused: {
+      label: 'Paused',
+      color: 'text-[var(--color-warning)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-warning) 18%,transparent)]',
+    },
+    completed: {
+      label: 'Completed',
+      color: 'text-[var(--color-accent-blue)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-accent-blue) 18%,transparent)]',
+    },
+    cancelled: {
+      label: 'Cancelled',
+      color: 'text-[var(--color-error)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-error) 18%,transparent)]',
+    },
 
     // Submission statuses
-    pending: { label: 'Pending', color: 'text-yellow-400', bgColor: 'bg-yellow-400/10' },
-    approved: { label: 'Approved', color: 'text-green-400', bgColor: 'bg-green-400/10' },
-    rejected: { label: 'Rejected', color: 'text-red-400', bgColor: 'bg-red-400/10' },
-    under_review: { label: 'Under Review', color: 'text-blue-400', bgColor: 'bg-blue-400/10' },
+    pending: {
+      label: 'Pending',
+      color: 'text-[var(--color-warning)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-warning) 18%,transparent)]',
+    },
+    approved: {
+      label: 'Approved',
+      color: 'text-[var(--color-success)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-success) 18%,transparent)]',
+    },
+    rejected: {
+      label: 'Rejected',
+      color: 'text-[var(--color-error)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-error) 18%,transparent)]',
+    },
+    under_review: {
+      label: 'Under Review',
+      color: 'text-[var(--color-accent-teal)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-accent-teal) 18%,transparent)]',
+    },
 
     // Payment statuses
-    processing: { label: 'Processing', color: 'text-blue-400', bgColor: 'bg-blue-400/10' },
-    failed: { label: 'Failed', color: 'text-red-400', bgColor: 'bg-red-400/10' },
+    processing: {
+      label: 'Processing',
+      color: 'text-[var(--color-accent-blue)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-accent-blue) 18%,transparent)]',
+    },
+    failed: {
+      label: 'Failed',
+      color: 'text-[var(--color-error)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-error) 18%,transparent)]',
+    },
   };
 
-  return statusProps[status] || { label: status, color: 'text-gray-400', bgColor: 'bg-gray-400/10' };
+  return (
+    statusProps[status] || {
+      label: status,
+      color: 'text-[var(--color-text-secondary)]',
+      bgColor: 'bg-[color-mix(in srgb,var(--color-divider-low) 25%,transparent)]',
+    }
+  );
 }
 
 /**

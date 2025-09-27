@@ -2,74 +2,67 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Briefcase, FileText, CreditCard, Settings } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/stores';
 
-interface BottomTabsProps {
-  className?: string;
-}
-
-const navigationItems = [
-  { name: 'Home', href: '/home', icon: Home },
-  { name: 'Tasks', href: '/tasks', icon: Briefcase },
-  { name: 'Submit', href: '/submissions', icon: FileText },
-  { name: 'Payments', href: '/payments', icon: CreditCard },
-  { name: 'Settings', href: '/settings', icon: Settings },
+const navigation = [
+  { label: 'Earn', href: '/home' },
+  { label: 'Borrow', href: '/borrow', disabled: true },
 ];
 
-export const BottomTabs = ({ className }: BottomTabsProps) => {
+export function BottomTabs({ className }: { className?: string }) {
   const pathname = usePathname();
-  const { user } = useAuth();
 
   return (
     <nav
       className={cn(
-        'fixed bottom-0 left-0 right-0 z-50 bg-black/95 border-t border-white/10 backdrop-blur-xl',
-        className,
+        'fixed inset-x-0 bottom-0 z-40 border-t border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[color-mix(in srgb,var(--color-bg-base) 95%,black 5%)]',
+        className
       )}
     >
       <div
-        className="px-6 pt-4"
-        style={{ paddingBottom: `calc(env(safe-area-inset-bottom) + 12px)` }}
+        className="max-w-md mx-auto px-6 py-4 flex items-center justify-between gap-4"
+        style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 12px)' }}
       >
-        <div className="flex items-center justify-between gap-4">
-          {navigationItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
+        {navigation.map((item) => {
+          const isActive = pathname === item.href || (item.href === '/home' && pathname === '/');
 
+          if (item.disabled) {
             return (
-              <Link
-                key={item.name}
-                href={item.href}
-                aria-current={isActive ? 'page' : undefined}
+              <button
+                key={item.label}
+                disabled
+                className="flex-1 flex flex-col items-center gap-2 cursor-not-allowed opacity-60"
+              >
+                <span className="flex h-11 w-full items-center justify-center rounded-full border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] text-[var(--color-text-secondary)] font-semibold text-sm tracking-[0.2em] uppercase">
+                  {item.label}
+                </span>
+              </button>
+            );
+          }
+
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="flex-1 flex flex-col items-center gap-2"
+            >
+              <span
                 className={cn(
-                  'flex-1 flex flex-col items-center gap-1 py-1 text-xs font-medium transition-colors',
+                  'flex h-11 w-full items-center justify-center rounded-full font-semibold text-sm tracking-[0.2em] uppercase transition-colors duration-150',
                   isActive
-                    ? 'text-[rgb(25,137,251)]'
-                    : 'text-white/60 hover:text-white',
+                    ? 'bg-[var(--color-accent-blue)] text-black'
+                    : 'border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
                 )}
               >
-                <Icon
-                  className={cn(
-                    'h-6 w-6 transition-transform',
-                    isActive && 'scale-[1.05]'
-                  )}
-                />
-                <span>{item.name}</span>
-              </Link>
-            );
-          })}
-        </div>
-
-        {user?.username && (
-          <p className="mt-4 text-center text-xs text-white/50">
-            Signed in as <span className="text-white font-medium">{user.username}</span>
-          </p>
-        )}
+                {item.label}
+              </span>
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );
-};
+}
 
 export default BottomTabs;

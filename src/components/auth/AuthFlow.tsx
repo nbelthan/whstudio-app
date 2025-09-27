@@ -227,7 +227,7 @@ export const AuthFlow: React.FC<AuthFlowProps> = ({
                   rightIcon={<ArrowRight className="w-4 h-4" />}
                   onClick={() => {
                     onCloseModal?.();
-                    window.location.href = '/dashboard';
+                    window.location.href = '/home';
                   }}
                 >
                   Go to Dashboard

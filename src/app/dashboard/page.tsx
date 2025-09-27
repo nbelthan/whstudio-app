@@ -1,207 +1,222 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import {
-  Typography,
-  SafeAreaView,
-  Button,
-  ListItem,
-  CircularState,
-  Spinner,
-} from '@worldcoin/mini-apps-ui-kit-react';
-import { Briefcase, Award, Clock, TrendingUp } from 'lucide-react';
+import { useEffect, useMemo } from 'react';
+import { SafeAreaView } from '@worldcoin/mini-apps-ui-kit-react';
+import { Activity, ArrowUpRight, CheckCircle2, Clock, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
 
-interface User {
-  id: string;
-  world_id: string;
-  username?: string;
-  verification_level: string;
-  wallet_address?: string;
-  reputation_score?: number;
-  total_earned?: number;
+import Card from '@/components/ui/card';
+import Badge from '@/components/ui/badge';
+import BottomTabs from '@/components/navigation/BottomTabs';
+import { cn, formatCurrency } from '@/lib/utils';
+import { useDashboard, useAuth } from '@/stores';
+
+interface StatsSummary {
+  weeklyEarnings: number;
+  weeklyChange: number;
+  isPositiveChange: boolean;
 }
 
-export default function Dashboard() {
-  const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+interface EarningsDatum {
+  date: string;
+  amount: number;
+}
 
+const heroCopy =
+  'Track verified contributions, streak progress, and instant payouts from your WorldHuman tasks.';
+
+const defaultSummary: StatsSummary = {
+  weeklyEarnings: 0,
+  weeklyChange: 0,
+  isPositiveChange: true,
+};
+
+export default function DashboardPage() {
+  const { user } = useAuth();
+  const {
+    userStats,
+    earningsData,
+    loading,
+    setDashboardLoading,
+    setDashboardError,
+    setEarningsData,
+    setUserStats,
+  } = useDashboard();
   useEffect(() => {
-    // Check authentication - for now using mock data in development
-    const checkAuth = async () => {
+    const fetchDashboardStats = async () => {
+      if (!user) return;
+
+      setDashboardLoading('stats', true);
+
       try {
-        // In development, use mock user data
-        if (process.env.NODE_ENV === 'development') {
-          const mockUser: User = {
-            id: '123',
-            world_id: 'world_1234567890',
-            username: 'dev_user',
-            verification_level: 'device',
-            wallet_address: '0x1234567890abcdef',
-            reputation_score: 100,
-            total_earned: 250,
-          };
-          setUser(mockUser);
-          setLoading(false);
-          return;
-        }
+        const mockStats = {
+          total_earned: user.total_earned || 0,
+          tasks_completed: Math.floor(Math.random() * 40) + 12,
+          success_rate: Math.random() * 20 + 80,
+          average_rating: Math.random() * 1 + 4,
+          current_streak: Math.floor(Math.random() * 6) + 2,
+        };
 
-        // Production - check actual session
-        const response = await fetch('/api/auth/session');
-        const data = await response.json();
+        const mockEarnings = {
+          daily: Array.from({ length: 7 }, (_, i) => ({
+            date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString(),
+            amount: Math.random() * 45 + 8,
+          })).reverse(),
+        };
 
-        if (!data.user) {
-          router.push('/');
-          return;
-        }
-        setUser(data.user);
+        setUserStats(mockStats);
+        setEarningsData(mockEarnings);
       } catch (error) {
-        console.error('Auth check failed:', error);
-        router.push('/');
+        console.error('Failed to fetch dashboard stats:', error);
+        setDashboardError('stats', 'Unable to load dashboard metrics');
       } finally {
-        setLoading(false);
+        setDashboardLoading('stats', false);
       }
     };
 
-    checkAuth();
-  }, [router]);
+    fetchDashboardStats();
+  }, [user, setDashboardLoading, setDashboardError, setUserStats, setEarningsData]);
 
-  if (loading) {
-    return (
-      <SafeAreaView className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <Spinner className="w-8 h-8 text-white mb-4 mx-auto" />
-          <Typography variant="body2" className="text-white/60">
-            Loading dashboard...
-          </Typography>
-        </div>
-      </SafeAreaView>
-    );
-  }
+  const summary: StatsSummary = useMemo(() => {
+    if (!earningsData?.daily?.length) {
+      return defaultSummary;
+    }
 
-  if (!user) {
-    return null;
-  }
+    const daily = earningsData.daily as EarningsDatum[];
+    const thisWeek = daily.slice(-7);
+    const lastWeek = daily.slice(-14, -7);
+
+    const weeklyEarnings = thisWeek.reduce((sum, datum) => sum + datum.amount, 0);
+    const previous = lastWeek.reduce((sum, datum) => sum + datum.amount, 0);
+    const weeklyChange = previous > 0 ? ((weeklyEarnings - previous) / previous) * 100 : 0;
+
+    return {
+      weeklyEarnings,
+      weeklyChange,
+      isPositiveChange: weeklyChange >= 0,
+    };
+  }, [earningsData]);
+
+  const streakPercentage = userStats ? Math.min(100, (userStats.current_streak / 14) * 100) : 0;
 
   return (
-    <SafeAreaView className="min-h-screen bg-black">
-      <div className="w-full max-w-md mx-auto px-6 py-6">
-        {/* Header */}
-        <div className="mb-4">
-          <Typography variant="h2" className="text-white mb-1">
+    <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)] text-[var(--color-text-primary)] pb-32">
+      <div className="max-w-md mx-auto px-6 py-8 space-y-6">
+        <header className="space-y-3">
+          <p className="text-[11px] uppercase tracking-[0.32em] text-[var(--color-text-secondary)]">
             Dashboard
-          </Typography>
-          <Typography variant="body2" className="text-white/60">
-            Welcome back, {user.username || 'Human'}
-          </Typography>
-        </div>
+          </p>
+          <h1 className="text-3xl font-semibold">Welcome back{user?.username ? `, ${user.username}` : ''}</h1>
+          <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{heroCopy}</p>
+        </header>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-            <div className="flex items-center mb-2">
-              <Award className="w-5 h-5 text-[rgb(25,137,251)] mr-2" />
-              <Typography variant="caption" className="text-white/60">
-                Reputation
-              </Typography>
-            </div>
-            <Typography variant="h3" className="text-white">
-              {user.reputation_score || 0}
-            </Typography>
-          </div>
-
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-            <div className="flex items-center mb-2">
-              <TrendingUp className="w-5 h-5 text-green-400 mr-2" />
-              <Typography variant="caption" className="text-white/60">
+        <Card variant="elevated" padding="lg" className="space-y-5">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <p className="text-xs uppercase tracking-[0.32em] text-[var(--color-text-secondary)]">
                 Total Earned
-              </Typography>
+              </p>
+              <p className="text-3xl font-semibold">
+                {formatCurrency(userStats?.total_earned || 0, 'WLD')}
+              </p>
             </div>
-            <Typography variant="h3" className="text-white">
-              ${user.total_earned || 0}
-            </Typography>
+            <Badge variant="primary" size="sm" leftIcon={<ShieldCheck className="h-3 w-3" />}>
+              Verified
+            </Badge>
           </div>
-        </div>
 
-        {/* Quick Actions */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
-          <Typography variant="h4" className="text-white mb-4">
-            Quick Actions
-          </Typography>
-
-          <div className="space-y-3">
-            <ListItem
-              icon={<Briefcase className="w-5 h-5 text-[rgb(25,137,251)]" />}
-              title="Browse Tasks"
-              subtitle="Find new tasks to complete"
-              onClick={() => router.push('/tasks')}
-            />
-
-            <ListItem
-              icon={<Clock className="w-5 h-5 text-yellow-400" />}
-              title="My Submissions"
-              subtitle="Track your pending submissions"
-              onClick={() => router.push('/submissions')}
-            />
+          <div className="rounded-2xl bg-[var(--color-bg-raised)] p-4 flex items-center justify-between">
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-[var(--color-text-primary)]">World ID Boost active</p>
+              <p className="text-xs text-[var(--color-text-secondary)]">
+                {summary.weeklyChange >= 0 ? '+' : '-'}
+                {Math.abs(summary.weeklyChange).toFixed(1)}% vs. last week
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-[var(--color-accent-blue)]">
+              <Activity className="h-4 w-4" />
+              View metrics
+            </div>
           </div>
-        </div>
+        </Card>
 
-        {/* User Info */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
-          <Typography variant="h4" className="text-white mb-4">
-            Account Info
-          </Typography>
-
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <Typography variant="caption" className="text-white/60">
-                World ID
-              </Typography>
-              <Typography variant="caption" className="text-white">
-                {user.world_id}
-              </Typography>
-            </div>
-
-            <div className="flex justify-between">
-              <Typography variant="caption" className="text-white/60">
-                Verification
-              </Typography>
-              <Typography variant="caption" className="text-white capitalize">
-                {user.verification_level}
-              </Typography>
-            </div>
-
-            {user.wallet_address && (
-              <div className="flex justify-between">
-                <Typography variant="caption" className="text-white/60">
-                  Wallet
-                </Typography>
-                <Typography variant="caption" className="text-white">
-                  {user.wallet_address.slice(0, 6)}...{user.wallet_address.slice(-4)}
-                </Typography>
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Performance</h2>
+            <Badge variant="ghost" size="sm">Last 7 days</Badge>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <Card variant="default" padding="lg" className="space-y-3">
+              <div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)]">
+                <CheckCircle2 className="h-4 w-4 text-[var(--color-success)]" />
+                Completion
               </div>
-            )}
-          </div>
-        </div>
+              <p className="text-2xl font-semibold text-[var(--color-text-primary)]">
+                {userStats ? `${Math.round(userStats.success_rate)}%` : '—'}
+              </p>
+              <p className="text-xs text-[var(--color-text-secondary)]">
+                {userStats?.tasks_completed ?? 0} verified tasks
+              </p>
+            </Card>
 
-        {/* Sign Out */}
-        <Button
-          variant="secondary"
-          size="large"
-          onClick={async () => {
-            try {
-              await fetch('/api/auth/logout', { method: 'POST' });
-              router.push('/');
-            } catch (error) {
-              console.error('Logout failed:', error);
-            }
-          }}
-          className="w-full"
-        >
-          Sign Out
-        </Button>
+            <Card variant="default" padding="lg" className="space-y-3">
+              <div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)]">
+                <Clock className="h-4 w-4 text-[var(--color-accent-blue)]" />
+                Streak
+              </div>
+              <p className="text-2xl font-semibold text-[var(--color-text-primary)]">
+                {userStats?.current_streak ?? 0} days
+              </p>
+              <div className="h-2 rounded-full bg-[color-mix(in srgb,var(--color-divider-low) 50%,transparent)] overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-[var(--color-accent-blue)] transition-all"
+                  style={{ width: `${streakPercentage}%` }}
+                />
+              </div>
+            </Card>
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Recent activity</h2>
+            <Link
+              href="/submissions"
+              className="text-xs uppercase tracking-[0.28em] text-[var(--color-accent-blue)] flex items-center gap-1"
+            >
+              View all
+              <ArrowUpRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <Card variant="default" className="space-y-2">
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <div
+                key={idx}
+                className={cn(
+                  'flex items-center justify-between gap-3 px-4 py-3',
+                  idx !== 2 && 'border-b border-[color-mix(in srgb,var(--color-divider-low) 60%,transparent)]'
+                )}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[color-mix(in srgb,var(--color-accent-blue) 18%,transparent)] text-[var(--color-accent-blue)]">
+                    <CheckCircle2 className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-[var(--color-text-primary)]">
+                      RLHF rating completed
+                    </p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">
+                      Settled 12 minutes ago
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm font-medium text-[var(--color-success)]">+0.85 WLD</p>
+              </div>
+            ))}
+          </Card>
+        </section>
       </div>
+      <BottomTabs />
     </SafeAreaView>
   );
 }
