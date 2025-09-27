@@ -86,7 +86,7 @@ const generateMoreTasks = () => {
       id: generateUUID(`mt-bench-${i.toString().padStart(3, '0')}`),
       title: `A/B Preference – MTBench #${149 + i}`,
       description: `Compare two AI responses for ${topic.toLowerCase()} and choose the better one`,
-      task_type: "pairwise_ab",
+      task_type: "rlhf_rating",
       instructions: `Evaluate the quality, accuracy, and helpfulness of both responses for this ${topic.toLowerCase()} task.`,
       reward_amount: 0.02,
       reward_currency: "USDC",
