@@ -148,14 +148,14 @@ export default function TasksPageUIKit() {
   };
 
   return (
-    <SafeAreaView className="min-h-screen bg-black">
+    <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)] text-[var(--color-text-primary)]">
       <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
         {/* Header */}
         <div className="mb-8">
-          <Typography variant="h1" className="text-white mb-2">
+          <Typography variant="h1" className="text-[var(--color-text-primary)] mb-2">
             Available Tasks
           </Typography>
-          <Typography variant="body2" className="text-white/70">
+          <Typography variant="body2" className="text-[var(--color-text-secondary)]">
             Complete tasks to earn rewards with your verified World ID
           </Typography>
         </div>
@@ -231,11 +231,11 @@ export default function TasksPageUIKit() {
 
         {/* Error State */}
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 mb-6">
-            <Typography variant="h3" className="text-red-400 mb-2">
+          <div className="bg-[color-mix(in srgb,var(--color-error) 18%,transparent)] border border-[color-mix(in srgb,var(--color-error) 35%,transparent)] rounded-2xl p-6 mb-6">
+            <Typography variant="h3" className="text-[var(--color-error)] mb-2">
               Error Loading Tasks
             </Typography>
-            <Typography variant="body2" className="text-red-300 mb-4">
+            <Typography variant="body2" className="text-[var(--color-text-secondary)] mb-4">
               {error}
             </Typography>
             <Button variant="secondary" size="small" onClick={handleRefresh}>
@@ -249,7 +249,7 @@ export default function TasksPageUIKit() {
         {loading && tasks.length === 0 ? (
           <div className="space-y-4">
             {[1, 2, 3].map(i => (
-              <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-4">
+              <div key={i} className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 85%,transparent)] p-4">
                 <Skeleton className="w-full h-24" />
                 <SkeletonTypography variant="h3" className="mt-3" />
                 <SkeletonTypography variant="body2" className="mt-2" />
@@ -261,19 +261,19 @@ export default function TasksPageUIKit() {
             {tasks.map((task: Task) => (
               <div
                 key={task.id}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6 cursor-pointer hover:bg-white/10 transition-colors"
+                className="rounded-2xl border border-[color-mix(in srgb,var(--color-divider-low) 70%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 92%,transparent)] p-6 cursor-pointer hover:bg-[color-mix(in srgb,var(--color-bg-surface) 70%,var(--color-accent-blue) 8%)] transition-colors"
                 onClick={() => handleTaskClick(task.id)}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
-                    <Typography variant="h3" className="text-white mb-1">
+                    <Typography variant="h3" className="text-[var(--color-text-primary)] mb-1">
                       {task.title}
                     </Typography>
-                    <Typography variant="body2" className="text-white/70">
+                    <Typography variant="body2" className="text-[var(--color-text-secondary)]">
                       {task.description}
                     </Typography>
                     {task.category_name && (
-                      <Typography variant="caption" className="text-white/50 mt-1">
+                      <Typography variant="caption" className="text-[var(--color-text-secondary)]/80 mt-1">
                         {task.category_name}
                       </Typography>
                     )}
@@ -288,21 +288,21 @@ export default function TasksPageUIKit() {
 
                 {/* Task Details */}
                 <div className="flex items-center gap-6 mb-4">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-white/40" />
-                    <Typography variant="caption" className="text-white/60">
+                  <div className="flex items-center gap-2 text-[var(--color-text-secondary)]">
+                    <Clock className="w-4 h-4 text-[var(--color-text-secondary)]" />
+                    <Typography variant="caption" className="text-[var(--color-text-secondary)]">
                       {formatTimeEstimate(task.estimated_time_minutes)}
                     </Typography>
                   </div>
                   <div className="flex items-center gap-2">
-                    <DollarSign className="w-4 h-4 text-green-400" />
-                    <Typography variant="body2" className="text-green-400 font-medium">
+                    <DollarSign className="w-4 h-4 text-[var(--color-success)]" />
+                    <Typography variant="body2" className="text-[var(--color-success)] font-medium">
                       {task.reward_amount} {task.reward_currency}
                     </Typography>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Award className="w-4 h-4 text-white/40" />
-                    <Typography variant="caption" className="text-white/60">
+                    <Award className="w-4 h-4 text-[var(--color-text-secondary)]" />
+                    <Typography variant="caption" className="text-[var(--color-text-secondary)]">
                       Max {task.max_submissions} submissions
                     </Typography>
                   </div>

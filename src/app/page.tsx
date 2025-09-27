@@ -1,22 +1,26 @@
 'use client';
 
-// Main entry point for WorldHuman Studio App
-// Deployment test: 2025-09-26 16:15
-// UI Guidelines fix: 2025-09-26
+// Main entry point for WorldHuman Studio App - Demo Mode
+import { useRouter } from 'next/navigation';
 import {
   Typography,
   SafeAreaView,
+  Button,
   useSafeAreaInsets
 } from '@worldcoin/mini-apps-ui-kit-react';
-import { AuthFlow } from '@/components/auth';
 
 export default function Home() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+
+  const handleGetStarted = () => {
+    router.push('/tasks');
+  };
 
   return (
     <SafeAreaView className="min-h-screen bg-black flex items-center justify-center">
       <div className="w-full max-w-md px-6">
-        <div className="text-center mb-4">
+        <div className="text-center mb-8">
           <Typography variant="h1" className="text-white mb-2">
             WorldHuman Studio
           </Typography>
@@ -28,7 +32,18 @@ export default function Home() {
           </Typography>
         </div>
 
-        <AuthFlow />
+        <Button
+          variant="primary"
+          size="large"
+          onClick={handleGetStarted}
+          className="w-full"
+        >
+          Get Started with Demo
+        </Button>
+
+        <Typography variant="caption" className="text-white/40 text-center mt-4 block">
+          Demo Mode - No authentication required
+        </Typography>
       </div>
     </SafeAreaView>
   );

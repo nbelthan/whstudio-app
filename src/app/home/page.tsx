@@ -7,13 +7,13 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to dashboard for authenticated users or root for new users
-    router.push('/dashboard');
+    // Redirect directly to tasks page for demo
+    router.push('/tasks');
   }, [router]);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="text-white">Redirecting...</div>
+      <div className="text-white">Redirecting to tasks...</div>
     </div>
   );
 }
