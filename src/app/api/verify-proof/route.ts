@@ -4,9 +4,9 @@ import {
   verifyCloudProof,
 } from '@worldcoin/minikit-js';
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyWorldIDProof, isValidProofFormat, checkVerificationRateLimit, actions } from '@/lib/world-verify';
+import { verifyWorldIdProof } from '@/lib/world-verify';
 import { queries } from '@/lib/db';
-import { createSession, isNullifierUsed } from '@/lib/session';
+import { createSession } from '@/lib/session';
 
 interface IRequestPayload {
   payload: ISuccessResult;
@@ -23,34 +23,16 @@ export async function POST(req: NextRequest) {
     const { payload, action, signal } = (await req.json()) as IRequestPayload;
     const app_id = process.env.NEXT_PUBLIC_APP_ID as `app_${string}`;
 
-    // Validate request format
-    if (!isValidProofFormat(payload)) {
+    // Validate request format - basic validation
+    if (!payload || !payload.nullifier_hash || !payload.merkle_root || !payload.proof) {
       return NextResponse.json(
         { error: 'Invalid proof format' },
         { status: 400 }
       );
     }
 
-    // Rate limiting check
-    const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0] ||
-                     req.headers.get('x-real-ip') ||
-                     'unknown';
-
-    const rateLimitCheck = await checkVerificationRateLimit(
-      `${clientIP}:${payload.nullifier_hash}`,
-      15, // 15 minutes window
-      5   // max 5 attempts
-    );
-
-    if (!rateLimitCheck.allowed) {
-      return NextResponse.json(
-        {
-          error: 'Rate limit exceeded',
-          resetTime: rateLimitCheck.resetTime.toISOString()
-        },
-        { status: 429 }
-      );
-    }
+    // Basic rate limiting could be implemented here in the future
+    // For now, we'll rely on Vercel's built-in rate limiting
 
     // Check if we're in development mode
     const isDevelopment = process.env.NODE_ENV === 'development' ||

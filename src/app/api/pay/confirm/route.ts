@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { withTransaction } from '@/lib/db';
-import { updatePaymentStatus } from '@/lib/payment';
+import { confirmPaymentStatus } from '@/lib/payment';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30; // Allow more time for blockchain verification
@@ -44,9 +44,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Update payment status with transaction hash
-    const success = await updatePaymentStatus(reference_id, 'completed', transaction_id);
+    const result = await confirmPaymentStatus(reference_id, transaction_id);
 
-    if (!success) {
+    if (!result.success) {
       return NextResponse.json(
         { error: 'Failed to update payment status' },
         { status: 400 }
