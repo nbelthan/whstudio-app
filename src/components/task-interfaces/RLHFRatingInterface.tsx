@@ -17,6 +17,7 @@ import {
 } from '@worldcoin/mini-apps-ui-kit-react';
 import { RLHFRatingData, Task } from '@/types';
 import { BUTTON_INTENTS, cn } from '@/lib/utils';
+import { Card, Badge, Modal, Input } from '@/components/ui';
 
 interface RLHFRatingInterfaceProps {
   task: Task;
@@ -86,65 +87,96 @@ export const RLHFRatingInterface: React.FC<RLHFRatingInterfaceProps> = ({
   // Load response data from task instructions (MT-Bench format)
   useEffect(() => {
     try {
-      // Try to parse MT-Bench format from task instructions
-      let mtBenchData: MTBenchInstructions | null = null;
+      // Parse MTBench questions from task instructions
+      const instructions = task.instructions || '';
 
-      if (task.verification_criteria && typeof task.verification_criteria === 'object') {
+      // Check if this is an MTBench task with real questions
+      if (instructions.includes('Option A:') && instructions.includes('Option B:')) {
+        // Extract the prompt (everything before "Option A:")
+        const promptMatch = instructions.split('Option A:')[0].trim();
+
+        // Extract Option A (between "Option A:" and "Option B:")
+        const optionAMatch = instructions.match(/Option A:\s*([\s\S]*?)\s*Option B:/);
+        const optionA = optionAMatch ? optionAMatch[1].trim() : 'Option A content';
+
+        // Extract Option B (everything after "Option B:")
+        const optionBMatch = instructions.match(/Option B:\s*([\s\S]*?)$/);
+        const optionB = optionBMatch ? optionBMatch[1].trim() : 'Option B content';
+
+        setResponseData({
+          id: `mt_bench_${task.id}`,
+          prompt: promptMatch || 'Please compare the following two responses:',
+          response_a: optionA,
+          response_b: optionB,
+          model_a: 'Response A',
+          model_b: 'Response B',
+          criteria: ['helpfulness', 'accuracy', 'clarity', 'relevance', 'safety'],
+        });
+      } else if (task.verification_criteria && typeof task.verification_criteria === 'object') {
         // Check if verification_criteria contains MT-Bench data
         if ('type' in task.verification_criteria && task.verification_criteria.type === 'pairwise_ab') {
-          mtBenchData = task.verification_criteria as MTBenchInstructions;
+          const mtBenchData = task.verification_criteria as MTBenchInstructions;
+          setResponseData({
+            id: `mt_bench_${task.id}`,
+            prompt: mtBenchData.prompt,
+            response_a: mtBenchData.optionA,
+            response_b: mtBenchData.optionB,
+            model_a: 'Response A',
+            model_b: 'Response B',
+            criteria: ['helpfulness', 'accuracy', 'clarity', 'relevance', 'safety'],
+          });
+        } else {
+          // Use instructions as prompt with generic responses
+          setResponseData({
+            id: 'generic_comparison',
+            prompt: instructions || 'Compare these two AI responses and choose the better one.',
+            response_a: 'This response demonstrates one approach to answering the question with detailed analysis.',
+            response_b: 'This response takes an alternative approach with different examples and perspective.',
+            model_a: 'Response A',
+            model_b: 'Response B',
+            criteria: ['helpfulness', 'accuracy', 'clarity', 'relevance'],
+          });
         }
-      }
-
-      // If no MT-Bench data in verification_criteria, try parsing instructions as JSON
-      if (!mtBenchData) {
+      } else {
+        // Try parsing instructions as JSON
         try {
           const parsed = JSON.parse(task.instructions);
           if (parsed.type === 'pairwise_ab') {
-            mtBenchData = parsed as MTBenchInstructions;
+            setResponseData({
+              id: `mt_bench_${task.id}`,
+              prompt: parsed.prompt,
+              response_a: parsed.optionA,
+              response_b: parsed.optionB,
+              model_a: 'Response A',
+              model_b: 'Response B',
+              criteria: ['helpfulness', 'accuracy', 'clarity', 'relevance', 'safety'],
+            });
+          } else {
+            throw new Error('Not MT-Bench format');
           }
         } catch {
-          // Not JSON, continue with fallback
+          // Use instructions as is for the prompt
+          setResponseData({
+            id: 'task_comparison',
+            prompt: instructions || 'Compare these two AI responses and choose the better one.',
+            response_a: 'This response provides a comprehensive answer to the question.',
+            response_b: 'This alternative response offers a different perspective.',
+            model_a: 'Response A',
+            model_b: 'Response B',
+            criteria: ['helpfulness', 'accuracy', 'clarity', 'relevance'],
+          });
         }
       }
-
-      let responseData: ResponseData;
-
-      if (mtBenchData) {
-        // Use MT-Bench format
-        responseData = {
-          id: `mt_bench_${task.id}`,
-          prompt: mtBenchData.prompt,
-          response_a: mtBenchData.optionA,
-          response_b: mtBenchData.optionB,
-          model_a: 'Option A',
-          model_b: 'Option B',
-          criteria: ['helpfulness', 'accuracy', 'clarity', 'relevance'],
-        };
-      } else {
-        // Fallback to mock data
-        responseData = {
-          id: 'sample_comparison',
-          prompt: task.instructions || 'Compare these two AI responses and choose the better one.',
-          response_a: `Response A: This is a sample AI-generated response that demonstrates one approach to answering the user's question. It provides detailed information and tries to be comprehensive in its coverage of the topic.`,
-          response_b: `Response B: This is an alternative AI-generated response that takes a different approach. It might be more concise, use different examples, or emphasize different aspects of the same topic.`,
-          model_a: 'Model A',
-          model_b: 'Model B',
-          criteria: ['helpfulness', 'accuracy', 'clarity'],
-        };
-      }
-
-      setResponseData(responseData);
     } catch (error) {
       console.error('Error parsing task data:', error);
       // Fallback to basic data
       setResponseData({
         id: 'fallback',
         prompt: task.instructions || 'Compare these options and choose the better one.',
-        response_a: 'Option A content not available',
-        response_b: 'Option B content not available',
-        model_a: 'Option A',
-        model_b: 'Option B',
+        response_a: 'Response A content',
+        response_b: 'Response B content',
+        model_a: 'Response A',
+        model_b: 'Response B',
         criteria: ['helpfulness'],
       });
     }
