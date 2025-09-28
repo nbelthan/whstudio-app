@@ -73,32 +73,92 @@ export async function GET(req: NextRequest) {
       const submissionCount = parseInt(req.headers.get('x-demo-submission-count') || '0');
       const totalEarned = parseFloat(req.headers.get('x-demo-total-earned') || '0');
 
+      // Real MTBench task examples for demo submissions
+      const realTaskExamples = [
+        {
+          title: 'A/B Preference – MTBench #106',
+          description: 'Logic problem about comparing costs of fruits',
+          instructions: 'Each problem consists of three statements. Based on the first two statements, the third statement may be true, false, or uncertain.\n1. Oranges cost more than apples.\n2. Oranges cost less than bananas.\n3. Bananas cost more than apples and bananas cost more than orange.\nIf the first two statements are true, then the third statement is'
+        },
+        {
+          title: 'A/B Preference – MTBench #102',
+          description: 'Riddle about the White House location',
+          instructions: 'You can see a beautiful red house to your left and a hypnotic greenhouse to your right, an attractive heated pink place in the front. So, where is the White House?'
+        },
+        {
+          title: 'A/B Preference – MTBench #96',
+          description: 'Explain machine learning concepts to non-technical customers',
+          instructions: 'Now you are a machine learning engineer. Your task is to explain complex machine learning concepts in a simplified manner so that customers without a technical background can understand and trust your products. Let\'s start with the question: "What is a language model? Is it trained using labeled or unlabelled data?"'
+        },
+        {
+          title: 'A/B Preference – MTBench #120',
+          description: 'Mathematical function evaluation',
+          instructions: 'Given that f(x) = 4x^3 - 9x - 14, find the value of f(2).'
+        },
+        {
+          title: 'A/B Preference – MTBench #90',
+          description: 'Grammar correction task',
+          instructions: 'Edit the following paragraph to correct any grammatical errors:\nShe didn\'t remembre where is her purse, so I thinks its in the car but he\'s say it\'s on kitchen table but he are not sure, and then they asked me to looking for it, she\'s say, "Can you?", and I responds with, "Maybe, but ain\'t no sure," and he not heard me, and, "What?", he asks, "Did you found it?".'
+        },
+        {
+          title: 'A/B Preference – MTBench #138',
+          description: 'Analyze smartphone reviews and provide ratings',
+          instructions: 'Analyze the following customer reviews from different sources for three different smartphones - the latest iPhone, Samsung Galaxy, and Google Pixel - and provide an overall rating for each phone on a scale of 1 to 10.'
+        },
+        {
+          title: 'A/B Preference – MTBench #121',
+          description: 'Python programming task',
+          instructions: 'Develop a Python program that reads all the text files under a directory and returns top-5 words with the most number of occurrences.'
+        },
+        {
+          title: 'A/B Preference – MTBench #134',
+          description: 'Data analysis - identify highest profit',
+          instructions: 'Given the following data, identify the company with the highest profit in 2021 and provide its CEO\'s name:\na) Company X, with CEO Amy Williams, reported $30 billion in revenue and a $3 billion profit in 2021.\nb) Company Y, led by CEO Mark Thompson, posted a $60 billion revenue and a $6 billion profit in the same year.'
+        },
+        {
+          title: 'A/B Preference – MTBench #110',
+          description: 'Critical thinking about school bullying',
+          instructions: 'Parents have complained to the principal about bullying during recess. The principal wants to quickly resolve this, instructing recess aides to be vigilant. Which situation should the aides report to the principal?'
+        },
+        {
+          title: 'A/B Preference – MTBench #158',
+          description: 'Philosophy - Socratic method',
+          instructions: 'Which methods did Socrates employ to challenge the prevailing thoughts of his time?'
+        }
+      ];
+
       // Create default demo submissions if we have submission count but no stored data
       const demoSubmissions = storedSubmissions.length > 0 ? storedSubmissions :
-        submissionCount > 0 ? Array.from({ length: Math.min(submissionCount, 10) }, (_, index) => ({
-          id: `demo-${index + 1}`,
-          task_id: `task-${index + 1}`,
-          submission_data: { chosen_response: index % 2 === 0 ? 'A' : 'B', confidence: 3 + (index % 3) },
-          attachments_urls: [],
-          time_spent_minutes: 3 + (index % 5),
-          quality_score: 4 + (index % 2),
-          status: 'approved',
-          review_notes: 'Great work!',
-          reviewed_at: new Date(Date.now() - (index * 3600000)).toISOString(),
-          is_paid: true,
-          created_at: new Date(Date.now() - (index * 7200000)).toISOString(),
-          updated_at: new Date(Date.now() - (index * 3600000)).toISOString(),
-          task: {
-            title: `A/B Preference Task #${150 - index}`,
-            description: 'Compare AI responses and choose the better one',
-            task_type: 'rlhf_rating',
-            difficulty_level: 1 + (index % 3),
-            reward_amount: Number(process.env.DEMO_REWARD ?? '0.02'),
-            reward_currency: (process.env.DEMO_CURRENCY ?? 'USDC').toUpperCase(),
-            creator_username: 'System',
-            category_name: 'RLHF Rating'
-          }
-        })) : [];
+        submissionCount > 0 ? Array.from({ length: Math.min(submissionCount, 10) }, (_, index) => {
+          const taskData = realTaskExamples[index % realTaskExamples.length];
+          return {
+            id: `demo-${index + 1}`,
+            task_id: `task-${index + 1}`,
+            submission_data: {
+              chosen_response: index % 2 === 0 ? 'A' : 'B',
+              confidence: 3 + (index % 3),
+              reasoning: 'After carefully analyzing both responses, I found that option ' + (index % 2 === 0 ? 'A' : 'B') + ' provides a more comprehensive and accurate answer.'
+            },
+            attachments_urls: [],
+            time_spent_minutes: 3 + (index % 5),
+            quality_score: 4 + (index % 2),
+            status: index === 0 ? 'pending' : (index === 1 ? 'under_review' : 'approved'),
+            review_notes: index === 0 ? 'Awaiting review' : (index === 1 ? 'Under quality assessment' : 'Excellent judgment and clear reasoning!'),
+            reviewed_at: index <= 1 ? null : new Date(Date.now() - (index * 3600000)).toISOString(),
+            is_paid: index > 1,
+            created_at: new Date(Date.now() - (index * 7200000)).toISOString(),
+            updated_at: new Date(Date.now() - (index * 3600000)).toISOString(),
+            task: {
+              ...taskData,
+              task_type: 'pairwise_ab',
+              difficulty_level: 1 + (index % 3),
+              reward_amount: Number(process.env.DEMO_REWARD ?? '0.02'),
+              reward_currency: (process.env.DEMO_CURRENCY ?? 'USDC').toUpperCase(),
+              creator_username: 'System',
+              category_name: 'RLHF Rating'
+            }
+          };
+        }) : [];
 
       // Apply status filter
       const status = searchParams.get('status') || 'all';
