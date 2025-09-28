@@ -214,7 +214,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         hover
         clickable
         onClick={handleClick}
-        className={cn('p-4', className)}
+        className={cn('p-6', className)}
       >
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 flex-1 min-w-0">

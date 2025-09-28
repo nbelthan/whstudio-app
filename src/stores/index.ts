@@ -15,7 +15,11 @@ import {
   ErrorState,
   UserStats,
   EarningsData,
-  TaskCategory
+  TaskCategory,
+  Notification,
+  NotificationStats,
+  NotificationPreferences,
+  NotificationType
 } from '@/types';
 
 // Auth store slice
@@ -96,14 +100,38 @@ interface PaymentsSlice {
   setPaymentError: (key: string, error: string | null) => void;
 }
 
+// Notifications store slice
+interface NotificationsSlice {
+  notifications: Notification[];
+  unreadCount: number;
+  preferences: NotificationPreferences | null;
+  stats: NotificationStats | null;
+  loading: LoadingState;
+  errors: ErrorState;
+
+  // Actions
+  setNotifications: (notifications: Notification[]) => void;
+  addNotification: (notification: Notification) => void;
+  updateNotification: (notificationId: string, updates: Partial<Notification>) => void;
+  removeNotification: (notificationId: string) => void;
+  markAsOpened: (notificationId: string) => void;
+  markAsClicked: (notificationId: string) => void;
+  markAllAsRead: () => void;
+  setPreferences: (preferences: NotificationPreferences) => void;
+  setStats: (stats: NotificationStats) => void;
+  setNotificationLoading: (key: string, loading: boolean) => void;
+  setNotificationError: (key: string, error: string | null) => void;
+  clearNotifications: () => void;
+  getUnreadCount: () => number;
+}
+
 // UI store slice
 interface UISlice {
   theme: 'light' | 'dark';
-  sidebarOpen: boolean;
   modals: {
     [key: string]: boolean;
   };
-  notifications: Array<{
+  toastNotifications: Array<{
     id: string;
     type: 'info' | 'success' | 'warning' | 'error';
     title: string;
@@ -113,14 +141,12 @@ interface UISlice {
 
   // Actions
   setTheme: (theme: 'light' | 'dark') => void;
-  toggleSidebar: () => void;
-  setSidebarOpen: (open: boolean) => void;
   openModal: (modalId: string) => void;
   closeModal: (modalId: string) => void;
   toggleModal: (modalId: string) => void;
-  addNotification: (notification: Omit<UISlice['notifications'][0], 'id' | 'timestamp'>) => void;
-  removeNotification: (id: string) => void;
-  clearNotifications: () => void;
+  addToastNotification: (notification: Omit<UISlice['toastNotifications'][0], 'id' | 'timestamp'>) => void;
+  removeToastNotification: (id: string) => void;
+  clearToastNotifications: () => void;
 }
 
 // Dashboard data slice
@@ -151,7 +177,7 @@ interface DashboardSlice {
 }
 
 // Combined store type
-type AppStore = AuthSlice & TasksSlice & SubmissionsSlice & PaymentsSlice & UISlice & DashboardSlice;
+type AppStore = AuthSlice & TasksSlice & SubmissionsSlice & PaymentsSlice & NotificationsSlice & UISlice & DashboardSlice;
 
 // Create the store
 export const useAppStore = create<AppStore>()(
@@ -177,6 +203,10 @@ export const useAppStore = create<AppStore>()(
           currentSubmission: null,
           payments: [],
           pendingPayments: [],
+          notifications: [],
+          unreadCount: 0,
+          preferences: null,
+          stats: null,
           userStats: null,
           earningsData: null,
           recentActivity: []
@@ -287,15 +317,97 @@ export const useAppStore = create<AppStore>()(
           errors: { ...state.errors, [`payment_${key}`]: error }
         })),
 
+        // Notifications slice
+        notifications: [],
+        unreadCount: 0,
+        preferences: null,
+        stats: null,
+
+        setNotifications: (notifications) => set({
+          notifications,
+          unreadCount: notifications.filter(n => n.status === 'sent' || n.status === 'delivered').length
+        }),
+        addNotification: (notification) => set((state) => ({
+          notifications: [notification, ...state.notifications],
+          unreadCount: (notification.status === 'sent' || notification.status === 'delivered')
+            ? state.unreadCount + 1
+            : state.unreadCount
+        })),
+        updateNotification: (notificationId, updates) => set((state) => {
+          const updatedNotifications = state.notifications.map(notification =>
+            notification.id === notificationId ? { ...notification, ...updates } : notification
+          );
+          const newUnreadCount = updatedNotifications.filter(n => n.status === 'sent' || n.status === 'delivered').length;
+          return {
+            notifications: updatedNotifications,
+            unreadCount: newUnreadCount
+          };
+        }),
+        removeNotification: (notificationId) => set((state) => {
+          const filteredNotifications = state.notifications.filter(n => n.id !== notificationId);
+          const newUnreadCount = filteredNotifications.filter(n => n.status === 'sent' || n.status === 'delivered').length;
+          return {
+            notifications: filteredNotifications,
+            unreadCount: newUnreadCount
+          };
+        }),
+        markAsOpened: (notificationId) => set((state) => {
+          const updatedNotifications = state.notifications.map(notification =>
+            notification.id === notificationId
+              ? { ...notification, status: 'opened' as const, opened_at: new Date().toISOString() }
+              : notification
+          );
+          const newUnreadCount = updatedNotifications.filter(n => n.status === 'sent' || n.status === 'delivered').length;
+          return {
+            notifications: updatedNotifications,
+            unreadCount: newUnreadCount
+          };
+        }),
+        markAsClicked: (notificationId) => set((state) => {
+          const updatedNotifications = state.notifications.map(notification =>
+            notification.id === notificationId
+              ? {
+                  ...notification,
+                  status: 'clicked' as const,
+                  clicked_at: new Date().toISOString(),
+                  opened_at: notification.opened_at || new Date().toISOString()
+                }
+              : notification
+          );
+          const newUnreadCount = updatedNotifications.filter(n => n.status === 'sent' || n.status === 'delivered').length;
+          return {
+            notifications: updatedNotifications,
+            unreadCount: newUnreadCount
+          };
+        }),
+        markAllAsRead: () => set((state) => ({
+          notifications: state.notifications.map(notification =>
+            (notification.status === 'sent' || notification.status === 'delivered')
+              ? { ...notification, status: 'opened' as const, opened_at: new Date().toISOString() }
+              : notification
+          ),
+          unreadCount: 0
+        })),
+        setPreferences: (preferences) => set({ preferences }),
+        setStats: (stats) => set({ stats }),
+        setNotificationLoading: (key, loading) => set((state) => ({
+          loading: { ...state.loading, [`notification_${key}`]: loading }
+        })),
+        setNotificationError: (key, error) => set((state) => ({
+          errors: { ...state.errors, [`notification_${key}`]: error }
+        })),
+        clearNotifications: () => set({ notifications: [], unreadCount: 0 }),
+        getUnreadCount: () => {
+          const state = get();
+          return state.notifications.filter(n => n.status === 'sent' || n.status === 'delivered').length;
+        },
+
         // UI slice
         theme: 'dark',
-        sidebarOpen: false,
         modals: {},
-        notifications: [],
+        toastNotifications: [],
 
         setTheme: (theme) => set({ theme }),
-        toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
-        setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
         openModal: (modalId) => set((state) => ({
           modals: { ...state.modals, [modalId]: true }
         })),
@@ -305,20 +417,20 @@ export const useAppStore = create<AppStore>()(
         toggleModal: (modalId) => set((state) => ({
           modals: { ...state.modals, [modalId]: !state.modals[modalId] }
         })),
-        addNotification: (notification) => set((state) => ({
-          notifications: [
+        addToastNotification: (notification) => set((state) => ({
+          toastNotifications: [
             {
               ...notification,
               id: Math.random().toString(36).substr(2, 9),
               timestamp: Date.now()
             },
-            ...state.notifications
+            ...state.toastNotifications
           ]
         })),
-        removeNotification: (id) => set((state) => ({
-          notifications: state.notifications.filter(n => n.id !== id)
+        removeToastNotification: (id) => set((state) => ({
+          toastNotifications: state.toastNotifications.filter(n => n.id !== id)
         })),
-        clearNotifications: () => set({ notifications: [] }),
+        clearToastNotifications: () => set({ toastNotifications: [] }),
 
         // Dashboard slice
         userStats: null,
@@ -481,35 +593,73 @@ export const usePayments = () => {
   };
 };
 
+export const useNotifications = () => {
+  const notifications = useAppStore((state) => state.notifications);
+  const unreadCount = useAppStore((state) => state.unreadCount);
+  const preferences = useAppStore((state) => state.preferences);
+  const stats = useAppStore((state) => state.stats);
+  const loading = useAppStore((state) => state.loading);
+  const errors = useAppStore((state) => state.errors);
+  const setNotifications = useAppStore((state) => state.setNotifications);
+  const addNotification = useAppStore((state) => state.addNotification);
+  const updateNotification = useAppStore((state) => state.updateNotification);
+  const removeNotification = useAppStore((state) => state.removeNotification);
+  const markAsOpened = useAppStore((state) => state.markAsOpened);
+  const markAsClicked = useAppStore((state) => state.markAsClicked);
+  const markAllAsRead = useAppStore((state) => state.markAllAsRead);
+  const setPreferences = useAppStore((state) => state.setPreferences);
+  const setStats = useAppStore((state) => state.setStats);
+  const setNotificationLoading = useAppStore((state) => state.setNotificationLoading);
+  const setNotificationError = useAppStore((state) => state.setNotificationError);
+  const clearNotifications = useAppStore((state) => state.clearNotifications);
+  const getUnreadCount = useAppStore((state) => state.getUnreadCount);
+
+  return {
+    notifications,
+    unreadCount,
+    preferences,
+    stats,
+    loading,
+    errors,
+    setNotifications,
+    addNotification,
+    updateNotification,
+    removeNotification,
+    markAsOpened,
+    markAsClicked,
+    markAllAsRead,
+    setPreferences,
+    setStats,
+    setNotificationLoading,
+    setNotificationError,
+    clearNotifications,
+    getUnreadCount,
+  };
+};
+
 export const useUI = () => {
   const theme = useAppStore((state) => state.theme);
-  const sidebarOpen = useAppStore((state) => state.sidebarOpen);
   const modals = useAppStore((state) => state.modals);
-  const notifications = useAppStore((state) => state.notifications);
+  const toastNotifications = useAppStore((state) => state.toastNotifications);
   const setTheme = useAppStore((state) => state.setTheme);
-  const toggleSidebar = useAppStore((state) => state.toggleSidebar);
-  const setSidebarOpen = useAppStore((state) => state.setSidebarOpen);
   const openModal = useAppStore((state) => state.openModal);
   const closeModal = useAppStore((state) => state.closeModal);
   const toggleModal = useAppStore((state) => state.toggleModal);
-  const addNotification = useAppStore((state) => state.addNotification);
-  const removeNotification = useAppStore((state) => state.removeNotification);
-  const clearNotifications = useAppStore((state) => state.clearNotifications);
+  const addToastNotification = useAppStore((state) => state.addToastNotification);
+  const removeToastNotification = useAppStore((state) => state.removeToastNotification);
+  const clearToastNotifications = useAppStore((state) => state.clearToastNotifications);
 
   return {
     theme,
-    sidebarOpen,
     modals,
-    notifications,
+    toastNotifications,
     setTheme,
-    toggleSidebar,
-    setSidebarOpen,
     openModal,
     closeModal,
     toggleModal,
-    addNotification,
-    removeNotification,
-    clearNotifications,
+    addToastNotification,
+    removeToastNotification,
+    clearToastNotifications,
   };
 };
 

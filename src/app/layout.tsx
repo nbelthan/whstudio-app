@@ -5,6 +5,8 @@ import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import AppHeader from '@/components/layout/AppHeader';
+import { Navigation } from '@/components/Navigation';
+import ConsentWrapper from '@/components/privacy/ConsentWrapper';
 
 const inter = Inter({
   weight: ['400', '500', '600', '700'],
@@ -43,8 +45,11 @@ export default async function RootLayout({
         suppressHydrationWarning
       >
         <ClientProviders session={session}>
-          <AppHeader />
-          <div className="pt-16">{children}</div>
+          <ConsentWrapper>
+            <AppHeader />
+            <div className="pt-16 pb-20">{children}</div>
+            <Navigation />
+          </ConsentWrapper>
         </ClientProviders>
       </body>
     </html>

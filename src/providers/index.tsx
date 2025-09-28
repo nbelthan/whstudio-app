@@ -3,6 +3,7 @@ import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import type { ReactNode } from 'react';
 import { ErudaProvider } from '@/providers/Eruda';
+import { NetworkProvider } from '@/providers/NetworkProvider';
 // Temporarily disabled MiniKit for demo
 // import ClientOnlyMiniKitProvider from '@/providers/MiniKitProvider';
 
@@ -36,7 +37,11 @@ export default function ClientProviders({
 
   return (
     <ErudaProvider>
-      <SessionProvider session={session}>{children}</SessionProvider>
+      <SessionProvider session={session}>
+        <NetworkProvider>
+          {children}
+        </NetworkProvider>
+      </SessionProvider>
     </ErudaProvider>
   );
 }

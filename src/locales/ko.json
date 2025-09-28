@@ -1,0 +1,125 @@
+{
+  "navigation": {
+    "dashboard": "대시보드",
+    "tasks": "작업",
+    "submissions": "제출",
+    "payments": "결제"
+  },
+  "buttons": {
+    "submit": "제출",
+    "cancel": "취소",
+    "confirm": "확인",
+    "save": "저장",
+    "edit": "편집",
+    "delete": "삭제",
+    "start": "시작",
+    "complete": "완료",
+    "next": "다음",
+    "previous": "이전",
+    "retry": "재시도",
+    "viewDetails": "세부사항 보기"
+  },
+  "common": {
+    "loading": "로딩 중...",
+    "error": "오류",
+    "success": "성공",
+    "warning": "경고",
+    "info": "정보",
+    "close": "닫기",
+    "search": "검색",
+    "filter": "필터",
+    "reset": "재설정",
+    "clear": "지우기",
+    "yes": "예",
+    "no": "아니오"
+  },
+  "errors": {
+    "generic": "문제가 발생했습니다. 다시 시도해 주세요.",
+    "network": "네트워크 오류입니다. 연결을 확인해 주세요.",
+    "unauthorized": "이 작업을 수행할 권한이 없습니다.",
+    "notFound": "요청한 리소스를 찾을 수 없습니다.",
+    "validation": "입력 내용을 확인하고 다시 시도해 주세요.",
+    "taskNotFound": "작업을 찾을 수 없습니다.",
+    "submissionFailed": "제출에 실패했습니다. 다시 시도해 주세요.",
+    "paymentFailed": "결제에 실패했습니다. 다시 시도해 주세요."
+  },
+  "tasks": {
+    "categories": {
+      "rlhf": "RLHF 평가",
+      "dataAnnotation": "데이터 주석",
+      "voiceRecording": "음성 녹음",
+      "textGeneration": "텍스트 생성",
+      "imageClassification": "이미지 분류"
+    },
+    "status": {
+      "available": "사용 가능",
+      "inProgress": "진행 중",
+      "completed": "완료",
+      "expired": "만료"
+    },
+    "difficulty": {
+      "easy": "쉬움",
+      "medium": "보통",
+      "hard": "어려움"
+    },
+    "noTasks": "현재 사용 가능한 작업이 없습니다.",
+    "completedTasks": "완료된 작업",
+    "availableTasks": "사용 가능한 작업",
+    "earnUp": "최대 수익",
+    "timeEstimate": "예상 시간",
+    "participants": "참가자",
+    "description": "설명",
+    "requirements": "요구사항",
+    "instructions": "지시사항"
+  },
+  "dashboard": {
+    "welcome": "WorldHuman Studio에 오신 것을 환영합니다",
+    "totalEarnings": "총 수익",
+    "tasksCompleted": "완료된 작업",
+    "successRate": "성공률",
+    "recentActivity": "최근 활동",
+    "quickStats": "빠른 통계",
+    "getStarted": "시작하기"
+  },
+  "submissions": {
+    "title": "내 제출",
+    "status": {
+      "pending": "대기 중",
+      "approved": "승인됨",
+      "rejected": "거부됨",
+      "underReview": "검토 중"
+    },
+    "submittedAt": "제출 일시",
+    "reviewedAt": "검토 일시",
+    "noSubmissions": "아직 제출이 없습니다.",
+    "feedback": "피드백"
+  },
+  "payments": {
+    "title": "결제 및 수익",
+    "balance": "현재 잔액",
+    "totalEarned": "총 수익",
+    "pendingPayments": "대기 중인 결제",
+    "paymentHistory": "결제 내역",
+    "withdraw": "출금",
+    "minimumWithdraw": "최소 출금 금액",
+    "processingTime": "처리 시간: 1-3 영업일"
+  },
+  "auth": {
+    "signIn": "로그인",
+    "signOut": "로그아웃",
+    "verifyWithWorldId": "World ID로 인증",
+    "connectWallet": "지갑 연결",
+    "verificationRequired": "World ID 인증이 필요합니다",
+    "welcome": "다시 오신 것을 환영합니다!",
+    "newUser": "WorldHuman Studio가 처음이신가요?"
+  },
+  "settings": {
+    "title": "설정",
+    "language": "언어",
+    "notifications": "알림",
+    "privacy": "개인정보",
+    "account": "계정",
+    "support": "지원",
+    "about": "정보"
+  }
+}

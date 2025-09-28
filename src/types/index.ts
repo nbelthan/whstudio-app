@@ -326,3 +326,144 @@ export interface EarningsData {
   monthly: Array<{ month: string; amount: number }>;
   by_task_type: Array<{ task_type: TaskType; amount: number; count: number }>;
 }
+
+// Notification system types
+export type NotificationType =
+  | 'task_available'
+  | 'task_assigned'
+  | 'task_completed'
+  | 'payment_received'
+  | 'submission_reviewed'
+  | 'high_paying_task'
+  | 'streak_milestone'
+  | 'reputation_updated'
+  | 'urgent_task'
+  | 'consensus_needed'
+  | 'weekly_summary'
+  | 'achievement_unlocked';
+
+export type NotificationPriority = 'low' | 'medium' | 'high' | 'urgent';
+export type NotificationStatus = 'sent' | 'delivered' | 'opened' | 'clicked' | 'failed';
+
+export interface NotificationTemplate {
+  id: string;
+  type: NotificationType;
+  title_template: string; // e.g., "🔥 ${username}, new high-paying task available!"
+  message_template?: string; // e.g., "Earn $${amount} for ${task_type} task: ${title}"
+  action_url?: string; // e.g., "/tasks/${task_id}"
+  emoji: string; // Primary emoji for the notification
+  priority: NotificationPriority;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  type: NotificationType;
+  title: string; // Personalized title with username and emojis
+  message?: string; // Personalized message content
+  action_url?: string; // URL to navigate when clicked
+  priority: NotificationPriority;
+  status: NotificationStatus;
+  metadata?: Record<string, any>; // Additional data (task_id, amount, etc.)
+
+  // Personalization data
+  personalization_data?: {
+    username?: string;
+    amount?: number;
+    task_title?: string;
+    task_type?: string;
+    task_id?: string;
+    streak_count?: number;
+    reputation_score?: number;
+    [key: string]: any;
+  };
+
+  // Tracking
+  sent_at: string;
+  delivered_at?: string;
+  opened_at?: string;
+  clicked_at?: string;
+  expires_at?: string;
+
+  created_at: string;
+  updated_at: string;
+}
+
+export interface NotificationPreferences {
+  id: string;
+  user_id: string;
+
+  // Notification type preferences
+  task_available: boolean;
+  task_assigned: boolean;
+  task_completed: boolean;
+  payment_received: boolean;
+  submission_reviewed: boolean;
+  high_paying_task: boolean;
+  streak_milestone: boolean;
+  reputation_updated: boolean;
+  urgent_task: boolean;
+  consensus_needed: boolean;
+  weekly_summary: boolean;
+  achievement_unlocked: boolean;
+
+  // Delivery preferences
+  in_app_notifications: boolean;
+  email_notifications: boolean;
+  push_notifications: boolean;
+
+  // Frequency settings
+  max_daily_notifications: number;
+  quiet_hours_start?: string; // HH:MM format
+  quiet_hours_end?: string; // HH:MM format
+  timezone?: string;
+
+  created_at: string;
+  updated_at: string;
+}
+
+export interface NotificationStats {
+  total_sent: number;
+  total_delivered: number;
+  total_opened: number;
+  total_clicked: number;
+  open_rate: number; // percentage
+  click_rate: number; // percentage
+  by_type: Array<{
+    type: NotificationType;
+    sent: number;
+    opened: number;
+    open_rate: number;
+  }>;
+}
+
+// API request/response types for notifications
+export interface SendNotificationRequest {
+  user_id?: string; // For single user
+  user_ids?: string[]; // For multiple users
+  type: NotificationType;
+  personalization_data?: Record<string, any>;
+  priority?: NotificationPriority;
+  action_url?: string;
+  expires_at?: string;
+  metadata?: Record<string, any>;
+}
+
+export interface NotificationsResponse extends ApiResponse {
+  notifications: Notification[];
+  pagination: {
+    limit: number;
+    offset: number;
+    count: number;
+    total: number;
+    has_more: boolean;
+  };
+  stats?: NotificationStats;
+}
+
+export interface NotificationResponse extends ApiResponse {
+  notification: Notification;
+}

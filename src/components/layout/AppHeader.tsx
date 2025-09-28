@@ -1,27 +1,23 @@
 /**
- * App Header Component
- * Shows user stats and navigation across all pages
+ * App Header Component - Stats Bar
+ * Shows user stats at the top, navigation moved to bottom tabs
  */
 
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import {
   Typography,
-  Button,
   Chip
 } from '@worldcoin/mini-apps-ui-kit-react';
 import {
-  Home,
-  Briefcase,
   DollarSign,
-  Award,
-  User
+  Award
 } from 'lucide-react';
+import { LanguageSelector } from '@/components/ui/LanguageSelector';
 
 export default function AppHeader() {
-  const router = useRouter();
   const pathname = usePathname();
   const [earnings, setEarnings] = useState<number>(0);
   const [reputation, setReputation] = useState<number>(100);
@@ -56,34 +52,12 @@ export default function AppHeader() {
     <div className="fixed top-0 left-0 right-0 z-50 bg-[var(--color-bg-base)] border-b border-[var(--color-divider-low)]">
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
-          {/* Left: Navigation with Labels */}
-          <div className="flex items-center gap-3">
-            <Button
-              variant={pathname === '/dashboard' ? 'primary' : 'secondary'}
-              size="small"
-              onClick={() => router.push('/dashboard')}
-              className="flex items-center gap-2 px-3"
-            >
-              <Home className="w-5 h-5" />
-              <span>Dashboard</span>
-            </Button>
-            <Button
-              variant={pathname.includes('/tasks') ? 'primary' : 'secondary'}
-              size="small"
-              onClick={() => router.push('/tasks')}
-              className="flex items-center gap-2 px-3"
-            >
-              <Briefcase className="w-5 h-5" />
-              <span>Tasks</span>
-            </Button>
-          </div>
-
-          {/* Center: App Name */}
-          <Typography variant="h4" className="text-[var(--color-text-primary)] hidden md:block">
+          {/* Left: App Name */}
+          <Typography variant="h4" className="text-[var(--color-text-primary)]">
             WorldHuman Studio
           </Typography>
 
-          {/* Right: User Stats */}
+          {/* Right: User Stats and Language Selector */}
           <div className="flex items-center gap-3">
             <Chip
               variant="success"
@@ -101,15 +75,7 @@ export default function AppHeader() {
               <Award className="w-3 h-3" />
               {reputation}
             </Chip>
-            <Button
-              variant="secondary"
-              size="small"
-              onClick={() => router.push('/dashboard')}
-              className="!p-2"
-              title="Profile"
-            >
-              <User className="w-4 h-4" />
-            </Button>
+            <LanguageSelector variant="compact" className="ml-2" />
           </div>
         </div>
       </div>

@@ -1,0 +1,125 @@
+{
+  "navigation": {
+    "dashboard": "Panel",
+    "tasks": "Tareas",
+    "submissions": "Envíos",
+    "payments": "Pagos"
+  },
+  "buttons": {
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "start": "Comenzar",
+    "complete": "Completar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "retry": "Reintentar",
+    "viewDetails": "Ver Detalles"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "warning": "Advertencia",
+    "info": "Información",
+    "close": "Cerrar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "reset": "Restablecer",
+    "clear": "Limpiar",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "errors": {
+    "generic": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "network": "Error de red. Por favor, verifica tu conexión.",
+    "unauthorized": "No tienes autorización para realizar esta acción.",
+    "notFound": "El recurso solicitado no fue encontrado.",
+    "validation": "Por favor, verifica tu entrada e inténtalo de nuevo.",
+    "taskNotFound": "Tarea no encontrada.",
+    "submissionFailed": "Error al enviar. Por favor, inténtalo de nuevo.",
+    "paymentFailed": "Pago fallido. Por favor, inténtalo de nuevo."
+  },
+  "tasks": {
+    "categories": {
+      "rlhf": "Calificación RLHF",
+      "dataAnnotation": "Anotación de Datos",
+      "voiceRecording": "Grabación de Voz",
+      "textGeneration": "Generación de Texto",
+      "imageClassification": "Clasificación de Imágenes"
+    },
+    "status": {
+      "available": "Disponible",
+      "inProgress": "En Progreso",
+      "completed": "Completado",
+      "expired": "Expirado"
+    },
+    "difficulty": {
+      "easy": "Fácil",
+      "medium": "Medio",
+      "hard": "Difícil"
+    },
+    "noTasks": "No hay tareas disponibles en este momento.",
+    "completedTasks": "Tareas Completadas",
+    "availableTasks": "Tareas Disponibles",
+    "earnUp": "Gana hasta",
+    "timeEstimate": "Tiempo estimado",
+    "participants": "participantes",
+    "description": "Descripción",
+    "requirements": "Requisitos",
+    "instructions": "Instrucciones"
+  },
+  "dashboard": {
+    "welcome": "Bienvenido a WorldHuman Studio",
+    "totalEarnings": "Ganancias Totales",
+    "tasksCompleted": "Tareas Completadas",
+    "successRate": "Tasa de Éxito",
+    "recentActivity": "Actividad Reciente",
+    "quickStats": "Estadísticas Rápidas",
+    "getStarted": "Comenzar"
+  },
+  "submissions": {
+    "title": "Mis Envíos",
+    "status": {
+      "pending": "Pendiente",
+      "approved": "Aprobado",
+      "rejected": "Rechazado",
+      "underReview": "En Revisión"
+    },
+    "submittedAt": "Enviado el",
+    "reviewedAt": "Revisado el",
+    "noSubmissions": "Aún no hay envíos.",
+    "feedback": "Comentarios"
+  },
+  "payments": {
+    "title": "Pagos y Ganancias",
+    "balance": "Saldo Actual",
+    "totalEarned": "Total Ganado",
+    "pendingPayments": "Pagos Pendientes",
+    "paymentHistory": "Historial de Pagos",
+    "withdraw": "Retirar",
+    "minimumWithdraw": "Cantidad mínima de retiro",
+    "processingTime": "Tiempo de procesamiento: 1-3 días hábiles"
+  },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signOut": "Cerrar Sesión",
+    "verifyWithWorldId": "Verificar con World ID",
+    "connectWallet": "Conectar Billetera",
+    "verificationRequired": "Verificación con World ID requerida",
+    "welcome": "¡Bienvenido de vuelta!",
+    "newUser": "¿Nuevo en WorldHuman Studio?"
+  },
+  "settings": {
+    "title": "Configuración",
+    "language": "Idioma",
+    "notifications": "Notificaciones",
+    "privacy": "Privacidad",
+    "account": "Cuenta",
+    "support": "Soporte",
+    "about": "Acerca de"
+  }
+}

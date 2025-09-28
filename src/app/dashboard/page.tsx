@@ -10,6 +10,7 @@ import {
   Spinner,
 } from '@worldcoin/mini-apps-ui-kit-react';
 import { Briefcase, Award, Clock, TrendingUp } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface User {
   id: string;
@@ -25,6 +26,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // For demo mode, always use mock data to avoid auth loops
@@ -38,7 +40,7 @@ export default function Dashboard() {
         const mockUser: User = {
           id: '123',
           world_id: 'world_1234567890',
-          username: 'Human',
+          username: 'DemoUser',
           verification_level: 'device',
           wallet_address: '0x1234567890abcdef',
           reputation_score: 100 + (submissionCount * 10), // Increase reputation with each submission
@@ -55,7 +57,7 @@ export default function Dashboard() {
         const mockUser: User = {
           id: '123',
           world_id: 'world_1234567890',
-          username: 'Human',
+          username: 'DemoUser',
           verification_level: 'device',
           wallet_address: '0x1234567890abcdef',
           reputation_score: 100 + (submissionCount * 10),
@@ -94,7 +96,7 @@ export default function Dashboard() {
         <div className="text-center">
           <Spinner className="w-8 h-8 text-white mb-4 mx-auto" />
           <Typography variant="body2" className="text-white/60">
-            Loading dashboard...
+            {t('common.loading')}
           </Typography>
         </div>
       </SafeAreaView>
@@ -107,7 +109,7 @@ export default function Dashboard() {
 
   return (
     <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
-      <div className="w-full max-w-md mx-auto px-6 py-8 space-y-6">
+      <div className="w-full max-w-md mx-auto px-6 py-6 space-y-8">
         {/* Hero */}
         <div className="bg-[var(--color-bg-surface)] border border-[var(--color-divider-low)] rounded-2xl p-6">
           <div className="flex items-start justify-between gap-4 mb-4">
@@ -116,7 +118,7 @@ export default function Dashboard() {
                 Overview
               </Typography>
               <Typography variant="h2" className="text-[var(--color-text-primary)] mt-2">
-                Welcome back, {user.username || 'Human'}
+                {t('dashboard.welcome')}
               </Typography>
             </div>
             <ChipBadge value={user.verification_level} />
@@ -126,7 +128,7 @@ export default function Dashboard() {
             <div className="bg-[var(--color-bg-raised)] rounded-xl px-4 py-3 border border-[color-mix(in srgb,var(--color-divider-low) 75%,transparent)]">
               <div className="flex items-center gap-2 text-[color-mix(in srgb,var(--color-text-secondary) 85%,transparent)] text-sm">
                 <TrendingUp className="h-4 w-4 text-[var(--color-success)]" />
-                Total Earned
+                {t('dashboard.totalEarnings')}
               </div>
               <Typography variant="h1" className="text-[var(--color-text-primary)] text-3xl font-semibold mt-2">
                 ${user.total_earned || 0}
@@ -136,7 +138,7 @@ export default function Dashboard() {
             <div className="rounded-xl px-4 py-3 border border-[color-mix(in srgb,var(--color-divider-low) 75%,transparent)] bg-[color-mix(in srgb,var(--color-bg-surface) 75%,var(--color-accent-blue) 8%)]">
               <div className="flex items-center gap-2 text-[color-mix(in srgb,var(--color-text-secondary) 85%,transparent)] text-sm">
                 <Award className="h-4 w-4 text-[var(--color-accent-blue)]" />
-                Reputation
+                {t('dashboard.successRate')}
               </div>
               <Typography variant="h1" className="text-[var(--color-text-primary)] text-3xl font-semibold mt-2">
                 {user.reputation_score || 0}
@@ -148,7 +150,7 @@ export default function Dashboard() {
         {/* Quick Actions */}
         <div className="bg-[var(--color-bg-surface)] border border-[var(--color-divider-low)] rounded-2xl p-6 space-y-4">
           <Typography variant="h3" className="text-[var(--color-text-primary)]">
-            Quick Actions
+            {t('dashboard.quickStats')}
           </Typography>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <Button
@@ -162,10 +164,10 @@ export default function Dashboard() {
               </div>
               <div className="flex-1">
                 <Typography variant="h4" className="text-[var(--color-text-primary)] mb-1">
-                  Browse Tasks
+                  {t('navigation.tasks')}
                 </Typography>
                 <Typography variant="body2" className="text-[var(--color-text-secondary)]">
-                  Find new tasks to complete
+                  {t('tasks.availableTasks')}
                 </Typography>
               </div>
             </Button>
@@ -181,10 +183,10 @@ export default function Dashboard() {
               </div>
               <div className="flex-1">
                 <Typography variant="h4" className="text-[var(--color-text-primary)] mb-1">
-                  My Submissions
+                  {t('navigation.submissions')}
                 </Typography>
                 <Typography variant="body2" className="text-[var(--color-text-secondary)]">
-                  Track pending submissions
+                  {t('submissions.title')}
                 </Typography>
               </div>
             </Button>
@@ -199,12 +201,10 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 gap-3">
             <InfoRow label="World ID" value={user.world_id} />
             <InfoRow label="Verification" value={user.verification_level} isCapitalized />
-            {user.wallet_address && (
-              <InfoRow
-                label="Wallet"
-                value={`${user.wallet_address.slice(0, 6)}...${user.wallet_address.slice(-4)}`}
-              />
-            )}
+            <InfoRow
+              label="Username"
+              value={user.username || 'User'}
+            />
           </div>
         </div>
 
@@ -221,7 +221,7 @@ export default function Dashboard() {
           }}
           className="w-full !rounded-2xl !border-[color-mix(in srgb,var(--color-divider-low) 60%,transparent)] !bg-[color-mix(in srgb,var(--color-bg-surface) 90%,transparent)] !text-[var(--color-text-primary)]"
         >
-          Sign Out
+          {t('auth.signOut')}
         </Button>
       </div>
     </SafeAreaView>

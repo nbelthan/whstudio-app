@@ -6,11 +6,43 @@
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "offline_fallback": "/offline",
   "icons": [
     {
       "src": "/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Tasks",
+      "short_name": "Tasks",
+      "description": "View available tasks",
+      "url": "/tasks",
+      "icons": [
+        {
+          "src": "/icon.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View your progress",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/icon.svg",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
     }
   ],
   "world_app": {
@@ -19,6 +51,9 @@
     "description": "Contribute to AI training with human feedback",
     "category": "productivity",
     "icon_url": "/icon.svg",
-    "verification_level": "orb"
+    "verification_level": "orb",
+    "support_contact": "support@worldhuman.studio",
+    "privacy_policy": "/privacy",
+    "terms_of_service": "/terms"
   }
 }

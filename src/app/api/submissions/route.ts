@@ -52,8 +52,64 @@ interface SubmissionWithTask {
  */
 export async function GET(req: NextRequest) {
   try {
-    const session = await requireAuth();
+    // For demo mode, return mock submissions without authentication
     const { searchParams } = new URL(req.url);
+    const isDemoMode = process.env.NODE_ENV === 'development' || !process.env.DATABASE_URL;
+
+    if (isDemoMode) {
+      // Return demo submissions
+      const demoSubmissions = [
+        {
+          id: '1',
+          task_id: '1',
+          submission_data: { chosen_response: 'A', confidence: 4 },
+          attachments_urls: [],
+          time_spent_minutes: 5,
+          quality_score: 5,
+          status: 'approved',
+          review_notes: 'Great work!',
+          reviewed_at: new Date().toISOString(),
+          is_paid: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          task: {
+            title: 'Previous Task Submission',
+            description: 'You completed this task earlier',
+            task_type: 'rlhf_rating',
+            difficulty_level: 2,
+            reward_amount: 0.25,
+            reward_currency: 'USDC',
+            creator_username: 'System',
+            category_name: 'RLHF'
+          }
+        }
+      ];
+
+      return NextResponse.json({
+        success: true,
+        submissions: demoSubmissions,
+        pagination: {
+          limit: 20,
+          offset: 0,
+          total: demoSubmissions.length,
+          has_more: false
+        },
+        statistics: {
+          total: 1,
+          pending: 0,
+          approved: 1,
+          rejected: 0,
+          under_review: 0,
+          total_earnings: 0.25,
+          average_quality_score: 5,
+          total_time_spent: 5,
+          approval_rate: '100.0'
+        }
+      });
+    }
+
+    // Original authentication code for production
+    const session = await requireAuth();
 
     // Parse query parameters
     const status = searchParams.get('status') || 'all'; // 'pending', 'approved', 'rejected', 'under_review', 'all'
@@ -288,6 +344,48 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
   try {
+    // For demo mode, create mock submission without authentication
+    const isDemoMode = process.env.NODE_ENV === 'development' || !process.env.DATABASE_URL;
+
+    if (isDemoMode) {
+      const body = await req.json();
+
+      // Create mock submission response
+      const mockSubmission = {
+        id: `sub_${Date.now()}`,
+        task_id: body.task_id,
+        user_id: 'demo_user',
+        submitter_nullifier: 'demo_nullifier',
+        submission_data: body.submission_data,
+        attachments_urls: body.attachments_urls || [],
+        time_spent_minutes: body.time_spent_minutes || 5,
+        status: 'approved', // Instant approval in demo
+        created_at: new Date().toISOString()
+      };
+
+      return NextResponse.json({
+        success: true,
+        submission: mockSubmission,
+        task: {
+          id: body.task_id,
+          title: 'Demo Task',
+          task_type: 'rlhf_rating',
+          reward_amount: 0.25,
+          reward_currency: 'USDC'
+        },
+        next_steps: {
+          status: 'approved',
+          message: 'Submission approved! Reward credited.',
+          payment_info: {
+            amount: 0.25,
+            currency: 'USDC',
+            will_be_paid_after: 'instant'
+          }
+        }
+      });
+    }
+
+    // Original authentication code for production
     const session = await requireAuth();
     const {
       task_id,

@@ -185,9 +185,9 @@ export default function TaskDetailPage() {
   if (loading) {
     return (
       <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
-        <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
+        <div className="px-6 py-6" style={{ paddingTop: insets.top + 16 }}>
           {/* Header Skeleton */}
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex items-center gap-4 mb-4">
             <Skeleton className="w-10 h-10 rounded-full" />
             <SkeletonTypography variant="h1" className="flex-1" />
           </div>
@@ -206,8 +206,8 @@ export default function TaskDetailPage() {
   if (error) {
     return (
       <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
-        <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
-          <div className="flex items-center gap-4 mb-8">
+        <div className="px-6 py-6" style={{ paddingTop: insets.top + 16 }}>
+          <div className="flex items-center gap-4 mb-4">
             <Button
               variant="secondary"
               size="small"
@@ -241,8 +241,8 @@ export default function TaskDetailPage() {
   if (!task) {
     return (
       <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
-        <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
-          <div className="flex items-center gap-4 mb-8">
+        <div className="px-6 py-6" style={{ paddingTop: insets.top + 16 }}>
+          <div className="flex items-center gap-4 mb-4">
             <Button
               variant="secondary"
               size="small"
@@ -281,9 +281,9 @@ export default function TaskDetailPage() {
 
   return (
     <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
-      <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
+      <div className="px-6 py-6" style={{ paddingTop: insets.top + 16 }}>
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-4">
           <Button
             variant="secondary"
             size="small"
@@ -303,7 +303,7 @@ export default function TaskDetailPage() {
         </div>
 
         {/* Task Info */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
               <Typography variant="h2" className="text-white mb-2">
@@ -400,7 +400,7 @@ export default function TaskDetailPage() {
         )}
 
         {/* Instructions */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
           <Typography variant="h3" className="text-white mb-4">
             Instructions
           </Typography>
@@ -411,7 +411,7 @@ export default function TaskDetailPage() {
 
         {/* Requirements */}
         {task.requires_verification && (
-          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-6 mb-6">
+          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-6 mb-4">
             <div className="flex items-center gap-2 mb-3">
               <AlertTriangle className="w-5 h-5 text-yellow-400" />
               <Typography variant="h3" className="text-yellow-400">
@@ -426,7 +426,7 @@ export default function TaskDetailPage() {
 
         {/* Verification Criteria */}
         {task.verification_criteria && Object.keys(task.verification_criteria).length > 0 && (
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
             <Typography variant="h3" className="text-white mb-4">
               Quality Criteria
             </Typography>
@@ -445,7 +445,7 @@ export default function TaskDetailPage() {
 
         {/* Attachments */}
         {task.attachment_urls && task.attachment_urls.length > 0 && (
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-4">
             <Typography variant="h3" className="text-white mb-4">
               Attachments
             </Typography>
@@ -468,7 +468,7 @@ export default function TaskDetailPage() {
         )}
 
         {/* Action Button */}
-        <div className="sticky bottom-6">
+        <div className="sticky bottom-3">
           {canStartTask && (
             <Button
               variant="primary"

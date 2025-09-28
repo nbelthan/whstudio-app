@@ -1,0 +1,125 @@
+{
+  "navigation": {
+    "dashboard": "แดชบอร์ด",
+    "tasks": "งาน",
+    "submissions": "การส่งงาน",
+    "payments": "การชำระเงิน"
+  },
+  "buttons": {
+    "submit": "ส่ง",
+    "cancel": "ยกเลิก",
+    "confirm": "ยืนยัน",
+    "save": "บันทึก",
+    "edit": "แก้ไข",
+    "delete": "ลบ",
+    "start": "เริ่ม",
+    "complete": "เสร็จสิ้น",
+    "next": "ถัดไป",
+    "previous": "ก่อนหน้า",
+    "retry": "ลองใหม่",
+    "viewDetails": "ดูรายละเอียด"
+  },
+  "common": {
+    "loading": "กำลังโหลด...",
+    "error": "ข้อผิดพลาด",
+    "success": "สำเร็จ",
+    "warning": "คำเตือน",
+    "info": "ข้อมูล",
+    "close": "ปิด",
+    "search": "ค้นหา",
+    "filter": "กรอง",
+    "reset": "รีเซ็ต",
+    "clear": "ล้าง",
+    "yes": "ใช่",
+    "no": "ไม่"
+  },
+  "errors": {
+    "generic": "เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง",
+    "network": "ข้อผิดพลาดเครือข่าย โปรดตรวจสอบการเชื่อมต่อ",
+    "unauthorized": "คุณไม่ได้รับอนุญาตให้ทำการนี้",
+    "notFound": "ไม่พบทรัพยากรที่ร้องขอ",
+    "validation": "โปรดตรวจสอบข้อมูลและลองใหม่",
+    "taskNotFound": "ไม่พบงาน",
+    "submissionFailed": "การส่งงานล้มเหลว โปรดลองใหม่",
+    "paymentFailed": "การชำระเงินล้มเหลว โปรดลองใหม่"
+  },
+  "tasks": {
+    "categories": {
+      "rlhf": "การให้คะแนน RLHF",
+      "dataAnnotation": "การแปลข้อมูล",
+      "voiceRecording": "การบันทึกเสียง",
+      "textGeneration": "การสร้างข้อความ",
+      "imageClassification": "การจำแนกภาพ"
+    },
+    "status": {
+      "available": "พร้อมใช้งาน",
+      "inProgress": "กำลังดำเนินการ",
+      "completed": "เสร็จสิ้น",
+      "expired": "หมดอายุ"
+    },
+    "difficulty": {
+      "easy": "ง่าย",
+      "medium": "ปานกลาง",
+      "hard": "ยาก"
+    },
+    "noTasks": "ไม่มีงานที่พร้อมใช้งานในขณะนี้",
+    "completedTasks": "งานที่เสร็จสิ้น",
+    "availableTasks": "งานที่พร้อมใช้งาน",
+    "earnUp": "รับได้สูงสุด",
+    "timeEstimate": "เวลาโดยประมาณ",
+    "participants": "ผู้เข้าร่วม",
+    "description": "คำอธิบาย",
+    "requirements": "ข้อกำหนด",
+    "instructions": "คำแนะนำ"
+  },
+  "dashboard": {
+    "welcome": "ยินดีต้อนรับสู่ WorldHuman Studio",
+    "totalEarnings": "รายได้รวม",
+    "tasksCompleted": "งานที่เสร็จสิ้น",
+    "successRate": "อัตราความสำเร็จ",
+    "recentActivity": "กิจกรรมล่าสุด",
+    "quickStats": "สถิติด่วน",
+    "getStarted": "เริ่มต้น"
+  },
+  "submissions": {
+    "title": "การส่งงานของฉัน",
+    "status": {
+      "pending": "รอดำเนินการ",
+      "approved": "อนุมัติ",
+      "rejected": "ปฏิเสธ",
+      "underReview": "กำลังตรวจสอบ"
+    },
+    "submittedAt": "ส่งเมื่อ",
+    "reviewedAt": "ตรวจสอบเมื่อ",
+    "noSubmissions": "ยังไม่มีการส่งงาน",
+    "feedback": "ความคิดเห็น"
+  },
+  "payments": {
+    "title": "การชำระเงินและรายได้",
+    "balance": "ยอดเงินปัจจุบัน",
+    "totalEarned": "รายได้รวม",
+    "pendingPayments": "การชำระเงินรอดำเนินการ",
+    "paymentHistory": "ประวัติการชำระเงิน",
+    "withdraw": "ถอน",
+    "minimumWithdraw": "จำนวนขั้นต่ำในการถอน",
+    "processingTime": "เวลาดำเนินการ: 1-3 วันทำการ"
+  },
+  "auth": {
+    "signIn": "เข้าสู่ระบบ",
+    "signOut": "ออกจากระบบ",
+    "verifyWithWorldId": "ยืนยันด้วย World ID",
+    "connectWallet": "เชื่อมต่อกระเป๋าเงิน",
+    "verificationRequired": "ต้องการการยืนยัน World ID",
+    "welcome": "ยินดีต้อนรับกลับ!",
+    "newUser": "ใหม่กับ WorldHuman Studio?"
+  },
+  "settings": {
+    "title": "การตั้งค่า",
+    "language": "ภาษา",
+    "notifications": "การแจ้งเตือน",
+    "privacy": "ความเป็นส่วนตัว",
+    "account": "บัญชี",
+    "support": "การสนับสนุน",
+    "about": "เกี่ยวกับ"
+  }
+}

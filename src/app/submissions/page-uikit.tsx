@@ -157,7 +157,7 @@ export default function SubmissionsPageUIKit() {
 
   return (
     <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)] text-[var(--color-text-primary)]">
-      <div className="px-6 py-8 space-y-6" style={{ paddingTop: insets.top + 32 }}>
+      <div className="px-6 py-6 space-y-8" style={{ paddingTop: insets.top + 16 }}>
         {/* Header */}
         <div className="space-y-2">
           <div className="flex justify-between items-start mb-4">

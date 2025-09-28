@@ -31,10 +31,18 @@ import {
   Filter,
   RefreshCw,
   ArrowUpRight,
-  ArrowDownLeft
+  ArrowDownLeft,
+  Shield,
+  FileText,
+  ExternalLink,
+  Mail,
+  HelpCircle,
+  User,
+  Settings as SettingsIcon
 } from 'lucide-react';
 import { usePayments } from '@/hooks/usePayments';
 import { formatCurrency, formatDate, formatRelativeTime } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 interface PaymentFilters {
   type: 'all' | 'sent' | 'received';
@@ -44,6 +52,7 @@ interface PaymentFilters {
 }
 
 export default function PaymentsPage() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const {
     payments,
@@ -57,7 +66,7 @@ export default function PaymentsPage() {
     clearError
   } = usePayments();
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'history'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'history' | 'settings'>('overview');
   const [filters, setFilters] = useState<PaymentFilters>({
     type: 'all',
     status: 'all',
@@ -443,6 +452,144 @@ export default function PaymentsPage() {
     </div>
   );
 
+  const renderSettings = () => (
+    <div className="space-y-4">
+      {/* Account Settings */}
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <Typography variant="h4" className="text-white mb-4 flex items-center gap-2">
+          <User className="w-5 h-5" />
+          Account Settings
+        </Typography>
+
+        <div className="space-y-3">
+          <ListItem
+            icon={<Shield className="w-5 h-5 text-blue-400" />}
+            title="Privacy Policy"
+            subtitle="How we collect, use, and protect your data"
+            rightContent={<ExternalLink className="w-4 h-4 text-white/60" />}
+            onClick={() => router.push('/privacy')}
+            className="cursor-pointer hover:bg-white/5"
+          />
+
+          <ListItem
+            icon={<FileText className="w-5 h-5 text-blue-400" />}
+            title="Terms of Service"
+            subtitle="Usage terms and conditions"
+            rightContent={<ExternalLink className="w-4 h-4 text-white/60" />}
+            onClick={() => router.push('/terms')}
+            className="cursor-pointer hover:bg-white/5"
+          />
+        </div>
+      </div>
+
+      {/* Support */}
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <Typography variant="h4" className="text-white mb-4 flex items-center gap-2">
+          <HelpCircle className="w-5 h-5" />
+          Support
+        </Typography>
+
+        <div className="space-y-3">
+          <ListItem
+            icon={<Mail className="w-5 h-5 text-green-400" />}
+            title="Contact Support"
+            subtitle="support@worldhuman.studio"
+            rightContent={<ExternalLink className="w-4 h-4 text-white/60" />}
+            onClick={() => window.open('mailto:support@worldhuman.studio', '_blank')}
+            className="cursor-pointer hover:bg-white/5"
+          />
+
+          <ListItem
+            icon={<Shield className="w-5 h-5 text-blue-400" />}
+            title="Privacy Concerns"
+            subtitle="privacy@worldhuman.studio"
+            rightContent={<ExternalLink className="w-4 h-4 text-white/60" />}
+            onClick={() => window.open('mailto:privacy@worldhuman.studio', '_blank')}
+            className="cursor-pointer hover:bg-white/5"
+          />
+        </div>
+      </div>
+
+      {/* App Information */}
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <Typography variant="h4" className="text-white mb-4 flex items-center gap-2">
+          <SettingsIcon className="w-5 h-5" />
+          App Information
+        </Typography>
+
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <Typography variant="body2" className="text-white/60">
+              Version
+            </Typography>
+            <Typography variant="body2" className="text-white">
+              1.0.0
+            </Typography>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <Typography variant="body2" className="text-white/60">
+              World App Integration
+            </Typography>
+            <Chip variant="success" size="small">
+              Active
+            </Chip>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <Typography variant="body2" className="text-white/60">
+              Support Contact
+            </Typography>
+            <Typography variant="body2" className="text-white">
+              support@worldhuman.studio
+            </Typography>
+          </div>
+        </div>
+      </div>
+
+      {/* Data & Privacy */}
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <Typography variant="h4" className="text-white mb-4 flex items-center gap-2">
+          <Shield className="w-5 h-5" />
+          Data & Privacy
+        </Typography>
+
+        <div className="space-y-3">
+          <Typography variant="body2" className="text-white/60 mb-3">
+            Your privacy matters to us. We follow strict data minimization principles and only collect information necessary for platform functionality.
+          </Typography>
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-400" />
+              <Typography variant="body2" className="text-white/80">
+                World ID verification (anonymized)
+              </Typography>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-400" />
+              <Typography variant="body2" className="text-white/80">
+                Task submissions for AI training
+              </Typography>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-400" />
+              <Typography variant="body2" className="text-white/80">
+                Secure payment processing
+              </Typography>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-400" />
+              <Typography variant="body2" className="text-white/80">
+                No unnecessary data collection
+              </Typography>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)]">
       <div className="w-full max-w-md mx-auto px-6 py-8 space-y-6">
@@ -460,12 +607,15 @@ export default function PaymentsPage() {
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
               <TabItem value="overview">Overview</TabItem>
               <TabItem value="history">History</TabItem>
+              <TabItem value="settings">Settings</TabItem>
             </Tabs>
           </div>
         </div>
 
         <div className="space-y-6">
-          {activeTab === 'overview' ? renderOverview() : renderHistory()}
+          {activeTab === 'overview' && renderOverview()}
+          {activeTab === 'history' && renderHistory()}
+          {activeTab === 'settings' && renderSettings()}
         </div>
       </div>
     </SafeAreaView>

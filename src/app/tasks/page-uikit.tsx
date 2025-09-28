@@ -150,10 +150,10 @@ export default function TasksPageUIKit() {
 
   return (
     <SafeAreaView className="min-h-screen bg-[var(--color-bg-base)] text-[var(--color-text-primary)]">
-      <div className="px-6 py-8" style={{ paddingTop: insets.top + 32 }}>
+      <div className="px-6 py-6" style={{ paddingTop: insets.top + 16 }}>
         {/* Header */}
-        <div className="mb-8">
-          <Typography variant="h1" className="text-[var(--color-text-primary)] mb-2">
+        <div className="mb-6">
+          <Typography variant="h1" className="text-[var(--color-text-primary)] mb-4">
             Available Tasks
           </Typography>
           <Typography variant="body2" className="text-[var(--color-text-secondary)]">
