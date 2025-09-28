@@ -15,6 +15,20 @@ export default function ConsentWrapper({ children }: ConsentWrapperProps) {
     handleDeclineConsent
   } = useConsentManager();
 
+  // Show loading state while checking consent
+  if (consentGiven === null) {
+    return (
+      <>
+        {children}
+        <ConsentDialog
+          isOpen={showConsentDialog}
+          onAccept={handleAcceptConsent}
+          onDecline={handleDeclineConsent}
+        />
+      </>
+    );
+  }
+
   // If consent is declined, show limited functionality message
   if (consentGiven === false) {
     return (
@@ -44,14 +58,6 @@ export default function ConsentWrapper({ children }: ConsentWrapperProps) {
     );
   }
 
-  return (
-    <>
-      {children}
-      <ConsentDialog
-        isOpen={showConsentDialog}
-        onAccept={handleAcceptConsent}
-        onDecline={handleDeclineConsent}
-      />
-    </>
-  );
+  // Consent has been given, render app normally
+  return <>{children}</>;
 }
