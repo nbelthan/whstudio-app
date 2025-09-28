@@ -77,8 +77,8 @@ export async function GET(req: NextRequest) {
             description: 'You completed this task earlier',
             task_type: 'rlhf_rating',
             difficulty_level: 2,
-            reward_amount: 0.25,
-            reward_currency: 'USDC',
+            reward_amount: Number(process.env.DEMO_REWARD ?? '0.02'),
+            reward_currency: (process.env.DEMO_CURRENCY ?? 'USDC').toUpperCase(),
             creator_username: 'System',
             category_name: 'RLHF'
           }
@@ -100,7 +100,7 @@ export async function GET(req: NextRequest) {
           approved: 1,
           rejected: 0,
           under_review: 0,
-          total_earnings: 0.25,
+          total_earnings: Number(process.env.DEMO_REWARD ?? '0.02'),
           average_quality_score: 5,
           total_time_spent: 5,
           approval_rate: '100.0'
@@ -370,15 +370,15 @@ export async function POST(req: NextRequest) {
           id: body.task_id,
           title: 'Demo Task',
           task_type: 'rlhf_rating',
-          reward_amount: 0.25,
-          reward_currency: 'USDC'
+          reward_amount: Number(process.env.DEMO_REWARD ?? '0.02'),
+          reward_currency: (process.env.DEMO_CURRENCY ?? 'USDC').toUpperCase()
         },
         next_steps: {
           status: 'approved',
           message: 'Submission approved! Reward credited.',
           payment_info: {
-            amount: 0.25,
-            currency: 'USDC',
+            amount: Number(process.env.DEMO_REWARD ?? '0.02'),
+            currency: (process.env.DEMO_CURRENCY ?? 'USDC').toUpperCase(),
             will_be_paid_after: 'instant'
           }
         }

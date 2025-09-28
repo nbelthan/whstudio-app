@@ -101,7 +101,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                 Reward
               </Typography>
               <Typography variant="body2" className="text-white">
-                ${submission.task.reward_amount} {submission.task.reward_currency}
+                {submission.task.reward_amount} {submission.task.reward_currency}
               </Typography>
             </div>
           </div>
@@ -504,7 +504,7 @@ export default function AdminSubmissionsPage() {
                             </div>
                             <div className="flex items-center gap-1">
                               <DollarSign className="w-4 h-4" />
-                              ${submission.task?.reward_amount} {submission.task?.reward_currency}
+                              {submission.task?.reward_amount} {submission.task?.reward_currency}
                             </div>
                             {submission.review_priority && (
                               <div className={`flex items-center gap-1 ${getPriorityColor(submission.review_priority)}`}>

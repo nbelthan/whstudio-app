@@ -316,7 +316,7 @@ export default function SubmissionsPageUIKit() {
                         </Chip>
                         {submission.status === 'approved' && (
                           <Typography variant="body2" className="text-[var(--color-success)] font-medium">
-                            +${submission.task.reward_amount.toFixed(2)} {submission.task.reward_currency}
+                            +{submission.task.reward_amount.toFixed(2)} {submission.task.reward_currency}
                           </Typography>
                         )}
                         {submission.quality_score && (

@@ -382,7 +382,7 @@ export default function TaskSubmissionPage() {
               </div>
               <div>
                 <Typography variant="h2" className="text-green-400 mb-1">
-                  Success! You earned ${rewardAmount.toFixed(2)} USDC
+                  Success! You earned {rewardAmount.toFixed(2)} USDC
                 </Typography>
                 <Typography variant="body2" className="text-green-300">
                   Your reward has been credited. Redirecting to dashboard...

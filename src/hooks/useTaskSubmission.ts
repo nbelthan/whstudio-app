@@ -7,6 +7,7 @@
 
 import { useState, useCallback } from 'react';
 import { SubmissionData } from '@/types';
+import { useUI } from '@/stores';
 
 interface SubmissionPayload extends SubmissionData {
   world_id_proof?: any; // World ID proof data
@@ -43,6 +44,7 @@ interface UseTaskSubmissionReturn {
 export function useTaskSubmission(): UseTaskSubmissionReturn {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const { addNotification } = useUI();
 
   /**
    * Clear submission error
@@ -135,6 +137,16 @@ export function useTaskSubmission(): UseTaskSubmissionReturn {
 
         console.log(`💰 Reward credited: ${responseData.reward.amount} ${responseData.reward.currency}`);
         console.log(`💰 Total earnings: ${newEarnings}`);
+
+        // Show success notification with reward details
+        addNotification({
+          id: `submission-success-${Date.now()}`,
+          type: 'success',
+          title: 'Task Completed! 🎉',
+          message: `Great work! You earned ${responseData.reward.amount.toFixed(2)} ${responseData.reward.currency}. Your reward has been credited.`,
+          timestamp: new Date(),
+          duration: 5000
+        });
       }
 
       return {

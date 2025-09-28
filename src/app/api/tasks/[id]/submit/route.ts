@@ -49,7 +49,8 @@ export async function POST(
 
     // For demo mode, simulate instant approval and reward crediting
     // Get task details to know the reward amount
-    const taskReward = 0.25; // Default $0.25 per task in demo
+    const taskReward = Number(process.env.DEMO_REWARD ?? '0.02'); // Use environment variable or default 0.02 USDC
+    const rewardCurrency = (process.env.DEMO_CURRENCY ?? 'USDC').toUpperCase();
 
     // Create mock submission with approved status for demo
     const mockSubmission = {
@@ -60,11 +61,11 @@ export async function POST(
       created_at: new Date().toISOString(),
       quality_score: 5, // Perfect score in demo
       reward_amount: taskReward,
-      reward_currency: 'USDC'
+      reward_currency: rewardCurrency
     };
 
     console.log('🔍 Submission API: Created mock submission with instant approval:', mockSubmission);
-    console.log('🔍 Submission API: Reward credited:', `${taskReward} USDC`);
+    console.log('🔍 Submission API: Reward credited:', `${taskReward} ${rewardCurrency}`);
 
     // Update user's total earned in demo (this would normally be in the database)
     // The frontend will handle updating the user's total_earned display
@@ -74,10 +75,10 @@ export async function POST(
       submission: mockSubmission,
       reward: {
         amount: taskReward,
-        currency: 'USDC',
+        currency: rewardCurrency,
         status: 'credited' // Instant crediting in demo
       },
-      message: `Submission approved! You earned ${taskReward} USDC. Thank you for contributing to RLHF!`
+      message: `Submission approved! You earned ${taskReward} ${rewardCurrency}. Thank you for contributing to RLHF!`
     });
 
   } catch (error) {
