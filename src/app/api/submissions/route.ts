@@ -57,53 +57,80 @@ export async function GET(req: NextRequest) {
     const isDemoMode = process.env.NODE_ENV === 'development' || !process.env.DATABASE_URL;
 
     if (isDemoMode) {
-      // Return demo submissions
-      const demoSubmissions = [
-        {
-          id: '1',
-          task_id: '1',
-          submission_data: { chosen_response: 'A', confidence: 4 },
+      // Get demo submissions from headers (passed from client localStorage)
+      const storedSubmissionsHeader = req.headers.get('x-demo-submissions');
+      let storedSubmissions = [];
+
+      try {
+        if (storedSubmissionsHeader) {
+          storedSubmissions = JSON.parse(decodeURIComponent(storedSubmissionsHeader));
+        }
+      } catch (e) {
+        console.log('Could not parse stored submissions:', e);
+      }
+
+      // Generate demo submissions based on submission count
+      const submissionCount = parseInt(req.headers.get('x-demo-submission-count') || '0');
+      const totalEarned = parseFloat(req.headers.get('x-demo-total-earned') || '0');
+
+      // Create default demo submissions if we have submission count but no stored data
+      const demoSubmissions = storedSubmissions.length > 0 ? storedSubmissions :
+        submissionCount > 0 ? Array.from({ length: Math.min(submissionCount, 10) }, (_, index) => ({
+          id: `demo-${index + 1}`,
+          task_id: `task-${index + 1}`,
+          submission_data: { chosen_response: index % 2 === 0 ? 'A' : 'B', confidence: 3 + (index % 3) },
           attachments_urls: [],
-          time_spent_minutes: 5,
-          quality_score: 5,
+          time_spent_minutes: 3 + (index % 5),
+          quality_score: 4 + (index % 2),
           status: 'approved',
           review_notes: 'Great work!',
-          reviewed_at: new Date().toISOString(),
+          reviewed_at: new Date(Date.now() - (index * 3600000)).toISOString(),
           is_paid: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
+          created_at: new Date(Date.now() - (index * 7200000)).toISOString(),
+          updated_at: new Date(Date.now() - (index * 3600000)).toISOString(),
           task: {
-            title: 'Previous Task Submission',
-            description: 'You completed this task earlier',
+            title: `A/B Preference Task #${150 - index}`,
+            description: 'Compare AI responses and choose the better one',
             task_type: 'rlhf_rating',
-            difficulty_level: 2,
+            difficulty_level: 1 + (index % 3),
             reward_amount: Number(process.env.DEMO_REWARD ?? '0.02'),
             reward_currency: (process.env.DEMO_CURRENCY ?? 'USDC').toUpperCase(),
             creator_username: 'System',
-            category_name: 'RLHF'
+            category_name: 'RLHF Rating'
           }
-        }
-      ];
+        })) : [];
+
+      // Apply status filter
+      const status = searchParams.get('status') || 'all';
+      const filteredSubmissions = status === 'all'
+        ? demoSubmissions
+        : demoSubmissions.filter(s => s.status === status);
 
       return NextResponse.json({
         success: true,
-        submissions: demoSubmissions,
-        pagination: {
-          limit: 20,
-          offset: 0,
-          total: demoSubmissions.length,
-          has_more: false
-        },
-        statistics: {
-          total: 1,
-          pending: 0,
-          approved: 1,
-          rejected: 0,
-          under_review: 0,
-          total_earnings: Number(process.env.DEMO_REWARD ?? '0.02'),
-          average_quality_score: 5,
-          total_time_spent: 5,
-          approval_rate: '100.0'
+        data: {
+          submissions: filteredSubmissions,
+          pagination: {
+            limit: 20,
+            offset: 0,
+            total: filteredSubmissions.length,
+            has_next: false
+          },
+          stats: {
+            total: demoSubmissions.length,
+            pending: demoSubmissions.filter(s => s.status === 'pending').length,
+            approved: demoSubmissions.filter(s => s.status === 'approved').length,
+            rejected: demoSubmissions.filter(s => s.status === 'rejected').length,
+            under_review: demoSubmissions.filter(s => s.status === 'under_review').length,
+            total_earnings: totalEarned || (demoSubmissions.length * Number(process.env.DEMO_REWARD ?? '0.02')),
+            average_quality_score: demoSubmissions.length > 0
+              ? demoSubmissions.reduce((acc, s) => acc + s.quality_score, 0) / demoSubmissions.length
+              : 0,
+            total_time_spent: demoSubmissions.reduce((acc, s) => acc + s.time_spent_minutes, 0),
+            approval_rate: demoSubmissions.length > 0
+              ? (demoSubmissions.filter(s => s.status === 'approved').length / demoSubmissions.length * 100)
+              : 0
+          }
         }
       });
     }
@@ -290,35 +317,37 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      submissions: formattedSubmissions,
-      pagination: {
-        limit,
-        offset,
-        total: totalCount,
-        has_more: offset + formattedSubmissions.length < totalCount
-      },
-      statistics: {
-        total: parseInt(stats?.total || '0'),
-        pending: parseInt(stats?.pending || '0'),
-        approved: parseInt(stats?.approved || '0'),
-        rejected: parseInt(stats?.rejected || '0'),
-        under_review: parseInt(stats?.under_review || '0'),
-        total_earnings: parseFloat(stats?.total_earnings || '0'),
-        average_quality_score: stats?.average_quality_score ? parseFloat(stats.average_quality_score) : null,
-        total_time_spent: parseInt(stats?.total_time_spent || '0'),
-        approval_rate: parseInt(stats?.total || '0') > 0
-          ? (parseInt(stats?.approved || '0') / parseInt(stats?.total || '0') * 100).toFixed(1)
-          : '0'
-      },
-      filters: {
-        status,
-        task_type,
-        category,
-        date_from,
-        date_to,
-        search,
-        sort,
-        order
+      data: {
+        submissions: formattedSubmissions,
+        pagination: {
+          limit,
+          offset,
+          total: totalCount,
+          has_next: offset + formattedSubmissions.length < totalCount
+        },
+        stats: {
+          total: parseInt(stats?.total || '0'),
+          pending: parseInt(stats?.pending || '0'),
+          approved: parseInt(stats?.approved || '0'),
+          rejected: parseInt(stats?.rejected || '0'),
+          under_review: parseInt(stats?.under_review || '0'),
+          total_earnings: parseFloat(stats?.total_earnings || '0'),
+          average_quality_score: stats?.average_quality_score ? parseFloat(stats.average_quality_score) : null,
+          total_time_spent: parseInt(stats?.total_time_spent || '0'),
+          approval_rate: parseInt(stats?.total || '0') > 0
+            ? parseFloat(((parseInt(stats?.approved || '0') / parseInt(stats?.total || '0')) * 100).toFixed(1))
+            : 0
+        },
+        filters: {
+          status,
+          task_type,
+          category,
+          date_from,
+          date_to,
+          search,
+          sort,
+          order
+        }
       }
     });
 

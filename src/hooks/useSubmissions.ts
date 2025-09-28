@@ -52,11 +52,31 @@ export function useSubmissions(initialFilters: Partial<SubmissionFilters> = {}):
       setLoading(true);
       setError(null);
 
+      // Get demo data from localStorage if available
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      // Add demo data headers if in demo mode
+      if (typeof window !== 'undefined') {
+        const submissionCount = localStorage.getItem('demo_submission_count');
+        const totalEarned = localStorage.getItem('demo_total_earned');
+        const storedSubmissions = localStorage.getItem('demo_submissions');
+
+        if (submissionCount) {
+          headers['x-demo-submission-count'] = submissionCount;
+        }
+        if (totalEarned) {
+          headers['x-demo-total-earned'] = totalEarned;
+        }
+        if (storedSubmissions) {
+          headers['x-demo-submissions'] = encodeURIComponent(storedSubmissions);
+        }
+      }
+
       const response = await fetch(`/api/submissions?${queryParams}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         credentials: 'include',
       });
 
