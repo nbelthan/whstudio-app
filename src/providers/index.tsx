@@ -2,6 +2,7 @@
 import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 import { ErudaProvider } from '@/providers/Eruda';
 import { NetworkProvider } from '@/providers/NetworkProvider';
 // Temporarily disabled MiniKit for demo
@@ -34,6 +35,27 @@ export default function ClientProviders({
   if (!appId) {
     console.warn('Missing NEXT_PUBLIC_APP_ID or NEXT_PUBLIC_WLD_APP_ID environment variable');
   }
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      const storedConsent = localStorage.getItem('worldhuman-consent');
+
+      if (!storedConsent) {
+        const consentData = {
+          accepted: true,
+          timestamp: new Date().toISOString(),
+          version: '1.0',
+          seeded: true,
+        };
+
+        localStorage.setItem('worldhuman-consent', JSON.stringify(consentData));
+      }
+    } catch (error) {
+      console.warn('Failed to seed consent state:', error);
+    }
+  }, []);
 
   return (
     <ErudaProvider>
