@@ -1,6 +1,7 @@
 'use client';
 
-import { Card, Typography, Button } from '@worldcoin/mini-apps-ui-kit-react';
+import { Typography, Button } from '@worldcoin/mini-apps-ui-kit-react';
+import { Card } from '@/components/ui';
 import { ArrowLeft, FileText, AlertTriangle, CheckCircle, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
