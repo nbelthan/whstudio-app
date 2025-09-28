@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Modal, Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
-import { Card } from '@/components/ui';
+import { Button, Typography } from '@worldcoin/mini-apps-ui-kit-react';
+import { Card, Modal } from '@/components/ui';
 import { Shield, FileText, ExternalLink, Check, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
