@@ -189,13 +189,15 @@ export function useNetworkStatus() {
       clearInterval(measurementIntervalRef.current);
     }
 
-    // Initial measurement
-    updateNetworkState();
-
-    // Set up periodic measurements
-    measurementIntervalRef.current = setInterval(() => {
+    // Delay initial measurement to prevent blocking initial render
+    setTimeout(() => {
       updateNetworkState();
-    }, PING_INTERVAL);
+
+      // Set up periodic measurements
+      measurementIntervalRef.current = setInterval(() => {
+        updateNetworkState();
+      }, PING_INTERVAL);
+    }, 500);
   }, [updateNetworkState]);
 
   /**

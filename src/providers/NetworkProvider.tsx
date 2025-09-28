@@ -91,10 +91,13 @@ export function NetworkProvider({ children }: NetworkProviderProps) {
     }
   };
 
-  // Initialize offline storage and service worker
+  // Initialize offline storage and service worker with delay to prevent blocking
   useEffect(() => {
     const initializeOfflineFeatures = async () => {
       try {
+        // Delay initialization to prevent blocking initial render
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
         // Initialize offline storage
         await offlineStorage.init();
         console.log('Offline storage initialized');
@@ -150,33 +153,38 @@ export function NetworkProvider({ children }: NetworkProviderProps) {
     }
   }, []);
 
-  // Performance monitoring for connection quality
+  // Performance monitoring for connection quality (disabled initially to prevent blocking)
   useEffect(() => {
-    const recordApiPerformance = (event: PerformanceEntry) => {
-      if (event.name.includes('/api/')) {
-        const loadTime = event.duration;
-        const success = !event.name.includes('error');
+    // Delay performance monitoring to after initial load
+    const timer = setTimeout(() => {
+      const recordApiPerformance = (event: PerformanceEntry) => {
+        if (event.name.includes('/api/')) {
+          const loadTime = event.duration;
+          const success = !event.name.includes('error');
 
-        connectionQuality.recordMetrics(
-          loadTime,
-          success,
-          loadTime > 30000, // Consider 30s+ as timeout
-          0, // bytes transferred (would need to be measured separately)
-          false // not from cache (would need to be determined)
-        );
+          connectionQuality.recordMetrics(
+            loadTime,
+            success,
+            loadTime > 30000, // Consider 30s+ as timeout
+            0, // bytes transferred (would need to be measured separately)
+            false // not from cache (would need to be determined)
+          );
+        }
+      };
+
+      // Monitor performance
+      if ('PerformanceObserver' in window) {
+        const observer = new PerformanceObserver((list) => {
+          list.getEntries().forEach(recordApiPerformance);
+        });
+
+        observer.observe({ entryTypes: ['navigation', 'resource'] });
+
+        return () => observer.disconnect();
       }
-    };
+    }, 2000); // Delay by 2 seconds
 
-    // Monitor performance
-    if ('PerformanceObserver' in window) {
-      const observer = new PerformanceObserver((list) => {
-        list.getEntries().forEach(recordApiPerformance);
-      });
-
-      observer.observe({ entryTypes: ['navigation', 'resource'] });
-
-      return () => observer.disconnect();
-    }
+    return () => clearTimeout(timer);
   }, [connectionQuality]);
 
   const contextValue: NetworkContextType = {
@@ -192,8 +200,8 @@ export function NetworkProvider({ children }: NetworkProviderProps) {
     <NetworkContext.Provider value={contextValue}>
       {children}
 
-      {/* Offline Indicator */}
-      <OfflineIndicator position="floating" showWhenOnline={false} />
+      {/* Offline Indicator - temporarily disabled to improve performance */}
+      {/* <OfflineIndicator position="floating" showWhenOnline={false} /> */}
 
       {/* Data Saver Recommendation */}
       {showDataSaverRecommendation && (

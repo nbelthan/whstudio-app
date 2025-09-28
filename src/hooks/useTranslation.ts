@@ -58,18 +58,23 @@ export function useTranslation() {
 
   // Initialize locale from localStorage or browser preference
   useEffect(() => {
-    const storedLocale = localStorage.getItem(STORAGE_KEY) as SupportedLocale;
-    const browserLocale = navigator.language.slice(0, 2) as SupportedLocale;
+    try {
+      const storedLocale = localStorage.getItem(STORAGE_KEY) as SupportedLocale;
+      const browserLocale = navigator.language?.slice(0, 2) as SupportedLocale;
 
-    if (storedLocale && Object.keys(translations).includes(storedLocale)) {
-      setLocale(storedLocale);
-    } else if (Object.keys(translations).includes(browserLocale)) {
-      setLocale(browserLocale);
-    } else {
+      if (storedLocale && Object.keys(translations).includes(storedLocale)) {
+        setLocale(storedLocale);
+      } else if (browserLocale && Object.keys(translations).includes(browserLocale)) {
+        setLocale(browserLocale);
+      } else {
+        setLocale('en');
+      }
+    } catch (error) {
+      console.warn('Failed to load locale preferences:', error);
       setLocale('en');
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   }, []);
 
   // Get the current translation object

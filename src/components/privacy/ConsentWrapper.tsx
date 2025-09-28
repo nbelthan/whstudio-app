@@ -15,6 +15,11 @@ export default function ConsentWrapper({ children }: ConsentWrapperProps) {
     handleDeclineConsent
   } = useConsentManager();
 
+  // Add error boundary for consent manager errors
+  if (typeof window === 'undefined') {
+    return <>{children}</>;
+  }
+
   // Show loading state while checking consent
   if (consentGiven === null) {
     return (
