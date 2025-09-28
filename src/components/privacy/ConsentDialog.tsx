@@ -200,25 +200,49 @@ export function useConsentManager() {
   const [showConsentDialog, setShowConsentDialog] = useState(false);
 
   useEffect(() => {
+    // In development mode, auto-accept consent for better DX
+    if (process.env.NODE_ENV === 'development') {
+      setConsentGiven(true);
+      setShowConsentDialog(false);
+
+      // Store auto-consent for development
+      const consentData = {
+        accepted: true,
+        timestamp: new Date().toISOString(),
+        version: '1.0',
+        auto: true // Mark as auto-accepted in dev
+      };
+      localStorage.setItem('worldhuman-consent', JSON.stringify(consentData));
+      return;
+    }
+
     // Check if consent has been given before
     const storedConsent = localStorage.getItem('worldhuman-consent');
     const consentData = storedConsent ? JSON.parse(storedConsent) : null;
 
-    if (consentData && consentData.accepted) {
-      // Check if consent is still valid (not older than 1 year)
-      const consentDate = new Date(consentData.timestamp);
-      const oneYearAgo = new Date();
-      oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    if (consentData) {
+      if (consentData.accepted) {
+        // Check if consent is still valid (not older than 1 year)
+        const consentDate = new Date(consentData.timestamp);
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
-      if (consentDate > oneYearAgo) {
-        setConsentGiven(true);
+        if (consentDate > oneYearAgo) {
+          setConsentGiven(true);
+          setShowConsentDialog(false);
+        } else {
+          // Consent expired, ask again
+          setConsentGiven(null);
+          setShowConsentDialog(true);
+        }
       } else {
-        // Consent expired, ask again
-        setConsentGiven(null);
-        setShowConsentDialog(true);
+        // Consent was explicitly declined
+        setConsentGiven(false);
+        setShowConsentDialog(false);
       }
     } else {
-      // No consent found, show dialog
+      // No consent found, keep null state and show dialog
+      setConsentGiven(null);
       setShowConsentDialog(true);
     }
   }, []);
