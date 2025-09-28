@@ -63,6 +63,16 @@ export function useSubmissions(initialFilters: Partial<SubmissionFilters> = {}):
         const totalEarned = localStorage.getItem('demo_total_earned');
         const storedSubmissions = localStorage.getItem('demo_submissions');
 
+        // Check if we're in demo mode (development or has demo data)
+        const isDemoMode = process.env.NODE_ENV === 'development' ||
+                          submissionCount !== null ||
+                          totalEarned !== null ||
+                          storedSubmissions !== null;
+
+        if (isDemoMode) {
+          headers['x-demo-mode'] = 'true';
+        }
+
         if (submissionCount) {
           headers['x-demo-submission-count'] = submissionCount;
         }

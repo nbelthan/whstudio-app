@@ -54,7 +54,10 @@ export async function GET(req: NextRequest) {
   try {
     // For demo mode, return mock submissions without authentication
     const { searchParams } = new URL(req.url);
-    const isDemoMode = process.env.NODE_ENV === 'development' || !process.env.DATABASE_URL;
+
+    // Check if we're in demo mode - prioritize the demo mode header from client
+    const clientDemoMode = req.headers.get('x-demo-mode') === 'true';
+    const isDemoMode = clientDemoMode || process.env.NODE_ENV === 'development' || !process.env.DATABASE_URL;
 
     if (isDemoMode) {
       // Get demo submissions from headers (passed from client localStorage)
