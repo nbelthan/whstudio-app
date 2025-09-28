@@ -37,7 +37,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  // In development mode, skip auth to avoid issues
+  const session = process.env.NODE_ENV === 'development' ? null : await auth();
   return (
     <html lang="en" suppressHydrationWarning>
       <body

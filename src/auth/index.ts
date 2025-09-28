@@ -27,7 +27,7 @@ declare module 'next-auth' {
 // For more information on each option (and a full list of options) go to
 // https://authjs.dev/getting-started/authentication/credentials
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   session: { strategy: 'jwt' },
   providers: [
     Credentials({
@@ -47,6 +47,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         signedNonce: string;
         finalPayloadJson: string;
       }) => {
+        // In development mode, allow demo authentication
+        if (process.env.NODE_ENV === 'development' && nonce === 'demo') {
+          return {
+            id: 'demo_user',
+            walletAddress: '0xDemoAddress',
+            username: 'Demo User',
+            profilePictureUrl: '/default-avatar.png',
+          };
+        }
+
         const expectedSignedNonce = hashNonce({ nonce });
 
         if (signedNonce !== expectedSignedNonce) {
